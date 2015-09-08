@@ -25,7 +25,7 @@ colors = {
 }
 
 #useful game dimesions
-TILESIZE = 50
+TILESIZE = 25
 MAPWIDTH = 0
 MAPHEIGH = 0
 
@@ -75,7 +75,7 @@ def drawBoard(node, board, finished):
 
     #update the display
     pygame.display.flip()
-    pygame.time.wait(400)
+    # pygame.time.wait(10)
     while finished:
     #get all the user events
         for event in pygame.event.get():

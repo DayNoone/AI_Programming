@@ -22,3 +22,6 @@ class Node:
         self.hValue = newHValue
         self.fValue = self.gValue + self.hValue
 
+
+#board = generateBoard(20, 20, 19, 3, 2, 18, [[5, 5, 10, 10], [1, 2, 4, 1]])
+
