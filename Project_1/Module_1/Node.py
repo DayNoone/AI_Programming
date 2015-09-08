@@ -14,4 +14,11 @@ class Node:
     def __lt__(self, other):
         return self.fValue < other.fValue
 
+    def set_gValue(self, newGValue):
+        self.gValue = newGValue
+        self.fValue = self.gValue + self.hValue
+
+    def set_hValue(self, newHValue):
+        self.hValue = newHValue
+        self.fValue = self.gValue + self.hValue
 
