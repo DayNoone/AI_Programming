@@ -25,7 +25,7 @@ def generate_all_successors(x):
 def best_first_search(initNode, goalNode, ):
     closedNodes = []
     openNodes = []
-    initNode.g = calculateGValue(initNode)
+    initNode.set_g(calculateGValue(initNode))
     initNode.h = calculateHValue(initNode, goalNode)
 
     heappush(openNodes, initNode)
@@ -34,7 +34,7 @@ def best_first_search(initNode, goalNode, ):
         if openNodes.count() == 0:
             print "No solution found"
             break
-        x = heappop(open)
+        x = heappop(openNodes)
         heappush(closedNodes, x)
         if x.X == goalNode.X and x.X == goalNode.Y:
             print "Solution found!"
