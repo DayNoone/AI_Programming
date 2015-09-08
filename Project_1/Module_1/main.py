@@ -52,14 +52,15 @@ def propagate_path_improvements(parent):
 def attach_and_eval(child, parent):
     child.parent = parent
     child.set_gValue(parent.gValue + MOVEMENT_COST)
-    calculateHValue(child.xPos, child.yPos, goalNode)
+    child.set_hValue(calculateHValue(child.xPos, child.yPos, goalNode))
 
 
 def updateStates(succ, states):
     for s in succ:
         string = str(s.xPos) + str(999) + str(s.yPos) + str(999) + str(s.gValue)
         s.state = int(string)
-        states[s.state] = s
+        if s.state not in states:
+            states[s.state] = s
 
 
 def best_first_search(initNode, goalNode, board):
@@ -72,9 +73,13 @@ def best_first_search(initNode, goalNode, board):
     heappush(openNodes, initNode)
 
     while True:
+        print "Open nodes:", len(openNodes)
+        print "Closed nodes:", len(closedNodes)
+        print "States:", len(states)
         if len(openNodes) == 0:
             print "No solution found"
             break
+        openNodes.sort()
         x = heappop(openNodes)
         drawBoard(x, board, False)
         heappush(closedNodes, x)
@@ -87,15 +92,10 @@ def best_first_search(initNode, goalNode, board):
 
         for s in succ:
             # TODO: If node S* has previously been created, and if state(S*) = state(S), then S ← S*.
-            if s.state in states.keys():
-                print "s.state:", s.state
-                if s.state == states[s.state].state:
-                    "THE SAME!"
+            if s.state in states:
                 s = states[s.state]
-            else:
-                "NOT"
             x.kids.append(s)
-            if s not in (closedNodes or openNodes):
+            if s not in closedNodes and s not in openNodes:
                 attach_and_eval(s, x)
                 heappush(openNodes, s)
             elif x.gValue + MOVEMENT_COST < s.gValue:
@@ -103,6 +103,11 @@ def best_first_search(initNode, goalNode, board):
                 attach_and_eval(s, x)
                 if s in closedNodes:
                     propagate_path_improvements()
+            elif x.gValue + MOVEMENT_COST == s.gValue:
+                print "EQUALS"
+
+            else:
+                print "not in open or closed"
 
 
 board5 = generateBoard(20, 20, 0, 0, 19, 13, [[4, 0, 4, 16], [12, 4, 2, 16], [16, 8, 4, 4]])
