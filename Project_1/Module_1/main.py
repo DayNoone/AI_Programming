@@ -22,7 +22,7 @@ def generate_all_successors(x):
     pass
 
 
-def best_first_search(initNode, goalNode, ):
+def best_first_search(initNode, goalNode, board):
     closedNodes = []
     openNodes = []
     initNode.set_g(calculateGValue(initNode))
