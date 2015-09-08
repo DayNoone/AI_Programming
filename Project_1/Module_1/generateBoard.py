@@ -44,5 +44,6 @@ def getBoardInfoFromInput():
             break;
     generateBoard(int(dimX), int(dimY), int(startX), int(startY), int(goalX), int(goalY), barriers)
 
-# generateBoard(6, 6, 1, 0, 5, 5, [[3, 2, 2, 2], [0, 3, 1, 3], [2, 0, 4, 2], [2, 5, 2, 1]])
-getBoardInfoFromInput()
+board = generateBoard(6, 6, 1, 0, 5, 5, [[3, 2, 2, 2], [0, 3, 1, 3], [2, 0, 4, 2], [2, 5, 2, 1]])
+
+# getBoardInfoFromInput()

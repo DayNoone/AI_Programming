@@ -2,22 +2,22 @@ class Node:
     def __init__(self, parent, g, h, x, y):
         self.parent = parent
         self.status = True
-        self.g = g
-        self.h = h
-        self.f = self.g + self.h
+        self.gValue = g
+        self.hValue = h
+        self.fValue = self.gValue + self.hValue
         self.kids = []
         self.state = None
 
-        self.x = x
-        self.y = y
+        self.xPos = x
+        self.yPos = y
 
     def __lt__(self, other):
-        return self.f < other.f
+        return self.fValue < other.fValue
 
     def set_g(self, g):
-        self.g = g
-        self.f = self.g + self.h
+        self.gValue = g
+        self.fValue = self.gValue + self.hValue
         for kid in self.kids:
-            kid.set_g(self.g - 1)
+            kid.set_g(self.gValue - 1)
 
 
