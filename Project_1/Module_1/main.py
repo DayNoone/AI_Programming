@@ -45,15 +45,21 @@ def propagate_path_improvements(parent):
     for child in parent.kids:
         if (parent.gValue + MOVEMENT_COST) < child.gValue:
             child.parent = parent
-            child.gValue = calculateGValue(parent)
+            child.set_gValue(calculateGValue(parent))
             propagate_path_improvements(child)
+
+
+def attach_and_eval(child, parent):
+    child.parent = parent
+    child.set_gValue(parent.gValue + MOVEMENT_COST)
+    calculateHValue(child.xPos, child.yPos, goalNode)
 
 
 def best_first_search(initNode, goalNode, board):
     closedNodes = []
     openNodes = []
-    initNode.set_g(calculateGValue(initNode))
-    initNode.hValue = calculateHValue(initNode, goalNode)
+    initNode.set_gValue(calculateGValue(initNode))
+    initNode.set_hValue(calculateHValue(initNode, goalNode))
 
     heappush(openNodes, initNode)
 
@@ -72,6 +78,13 @@ def best_first_search(initNode, goalNode, board):
         for s in succ:
             # If node S* has previously been created, and if state(S*) = state(S), then S ← S*.
             x.kids.append(s)
+            if s not in (closedNodes or openNodes):
+                attach_and_eval(s, x)
+                heappush(openNodes, s)
+            elif x.gValue + MOVEMENT_COST < s.gValue:
+                attach_and_eval(s, x)
+                if s in closedNodes:
+                    propagate_path_improvements()
 
 
 board = generateBoard(6, 6, 1, 0, 5, 5, [[3, 2, 2, 2], [0, 3, 1, 3], [2, 0, 4, 2], [2, 5, 2, 1]])
