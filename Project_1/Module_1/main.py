@@ -3,13 +3,14 @@ import math
 from heapq import heappush, heappop
 from Node import Node
 from generateBoard import generateBoard
+from gui import drawBoard, initiate
 
 MOVEMENT_COST = 1
 
 
 def calculateHValue(xPos, yPos, goalNode):
-    xOff = math.fabs(goalNode.xPos - xPos)
-    yOff = math.fabs(goalNode.yPos - yPos)
+    xOff = math.fabs(goalNode[0] - xPos)
+    yOff = math.fabs(goalNode[1] - yPos)
     return xOff + yOff
 
 
@@ -31,13 +32,10 @@ def generate_all_successors(parent, board, goalNode):
     for direction in range(len(directionX)):
         newX = parent.xPos + directionX[direction]
         newY = parent.yPos + directionY[direction]
-        print "newX", newX, "newY", newY
         if boardWidth > newX >= 0 and boardHeight > newY >= 0:
-            print "INSIDE board"
             if board[newX][newY] != '#':
                 newNode = Node(parent, calculateGValue(parent), calculateHValue(newX, newY, goalNode), newX, newY)
                 succ.append(newNode)
-        print ""
     return succ
 
 
@@ -59,19 +57,20 @@ def best_first_search(initNode, goalNode, board):
     closedNodes = []
     openNodes = []
     initNode.set_gValue(calculateGValue(initNode))
-    initNode.set_hValue(calculateHValue(initNode, goalNode))
+    initNode.set_hValue(calculateHValue(initNode.xPos, initNode.yPos, goalNode))
 
     heappush(openNodes, initNode)
 
     while True:
-        if openNodes.count() == 0:
+        if len(openNodes) == 0:
             print "No solution found"
             break
         x = heappop(openNodes)
+        drawBoard(x, board, False)
         heappush(closedNodes, x)
-        if x.xPos == goalNode.xPos and x.xPos == goalNode.yPos:
+        if x.xPos == goalNode[0] and x.xPos == goalNode[1]:
             print "Solution found!"
-            break
+            return x
 
         succ = generate_all_successors(x, board, goalNode)
 
@@ -87,11 +86,13 @@ def best_first_search(initNode, goalNode, board):
                     propagate_path_improvements()
 
 
-board = generateBoard(6, 6, 1, 0, 5, 5, [[3, 2, 2, 2], [0, 3, 1, 3], [2, 0, 4, 2], [2, 5, 2, 1]])
-goalNode = Node(None, None, None, 5, 5)
+#board = generateBoard(6, 6, 1, 0, 5, 5, [[3, 2, 2, 2], [0, 3, 1, 3], [2, 0, 4, 2], [2, 5, 2, 1]])
+board = generateBoard(20, 20, 19, 3, 2, 18, [[5, 5, 10, 10], [1, 2, 4, 1]])
+initiate(board)
+goalNode = (2, 18)
 startNode = Node(None, calculateGValue(None), calculateHValue(1, 0, goalNode), 1, 0)
-best_first_search(startNode, goalNode, board)
-
+x = best_first_search(startNode, goalNode, board)
+drawBoard(x, board, True)
 
 # Tests
 def generateSuccTest():

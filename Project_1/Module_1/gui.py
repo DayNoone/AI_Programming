@@ -21,51 +21,57 @@ colors = {
     'X'    : GREEN,
     '#'    : GREY,
     'O'    : WHITE,
-    'P'    : BLUE
+    '1'    : BLUE
 }
-
-#a list representing our tilemap
-tilemap = [
-    ['S', 'O', 'O', 'O'],
-    ['O', 'O', 'O', 'O'],
-    ['O', '#', '#', '#'],
-    ['O', 'O', 'X', 'O'],
-    ['O', 'O', 'O', 'O']
-]
-tilemap2 = [
-    ['S', 'P', 'O', 'O'],
-    ['O', 'O', 'O', 'O'],
-    ['O', '#', '#', '#'],
-    ['O', 'O', 'X', 'O'],
-    ['O', 'O', 'O', 'O']
-]
-tilemap3 = [
-    ['S', 'P', 'P', 'O'],
-    ['O', 'O', 'O', 'O'],
-    ['O', '#', '#', '#'],
-    ['O', 'O', 'X', 'O'],
-    ['O', 'O', 'O', 'O']
-]
-
-
 
 #useful game dimesions
 TILESIZE = 50
-MAPWIDTH = 4
-MAPHEIGH = 5
+MAPWIDTH = 0
+MAPHEIGH = 0
 
 #set up the display
 pygame.init()
-DISPLAYSURF = pygame.display.set_mode((MAPWIDTH*TILESIZE, MAPHEIGH*TILESIZE))
+DISPLAYSURF = pygame.display.set_mode((20*TILESIZE, 20*TILESIZE))
 
-def drawBoard(map, finished):
+def initiate(board):
+    global MAPHEIGH
+    MAPHEIGH = len(board)
+    global MAPWIDTH
+    MAPWIDTH = len(board[0])
+
+
+def addNodePos(node, pathMat):
+    pathMat[node.xPos][node.yPos] = '1'
+    if node.parent is not None:
+        addNodePos(node.parent, pathMat)
+
+
+def generatePathMatrix(node):
+
+    pathMat = [[0 for x in range(MAPWIDTH)] for x in range(MAPHEIGH)]
+    addNodePos(node, pathMat)
+    return pathMat
+
+
+def drawBoard(node, board, finished):
     #loop through each row
     for row in range(MAPHEIGH):
         #loop through each column in the row
         for column in range(MAPWIDTH):
             #draw the resource at that position in the tilmap, using the cc
-            pygame.draw.rect(DISPLAYSURF, colors[map[row][column]], (column*TILESIZE, row*TILESIZE,TILESIZE,TILESIZE))
+            pygame.draw.rect(DISPLAYSURF, colors[board[row][column]], (column*TILESIZE, row*TILESIZE,TILESIZE,TILESIZE))
             pygame.draw.circle(DISPLAYSURF, BLACK, ((column*TILESIZE)+TILESIZE/2, (row*TILESIZE)+TILESIZE/2), 3, 0)
+
+    pathMat = generatePathMatrix(node)
+
+    #loop through each row
+    for row in range(MAPHEIGH):
+        #loop through each column in the row
+        for column in range(MAPWIDTH):
+            if pathMat[row][column] == '1':
+                #draw the resource at that position in the tilmap, using the cc
+                pygame.draw.rect(DISPLAYSURF, colors[pathMat[row][column]], (column*TILESIZE, row*TILESIZE,TILESIZE,TILESIZE))
+                pygame.draw.circle(DISPLAYSURF, BLACK, ((column*TILESIZE)+TILESIZE/2, (row*TILESIZE)+TILESIZE/2), 3, 0)
 
     #update the display
     pygame.display.flip()
@@ -78,8 +84,3 @@ def drawBoard(map, finished):
                 #and the game and close the window
                 pygame.quit()
                 sys.exit()
-
-
-drawBoard(tilemap, False)
-drawBoard(tilemap2, False)
-drawBoard(tilemap3, True)
