@@ -14,10 +14,4 @@ class Node:
     def __lt__(self, other):
         return self.fValue < other.fValue
 
-    def set_g(self, g):
-        self.gValue = g
-        self.fValue = self.gValue + self.hValue
-        for kid in self.kids:
-            kid.set_g(self.gValue - 1)
-
 

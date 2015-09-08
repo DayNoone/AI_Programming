@@ -41,6 +41,14 @@ def generate_all_successors(parent, board, goalNode):
     return succ
 
 
+def propagate_path_improvements(parent):
+    for child in parent.kids:
+        if (parent.gValue + MOVEMENT_COST) < child.gValue:
+            child.parent = parent
+            child.gValue = calculateGValue(parent)
+            propagate_path_improvements(child)
+
+
 def best_first_search(initNode, goalNode, board):
     closedNodes = []
     openNodes = []
