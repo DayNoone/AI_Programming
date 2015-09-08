@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, parent, g, h):
+    def __init__(self, parent, g, h, x, y):
         self.parent = parent
         self.status = True
         self.g = g
@@ -7,6 +7,9 @@ class Node:
         self.f = self.g + self.h
         self.kids = []
         self.state = None
+
+        self.x = x
+        self.y = y
 
     def set_g(self, g):
         self.g = g

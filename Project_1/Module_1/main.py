@@ -1,6 +1,7 @@
 # coding=utf-8
 import math
 from heapq import heappush, heappop
+from Node import Node
 
 MOVEMENT_COST = 1
 
@@ -12,6 +13,8 @@ def calculateHValue(initNode, goalNode):
 
 
 def calculateGValue(initNode):
+    if initNode.parent is None:
+        return 0
     return initNode.parent.g + MOVEMENT_COST
 
 
