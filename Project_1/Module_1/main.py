@@ -76,7 +76,7 @@ def best_first_search(initNode, goalNode, board):
         succ = generate_all_successors(x, board, goalNode)
 
         for s in succ:
-            # If node S* has previously been created, and if state(S*) = state(S), then S ← S*.
+            """TODO: If node S* has previously been created, and if state(S*) = state(S), then S ← S*."""
             x.kids.append(s)
             if s not in (closedNodes or openNodes):
                 attach_and_eval(s, x)
