@@ -124,11 +124,6 @@ def best_first_search(initNode, goalPos, board, debug):
         for s in succ:
             s = states[s.state]
             x.kids.append(s)
-            if s in closedNodes:
-                print "Is in closed:", s
-            if s in openNodes:
-                print "Is is open:", s
-
             if s not in closedNodes and s not in openNodes:
                 if debug:
                     print "Not in any list"
@@ -137,14 +132,12 @@ def best_first_search(initNode, goalPos, board, debug):
                 heappush(openNodes, s)
 
             elif x.gValue + MOVEMENT_COST < s.gValue:
-
                 if debug:
                     print "Elif"
+
                 attach_and_eval(s, x, goalPos)
                 if s in closedNodes:
                     propagate_path_improvements(s)
-            else:
-                print("Else")
 
 
 MOVEMENT_COST = 1
@@ -178,41 +171,4 @@ def run(board):
     drawBoard(x, board.boardMatrix, openNodes, closedNodes, True)
 
 
-# run(board_5)
-#
-
 run(scenarioWeird)
-
-
-# Tests
-def generateSuccTest():
-    testBoard = [['O' for x in range(5)] for x in range(5)]
-    testBoard[2][2] = '#'
-    succ = generate_all_successors(Node(Node(None, 0, 0, 3, 1), 0, 0, 1, 2),
-                                   testBoard,
-                                   (3, 3))
-    print "Length of succ:"
-    print len(succ)
-
-
-def NodeSortTest():
-    nodeHeap = []
-    n1 = Node(None, 0, 0, 1, 0)
-    n2 = Node(None, 1, 0, 2, 0)
-    n3 = Node(None, 1, 1, 3, 0)
-    n4 = Node(None, 0, 3, 4, 0)
-    heappush(nodeHeap, n3)
-    heappush(nodeHeap, n1)
-    heappush(nodeHeap, n4)
-    heappush(nodeHeap, n2)
-
-    n1.set_gValue(10)
-    nodeHeap.sort()
-
-    print (heappop(nodeHeap))
-    print (heappop(nodeHeap))
-    print (heappop(nodeHeap))
-    print (heappop(nodeHeap))
-
-# generateSuccTest()
-# NodeSortTest()
