@@ -173,7 +173,7 @@ def main():
 
     board = inputValidation('Choose board (0-5): ')
 
-    algorithm = inputValidation('Choose from algorithms: A* (1), Depth-first (3), Breadth-first (4): ')
+    algorithm = inputValidation('Choose from algorithms: A* (1), Depth-first (2), Breadth-first (3): ')
 
     heuristic = inputValidation('Choose from heuristics: Manhattan (1), Euclidean (2), No heuristic/Dijkstra (3)')
 
