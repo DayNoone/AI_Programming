@@ -99,7 +99,7 @@ def drawBoard(node, board, openNodes, closedNodes, finished):
 
 
     # update the display
-    pygame.display.flip()
+    pygame.display.update()
     # pygame.time.wait(10)
     while finished:
         # get all the user events
