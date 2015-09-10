@@ -87,7 +87,7 @@ def best_first_search(initNode, goalPos, board):
         print "States:", len(states)
         if len(openNodes) == 0:
             print "No solution found"
-            return initNode
+            return closedNodes[0], openNodes, closedNodes
         openNodes.sort()
         print
         print "Open nodes: "
@@ -96,11 +96,11 @@ def best_first_search(initNode, goalPos, board):
         print
         x = heappop(openNodes)
         print "Popped node:", x
-        drawBoard(x, board, False)
+        drawBoard(x, board, openNodes, closedNodes, False)
         heappush(closedNodes, x)
         if x.xPos == goalPos[0] and x.yPos == goalPos[1]:
             print "Solution found!"
-            return x
+            return x, openNodes, closedNodes
 
         succ = generate_all_successors(x, board, goalPos)
         print "len(succ):", len(succ)
@@ -140,8 +140,8 @@ def run(board):
     initiate(board.boardMatrix)
     startNode = Node(None, calculateGValue(None), calculateHValue(board.startXY[0], board.startXY[1], board.goalXY),
                      board.startXY[0], board.startXY[1])
-    x = best_first_search(startNode, board.goalXY, board.boardMatrix)
-    drawBoard(x, board.boardMatrix, True)
+    x, openNodes, closedNodes = best_first_search(startNode, board.goalXY, board.boardMatrix)
+    drawBoard(x, board.boardMatrix, openNodes, closedNodes, True)
 
 
 run(board_3)

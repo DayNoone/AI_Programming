@@ -7,6 +7,7 @@ GREY = (90, 90, 90)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
+YELLOW = (255, 255, 0)
 BLUE = (0, 0, 255)
 
 #constants representing the different resources
@@ -53,7 +54,15 @@ def generatePathMatrix(node):
     return pathMat
 
 
-def drawBoard(node, board, finished):
+def drawSolution(node):
+    if node.parent is not None:
+        pygame.draw.line(DISPLAYSURF, BLACK, ((node.yPos*TILESIZE)+TILESIZE/2, (node.xPos*TILESIZE)+TILESIZE/2), ((node.parent.yPos*TILESIZE)+TILESIZE/2, (node.parent.xPos*TILESIZE)+TILESIZE/2), 1)
+        drawSolution(node.parent)
+
+
+def drawBoard(node, board, openNodes, closedNodes, finished):
+    pygame.time.wait(100)
+    pathMat = generatePathMatrix(node)
     #loop through each row
     for row in range(MAPHEIGH):
         #loop through each column in the row
@@ -61,17 +70,24 @@ def drawBoard(node, board, finished):
             #draw the resource at that position in the tilmap, using the cc
             pygame.draw.rect(DISPLAYSURF, colors[board[row][column]], (column*TILESIZE, row*TILESIZE,TILESIZE,TILESIZE))
             pygame.draw.circle(DISPLAYSURF, BLACK, ((column*TILESIZE)+TILESIZE/2, (row*TILESIZE)+TILESIZE/2), 3, 0)
-
-    pathMat = generatePathMatrix(node)
-
-    #loop through each row
-    for row in range(MAPHEIGH):
-        #loop through each column in the row
-        for column in range(MAPWIDTH):
             if pathMat[row][column] == '1':
                 #draw the resource at that position in the tilmap, using the cc
                 pygame.draw.rect(DISPLAYSURF, colors[pathMat[row][column]], (column*TILESIZE, row*TILESIZE,TILESIZE,TILESIZE))
                 pygame.draw.circle(DISPLAYSURF, BLACK, ((column*TILESIZE)+TILESIZE/2, (row*TILESIZE)+TILESIZE/2), 3, 0)
+
+    for node in openNodes:
+        pygame.draw.rect(DISPLAYSURF, GREEN, (node.yPos*TILESIZE, node.xPos*TILESIZE,TILESIZE,TILESIZE))
+        pygame.draw.circle(DISPLAYSURF, BLACK, ((node.yPos*TILESIZE)+TILESIZE/2, (node.xPos*TILESIZE)+TILESIZE/2), 3, 0)
+
+    for node in closedNodes:
+        pygame.draw.rect(DISPLAYSURF, YELLOW, (node.yPos*TILESIZE, node.xPos*TILESIZE,TILESIZE,TILESIZE))
+        pygame.draw.circle(DISPLAYSURF, BLACK, ((node.yPos*TILESIZE)+TILESIZE/2, (node.xPos*TILESIZE)+TILESIZE/2), 3, 0)
+
+
+
+    if finished:
+        drawSolution(node)
+
 
     #update the display
     pygame.display.flip()
