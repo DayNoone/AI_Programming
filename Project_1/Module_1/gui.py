@@ -31,14 +31,11 @@ MAPWIDTH = 0
 MAPHEIGH = 0
 
 
-def initPygame():
-    pygame.init()
-
-
 DISPLAYSURF = pygame.display.set_mode((20 * TILESIZE, 20 * TILESIZE))
 
 
 def initiate(board):
+    pygame.init()
     global MAPHEIGH
     MAPHEIGH = len(board)
     global MAPWIDTH

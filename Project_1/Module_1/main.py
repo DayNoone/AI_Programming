@@ -170,5 +170,12 @@ def run(board):
     x, openNodes, closedNodes = best_first_search(startNode, board.goalXY, board.boardMatrix, True)
     drawBoard(x, board.boardMatrix, openNodes, closedNodes, True)
 
+def main():
+    board = int(raw_input('Choose board (1-5): '))
+    boardList = [board_0, board_1, board_2, board_3, board_4, board_5]
 
-run(scenarioWeird)
+    algorithm = int(raw_input('Choose from algorithms: A* (1), Best-first (2), Depth-first (3), Breadth-first (4): '))
+
+    run(boardList[board])
+
+main()
