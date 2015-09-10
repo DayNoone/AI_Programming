@@ -2,6 +2,7 @@
 import math
 from heapq import heappush, heappop
 from Node import Node
+from Board import Board
 from generateBoard import generateBoard
 from gui import drawBoard, initiate
 
@@ -110,22 +111,26 @@ def best_first_search(initNode, goalPos, board):
                 print "not in open or closed"
 
 MOVEMENT_COST = 1
-board_1 = generateBoard(6, 6, 1, 0, 5, 5, [[3, 2, 2, 2], [0, 3, 1, 3], [2, 0, 4, 2], [2, 5, 2, 1]])
-board_2 = generateBoard(20, 20, 19, 3, 2, 18, [[5, 5, 10, 10], [1, 2, 4, 1]])
-board_3 = generateBoard(20, 20, 0, 0, 19, 19,[[17, 10, 2, 1], [14, 4, 5, 2], [3, 16, 10, 2], [13, 7, 5, 3], [15, 15, 3, 3]])
-board_5 = generateBoard(20, 20, 0, 0, 19, 13, [[4, 0, 4, 16], [12, 4, 2, 16], [16, 8, 4, 4]])
-goalPos_5 = (19, 13)
+
+board_1 = Board(generateBoard(6, 6, 1, 0, 5, 5, [[3, 2, 2, 2], [0, 3, 1, 3], [2, 0, 4, 2], [2, 5, 2, 1]]),
+                (1, 0), (5,5))
+board_2 = Board(generateBoard(20, 20, 19, 3, 2, 18, [[5, 5, 10, 10], [1, 2, 4, 1]]),
+                (19, 3), (2, 18))
+board_3 = Board(generateBoard(20, 20, 0, 0, 19, 19,[[17, 10, 2, 1], [14, 4, 5, 2], [3, 16, 10, 2], [13, 7, 5, 3], [15, 15, 3, 3]]),
+                (0, 0), (19, 19))
+board_5 = Board(generateBoard(20, 20, 0, 0, 19, 13, [[4, 0, 4, 16], [12, 4, 2, 16], [16, 8, 4, 4]]),
+                (0, 0), (19, 13))
 
 
 
-def run(board, goalPos):
-    initiate(board)
-    startNode = Node(None, calculateGValue(None), calculateHValue(0, 0, goalPos), 0, 0)
-    x = best_first_search(startNode, goalPos, board)
-    drawBoard(x, board, True)
+def run(board):
+    initiate(board.boardMatrix)
+    startNode = Node(None, calculateGValue(None), calculateHValue(board.startXY[0], board.startXY[1], board.goalXY), board.startXY[0], board.startXY[1])
+    x = best_first_search(startNode, board.goalXY, board.boardMatrix)
+    drawBoard(x, board.boardMatrix, True)
 
 
-run(board_5, goalPos_5)
+run(board_5)
 
 
 # Tests
