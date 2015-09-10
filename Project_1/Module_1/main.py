@@ -20,29 +20,21 @@ def calculateGValue(parent):
 
 
 def generate_all_successors(parent, board, goalPos):
-    succ = []
+    newChildPositions = [
+        (parent.xPos + MOVEMENT_COST, parent.yPos),
+        (parent.xPos - MOVEMENT_COST, parent.yPos),
+        (parent.xPos, parent.yPos + MOVEMENT_COST),
+        (parent.xPos, parent.yPos - MOVEMENT_COST)
+              ]
+    newChildren = []
+    for newChildPosition in newChildPositions:
+        if 0 <= newChildPosition[0] < len(board) and 0 <= newChildPosition[1] < len(board):
+            if board[newChildPosition[0]][newChildPosition[1]] != '#':
+                if parent.parent is not None and parent.parent.xPos == newChildPosition[0] and parent.parent.yPos == newChildPosition[1]:
+                    continue
+                newChildren.append(Node(parent, 0, 0, newChildPosition[0], newChildPosition[1]))
 
-    boardWidth = len(board[0])
-    boardHeight = len(board)
-
-    directionX = [0, 0, 1, -1]
-    directionY = [1, -1, 0, 0]
-
-    for direction in range(len(directionX)):
-        newX = parent.xPos + directionX[direction]
-        newY = parent.yPos + directionY[direction]
-
-        if parent.parent is not None and parent.parent.xPos == newX and parent.parent.yPos == newY:
-            continue
-        if boardWidth > newX >= 0 and boardHeight > newY >= 0:
-            if board[newX][newY] != '#':
-                newNode = Node(parent, calculateGValue(parent), calculateHValue(newX, newY, goalPos), newX, newY)
-                succ.append(newNode)
-
-    print "Succs for parent ", parent
-    for a in succ:
-        print a
-    return succ
+    return newChildren
 
 
 def propagate_path_improvements(parent):
@@ -153,7 +145,7 @@ def run(board):
     drawBoard(x, board.boardMatrix, openNodes, closedNodes, True)
 
 
-run(board_4)
+run(board_5)
 
 
 # Tests
