@@ -13,10 +13,15 @@ def updateStates(successors, states):
             states[s.state] = s
 
 
-def calculateHValue(xPos, yPos, goalPos):
+def calculateHeuristicValue(xPos, yPos, goalPos, heuristic):
     xOff = math.fabs(goalPos[0] - xPos)
     yOff = math.fabs(goalPos[1] - yPos)
-    return (xOff + yOff) * MOVEMENT_COST
+    if heuristic == 1:
+        return (xOff + yOff) * MOVEMENT_COST
+    elif heuristic == 2:
+        return math.sqrt(xOff * xOff + yOff * yOff) * MOVEMENT_COST
+    else:
+        return 0
 
 
 def calculateGValue(parent):
@@ -55,10 +60,10 @@ def propagate_path_improvements(parent):
             propagate_path_improvements(child)
 
 
-def attach_and_eval(child, parent, goalPos):
+def attach_and_eval(child, parent, goalPos, heuristic):
     child.parent = parent
     child.set_gValue(parent.gValue + MOVEMENT_COST)
-    child.set_hValue(calculateHValue(child.xPos, child.yPos, goalPos))
+    child.set_hValue(calculateHeuristicValue(child.xPos, child.yPos, goalPos, heuristic))
 
 
 def searchAlgorithm(goalPos, board, algorithm, heuristic, ninjaMode, debug=False):
@@ -69,7 +74,7 @@ def searchAlgorithm(goalPos, board, algorithm, heuristic, ninjaMode, debug=False
     if ninjaMode:
         initNode = NinjaNode(None, 0, 0, board.startXY[0], board.startXY[1])
     initNode.set_gValue(0)
-    initNode.set_hValue(calculateHValue(initNode.xPos, initNode.yPos, goalPos))
+    initNode.set_hValue(calculateHeuristicValue(initNode.xPos, initNode.yPos, goalPos, heuristic))
 
     heappush(openNodes, initNode)
 
@@ -88,7 +93,6 @@ def searchAlgorithm(goalPos, board, algorithm, heuristic, ninjaMode, debug=False
             print "No solution found"
             return closedNodes[-1], openNodes, closedNodes
 
-
         if debug:
             print
             print "Open nodes: "
@@ -105,8 +109,9 @@ def searchAlgorithm(goalPos, board, algorithm, heuristic, ninjaMode, debug=False
 
         if algorithm == 1:
             openNodes.sort()
-
-        x = heappop(openNodes)
+            x = heappop(openNodes)
+        else:
+            x = openNodes.pop(0)
 
         if debug:
             print "Popped node:", x
@@ -132,14 +137,16 @@ def searchAlgorithm(goalPos, board, algorithm, heuristic, ninjaMode, debug=False
             s = states[s.state]
             x.kids.append(s)
             if s not in closedNodes and s not in openNodes:
-                attach_and_eval(s, x, goalPos)
+                attach_and_eval(s, x, goalPos, heuristic)
                 if algorithm == 1:
                     heappush(openNodes, s)
                 elif algorithm == 2:
-
+                    openNodes.insert(0, s)
+                elif algorithm == 3:
+                    openNodes.append(s)
 
             elif x.gValue + MOVEMENT_COST < s.gValue:
-                attach_and_eval(s, x, goalPos)
+                attach_and_eval(s, x, goalPos, heuristic)
                 if s in closedNodes:
                     propagate_path_improvements(s)
 
