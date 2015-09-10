@@ -116,7 +116,7 @@ def searchAlgorithm(goalPos, board, algorithm, heuristic, ninjaMode, debug=False
         if debug:
             print "Popped node:", x
 
-        drawBoard(x, board.boardMatrix, openNodes, closedNodes, False)
+        drawBoard(x, board.boardMatrix, board.startXY, board.goalXY, openNodes, closedNodes, False)
 
         heappush(closedNodes, x)
 
@@ -156,7 +156,7 @@ def run(board, algorithm, heuristic, ninjaMode):
 
     x, openNodes, closedNodes = searchAlgorithm(board.goalXY, board, algorithm, heuristic, ninjaMode, False)
 
-    drawBoard(x, board.boardMatrix, openNodes, closedNodes, True)
+    drawBoard(x, board.boardMatrix, board.startXY, board.goalXY, openNodes, closedNodes, True)
 
 
 MOVEMENT_COST = 1

@@ -60,7 +60,7 @@ def drawSolution(node):
         drawSolution(node.parent)
 
 
-def drawBoard(node, board, openNodes, closedNodes, finished):
+def drawBoard(node, board, startPos, goalPos, openNodes, closedNodes, finished):
     pygame.time.wait(20)
     pathMat = generatePathMatrix(node)
     # loop through each row
@@ -89,9 +89,13 @@ def drawBoard(node, board, openNodes, closedNodes, finished):
         pygame.draw.circle(DISPLAYSURF, BLACK,
                            ((node.yPos * TILESIZE) + TILESIZE / 2, (node.xPos * TILESIZE) + TILESIZE / 2), 3, 0)
 
+    pygame.draw.circle(DISPLAYSURF, RED,
+                                   ((startPos[1] * TILESIZE) + TILESIZE / 2, (startPos[0] * TILESIZE) + TILESIZE / 2), 5, 0)
+
+    pygame.draw.circle(DISPLAYSURF, RED, ((goalPos[1] * TILESIZE) + TILESIZE / 2, (goalPos[0] * TILESIZE) + TILESIZE / 2), 5, 0)
+
     if finished:
         drawSolution(node)
-
 
     # update the display
     pygame.display.update()
