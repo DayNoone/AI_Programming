@@ -92,7 +92,7 @@ def searchAlgorithm(goalPos, board, algorithm, heuristic, ninjaMode, debug=False
         if len(openNodes) == 0:
             print "No solution found"
             return closedNodes[-1], openNodes, closedNodes
-        
+
         if debug:
             print
             print "Open nodes: "
@@ -177,12 +177,22 @@ def run(board, algorithm, heuristic, ninjaMode):
 
 MOVEMENT_COST = 1
 
+# (.   \
+#    \  |
+#     \ |___(\--/)
+#   __/    (  . . )
+#  "'._.    '-.O.'
+#       '-.  \ "|\
+#          '.,,/'.,,
+
+
 def inputValidation(inputText):
     while True:
         try:
             return int(raw_input(inputText))
         except ValueError:
             print('Please enter an integer...')
+
 
 def main():
     boardList = getBoardExampleList()
@@ -191,9 +201,9 @@ def main():
 
     algorithm = inputValidation('Choose from algorithms: A* (1), Depth-first (2), Breadth-first (3): ')
 
-    heuristic = inputValidation('Choose from heuristics: Manhattan (1), Euclidean (2), No heuristic/Dijkstra (3)')
+    heuristic = inputValidation('Choose from heuristics: Manhattan (1), Euclidean (2), No heuristic/Dijkstra (3): ')
 
-    node = inputValidation('Choose from nodes: Normal Node (1), Ninja Node (2)')
+    node = inputValidation('Choose from nodes: Normal Node (1), Ninja Node (2): ')
 
     ninjaMode = False;
     if node == 2:
@@ -206,5 +216,7 @@ def main():
 
     run(selectedBoard, algorithm, heuristic, ninjaMode)
 
+    print ""
 
-main()
+while True:
+    main()

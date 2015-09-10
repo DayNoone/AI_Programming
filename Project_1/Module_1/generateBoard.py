@@ -32,8 +32,6 @@ def getBoardInfoFromInput():
     goalX = raw_input("GoalX: ")
     goalY = raw_input("GoalY: ")
     barriers = []
-    print "Enter barriers: startX startY rangeX rangeY. I.e 0022"
-    print "Generate board with: q"
     while 1:
         prompt = raw_input("Do you want to enter one more barrier? y/n")
         if prompt == 'y':
@@ -43,8 +41,8 @@ def getBoardInfoFromInput():
             barrierYRange = int(raw_input("Enter barrier YRange: "))
             barriers.append([barrierXpos, barrierYpos, barrierXRange, barrierYRange])
         elif prompt == 'n':
-            break;
-    generateBoard(int(dimX), int(dimY), int(startX), int(startY), int(goalX), int(goalY), barriers)
+            break
+    return Board(generateBoard(int(dimX), int(dimY), int(startX), int(startY), int(goalX), int(goalY), barriers), (int(startX), int(startY)), (int(goalX), int(goalY)))
 
 
 board_test = Board(generateBoard(6, 6, 1, 0, 5, 5, [[3, 2, 2, 2], [0, 3, 1, 3], [2, 0, 4, 2], [2, 5, 2, 1]]), (1, 0), (5, 5))

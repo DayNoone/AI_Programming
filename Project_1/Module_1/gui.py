@@ -60,11 +60,10 @@ def drawSolution(node):
         drawSolution(node.parent)
 
 
-def drawBoard(node, board, startPos, goalPos, openNodes, closedNodes, finished):
-    pygame.time.wait(20)
-    pathMat = generatePathMatrix(node)
-
-    # Displaying the general board
+def drawBoard(lastNode, board, startPos, goalPos, openNodes, closedNodes, finished):
+    # pygame.time.wait(20)
+    pathMat = generatePathMatrix(lastNode)
+    # loop through each row
     for row in range(MAPHEIGH):
         # loop through each column in the row
         for column in range(MAPWIDTH):
@@ -109,7 +108,8 @@ def drawBoard(node, board, startPos, goalPos, openNodes, closedNodes, finished):
     pygame.draw.circle(DISPLAYSURF, BLACK, ((goalPos[1] * TILESIZE) + TILESIZE / 2, (goalPos[0] * TILESIZE) + TILESIZE / 2), 3, 0)
 
     if finished:
-        drawSolution(node)
+        drawSolution(lastNode)
+
 
     # update the display
     pygame.display.update()
@@ -123,4 +123,8 @@ def drawBoard(node, board, startPos, goalPos, openNodes, closedNodes, finished):
             if event.type == QUIT:
                 # and the game and close the window
                 pygame.quit()
-                sys.exit()
+                return
+            elif event.type == pygame.KEYDOWN:
+                pygame.quit()
+                return
+
