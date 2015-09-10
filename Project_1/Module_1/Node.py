@@ -14,6 +14,9 @@ class Node:
     def __lt__(self, other):
         return self.fValue < other.fValue
 
+    def __str__(self):
+        return "X,Y: " + str(self.xPos) + "," + str(self.yPos) + " F: " + str(self.fValue) + "(" + str(self.gValue) + "+" + str(self.hValue) + ")"
+
     def set_gValue(self, newGValue):
         self.gValue = newGValue
         self.fValue = self.gValue + self.hValue

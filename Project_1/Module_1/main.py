@@ -7,8 +7,6 @@ from generateBoard import generateBoard
 from gui import drawBoard, initiate
 
 
-
-
 def calculateHValue(xPos, yPos, goalPos):
     xOff = math.fabs(goalPos[0] - xPos)
     yOff = math.fabs(goalPos[1] - yPos)
@@ -40,6 +38,10 @@ def generate_all_successors(parent, board, goalPos):
             if board[newX][newY] != '#':
                 newNode = Node(parent, calculateGValue(parent), calculateHValue(newX, newY, goalPos), newX, newY)
                 succ.append(newNode)
+
+    print "Succs for parent ", parent
+    for a in succ:
+        print a
     return succ
 
 
@@ -76,7 +78,10 @@ def best_first_search(initNode, goalPos, board):
     heappush(openNodes, initNode)
 
     while True:
-        print ""
+        print
+        print "#####"
+        print "NEW WHILE"
+        print "#####"
         print "Open nodes:", len(openNodes)
         print "Closed nodes:", len(closedNodes)
         print "States:", len(states)
@@ -84,7 +89,13 @@ def best_first_search(initNode, goalPos, board):
             print "No solution found"
             return initNode
         openNodes.sort()
+        print
+        print "Open nodes: "
+        for a in openNodes:
+            print a
+        print
         x = heappop(openNodes)
+        print "Popped node:", x
         drawBoard(x, board, False)
         heappush(closedNodes, x)
         if x.xPos == goalPos[0] and x.yPos == goalPos[1]:
@@ -98,39 +109,42 @@ def best_first_search(initNode, goalPos, board):
         for s in succ:
             # TODO: If node S* has previously been created, and if state(S*) = state(S), then S ← S*.
             if s.state in states:
+                print "Node:", s
+                print "is in states"
                 s = states[s.state]
             x.kids.append(s)
             if s not in closedNodes and s not in openNodes:
                 print "Not in list"
                 attach_and_eval(s, x, goalPos)
                 heappush(openNodes, s)
-            elif x.gValue + MOVEMENT_COST < s.gValue:
-                print "Elif"
-                attach_and_eval(s, x, goalPos)
-                if s in closedNodes:
-                    propagate_path_improvements()
+                if x.gValue + MOVEMENT_COST < s.gValue:
+                    print "Elif"
+                    attach_and_eval(s, x, goalPos)
+            if s in closedNodes:
+                propagate_path_improvements(s)
 
 MOVEMENT_COST = 1
 
 board_1 = Board(generateBoard(6, 6, 1, 0, 5, 5, [[3, 2, 2, 2], [0, 3, 1, 3], [2, 0, 4, 2], [2, 5, 2, 1]]),
-                (1, 0), (5,5))
+                (1, 0), (5, 5))
 board_2 = Board(generateBoard(20, 20, 19, 3, 2, 18, [[5, 5, 10, 10], [1, 2, 4, 1]]),
                 (19, 3), (2, 18))
-board_3 = Board(generateBoard(20, 20, 0, 0, 19, 19,[[17, 10, 2, 1], [14, 4, 5, 2], [3, 16, 10, 2], [13, 7, 5, 3], [15, 15, 3, 3]]),
-                (0, 0), (19, 19))
+board_3 = Board(
+    generateBoard(20, 20, 0, 0, 19, 19, [[17, 10, 2, 1], [14, 4, 5, 2], [3, 16, 10, 2], [13, 7, 5, 3], [15, 15, 3, 3]]),
+    (0, 0), (19, 19))
 board_5 = Board(generateBoard(20, 20, 0, 0, 19, 13, [[4, 0, 4, 16], [12, 4, 2, 16], [16, 8, 4, 4]]),
                 (0, 0), (19, 13))
 
 
-
 def run(board):
     initiate(board.boardMatrix)
-    startNode = Node(None, calculateGValue(None), calculateHValue(board.startXY[0], board.startXY[1], board.goalXY), board.startXY[0], board.startXY[1])
+    startNode = Node(None, calculateGValue(None), calculateHValue(board.startXY[0], board.startXY[1], board.goalXY),
+                     board.startXY[0], board.startXY[1])
     x = best_first_search(startNode, board.goalXY, board.boardMatrix)
     drawBoard(x, board.boardMatrix, True)
 
 
-run(board_5)
+run(board_3)
 
 
 # Tests
@@ -143,4 +157,26 @@ def generateSuccTest():
     print "Length of succ:"
     print len(succ)
 
+
+def NodeSortTest():
+    nodeHeap = []
+    n1 = Node(None, 0, 0, 1, 0)
+    n2 = Node(None, 1, 0, 2, 0)
+    n3 = Node(None, 1, 1, 3, 0)
+    n4 = Node(None, 0, 3, 4, 0)
+    heappush(nodeHeap, n3)
+    heappush(nodeHeap, n1)
+    heappush(nodeHeap, n4)
+    heappush(nodeHeap, n2)
+
+    n1.set_gValue(10)
+    nodeHeap.sort()
+
+    print (heappop(nodeHeap))
+    print (heappop(nodeHeap))
+    print (heappop(nodeHeap))
+    print (heappop(nodeHeap))
+
+
 # generateSuccTest()
+# NodeSortTest()
