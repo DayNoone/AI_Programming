@@ -1,8 +1,8 @@
+import os
 import sys
 
 import pygame
 from pygame.locals import *
-
 
 # constants representing colours
 WHITE = (255, 255, 255)
@@ -28,20 +28,15 @@ colors = {
     '1': BLUE
 }
 
-# useful game dimesions
-TILESIZE = 25
-MAPWIDTH = 0
-MAPHEIGH = 0
-
-DISPLAYSURF = pygame.display.set_mode((20 * TILESIZE, 20 * TILESIZE))
-
-
 def initiate(board):
+    global MAPHEIGH, MAPWIDTH, TILESIZE, DISPLAYSURF
+    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (25, 50)  # forces screen to top left corner
     pygame.init()
-    global MAPHEIGH
     MAPHEIGH = len(board)
-    global MAPWIDTH
     MAPWIDTH = len(board[0])
+    TILESIZE = 25
+    DISPLAYSURF = pygame.display.set_mode((20 * TILESIZE, 20 * TILESIZE))
+    pygame.display.set_caption('Module 1 - A*')
 
 
 def addNodePos(node, pathMat):
@@ -66,7 +61,7 @@ def drawSolution(node):
 
 
 def drawBoard(node, board, openNodes, closedNodes, finished):
-    # pygame.time.wait(100)
+    pygame.time.wait(20)
     pathMat = generatePathMatrix(node)
     # loop through each row
     for row in range(MAPHEIGH):
