@@ -112,6 +112,7 @@ def searchAlgorithm(goalPos, board, algorithm, heuristic, ninjaMode, debug=False
         drawBoard(x, board.boardMatrix, openNodes, closedNodes, False)
 
         heappush(closedNodes, x)
+
         if x.xPos == goalPos[0] and x.yPos == goalPos[1]:
             print "Solution found!"
             return x, openNodes, closedNodes
@@ -130,7 +131,10 @@ def searchAlgorithm(goalPos, board, algorithm, heuristic, ninjaMode, debug=False
             x.kids.append(s)
             if s not in closedNodes and s not in openNodes:
                 attach_and_eval(s, x, goalPos)
-                heappush(openNodes, s)
+                if algorithm == 1:
+                    heappush(openNodes, s)
+                elif algorithm == 2:
+
 
             elif x.gValue + MOVEMENT_COST < s.gValue:
                 attach_and_eval(s, x, goalPos)
@@ -160,7 +164,7 @@ def main():
 
     board = inputValidation('Choose board (0-5): ')
 
-    algorithm = inputValidation('Choose from algorithms: A* (1), Best-first (2), Depth-first (3), Breadth-first (4): ')
+    algorithm = inputValidation('Choose from algorithms: A* (1), Depth-first (3), Breadth-first (4): ')
 
     heuristic = inputValidation('Choose from heuristics: Manhattan (1), Euclidean (2), No heuristic/Dijkstra (3)')
 
