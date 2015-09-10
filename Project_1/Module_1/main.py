@@ -10,7 +10,7 @@ from gui import drawBoard, initiate
 def calculateHValue(xPos, yPos, goalPos):
     xOff = math.fabs(goalPos[0] - xPos)
     yOff = math.fabs(goalPos[1] - yPos)
-    return xOff + yOff
+    return (xOff + yOff) * MOVEMENT_COST
 
 
 def calculateGValue(parent):
@@ -62,69 +62,85 @@ def attach_and_eval(child, parent, goalPos):
 
 def updateStates(succ, states):
     for s in succ:
-        string = str(s.xPos) + str(s.yPos)
-        s.state = int(string)
+        s.state = int(str(s.xPos) + str(s.yPos))
         if s.state not in states:
             states[s.state] = s
 
 
-def best_first_search(initNode, goalPos, board):
+def best_first_search(initNode, goalPos, board, debug):
     closedNodes = []
     openNodes = []
     states = {}
-    initNode.set_gValue(calculateGValue(initNode))
+    initNode.set_gValue(0)
     initNode.set_hValue(calculateHValue(initNode.xPos, initNode.yPos, goalPos))
 
     heappush(openNodes, initNode)
 
     while True:
-        print
-        print "#####"
-        print "NEW WHILE"
-        print "#####"
-        print "Open nodes:", len(openNodes)
-        print "Closed nodes:", len(closedNodes)
-        print "States:", len(states)
+
+        if debug:
+            print
+            print "#####"
+            print "NEW WHILE"
+            print "#####"
+            print "Open nodes:", len(openNodes)
+            print "Closed nodes:", len(closedNodes)
+            print "States:", len(states)
+
         if len(openNodes) == 0:
             print "No solution found"
-            return closedNodes[0], openNodes, closedNodes
+            return closedNodes[-1], openNodes, closedNodes
+
         openNodes.sort()
-        print
-        print "Open nodes: "
-        for a in openNodes:
-            print a
-        print
+
+        if debug:
+            print
+            print "Open nodes: "
+            for a in openNodes:
+                print a
+            print
+
         x = heappop(openNodes)
-        print "Popped node:", x
+
+        if debug:
+            print "Popped node:", x
+
         drawBoard(x, board, openNodes, closedNodes, False)
+
         heappush(closedNodes, x)
         if x.xPos == goalPos[0] and x.yPos == goalPos[1]:
             print "Solution found!"
             return x, openNodes, closedNodes
 
         succ = generate_all_successors(x, board, goalPos)
-        print "len(succ):", len(succ)
+
+        if debug:
+            print "len(succ):", len(succ)
+
         updateStates(succ, states)
 
         for s in succ:
-            # TODO: If node S* has previously been created, and if state(S*) = state(S), then S ← S*.
-            if s.state in states:
-                print "Node:", s
-                print "is in states"
-                s = states[s.state]
+            s = states[s.state]
             x.kids.append(s)
             if s not in closedNodes and s not in openNodes:
-                print "Not in list"
+
+                if debug:
+                    print "Not in any list"
+
                 attach_and_eval(s, x, goalPos)
                 heappush(openNodes, s)
+
             elif x.gValue + MOVEMENT_COST < s.gValue:
-                print "Elif"
+
+                if debug:
+                    print "Elif"
+
                 attach_and_eval(s, x, goalPos)
                 if s in closedNodes:
                     propagate_path_improvements(s)
 
 
-MOVEMENT_COST = 0.5
+MOVEMENT_COST = 2
 
 board_test = Board(generateBoard(6, 6, 1, 0, 5, 5, [[3, 2, 2, 2], [0, 3, 1, 3], [2, 0, 4, 2], [2, 5, 2, 1]]),
                    (1, 0), (5, 5))
@@ -144,25 +160,28 @@ board_4 = Board(generateBoard(10, 10, 0, 0, 9, 9, [[3, 0, 2, 7], [6, 0, 4, 4], [
 board_5 = Board(generateBoard(20, 20, 0, 0, 19, 13, [[4, 0, 4, 16], [12, 4, 2, 16], [16, 8, 4, 4]]),
                 (0, 0), (19, 13))
 
+scenarioWeird = Board(generateBoard(20, 20, 0, 0, 19, 19, [[1, 18, 18, 1], [18, 1, 1, 18]]), (0, 0), (19, 19))
+
 
 def run(board):
     initiate(board.boardMatrix)
     startNode = Node(None, calculateGValue(None), calculateHValue(board.startXY[0], board.startXY[1], board.goalXY),
                      board.startXY[0], board.startXY[1])
-    x, openNodes, closedNodes = best_first_search(startNode, board.goalXY, board.boardMatrix)
+    x, openNodes, closedNodes = best_first_search(startNode, board.goalXY, board.boardMatrix, True)
     drawBoard(x, board.boardMatrix, openNodes, closedNodes, True)
 
 
-run(board_4)
+# run(board_2)
+run(scenarioWeird)
 
 
 # Tests
 def generateSuccTest():
     testBoard = [['O' for x in range(5)] for x in range(5)]
-    testBoard[0][0] = '#'
-    succ = generate_all_successors(Node(Node(None, 0, 0, 1, 1), 0, 0, 1, 0),
+    testBoard[2][2] = '#'
+    succ = generate_all_successors(Node(Node(None, 0, 0, 3, 1), 0, 0, 1, 2),
                                    testBoard,
-                                   (1, 1))
+                                   (3, 3))
     print "Length of succ:"
     print len(succ)
 
@@ -186,5 +205,5 @@ def NodeSortTest():
     print (heappop(nodeHeap))
     print (heappop(nodeHeap))
 
-# generateSuccTest()
+generateSuccTest()
 # NodeSortTest()
