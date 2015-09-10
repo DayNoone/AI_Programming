@@ -2,7 +2,7 @@
 import math
 from heapq import heappush, heappop
 from Node import Node, NinjaNode
-from generateBoard import getBoardExampleList
+from generateBoard import getBoardExampleList, getBoardInfoFromInput
 from gui import drawBoard, initiate
 
 
@@ -151,12 +151,28 @@ def searchAlgorithm(goalPos, board, algorithm, heuristic, ninjaMode, debug=False
                     propagate_path_improvements(s)
 
 
+def lengthSolution(x, length):
+    if x.parent is not None:
+        return lengthSolution(x.parent, length + 1)
+    return length
+
+
 def run(board, algorithm, heuristic, ninjaMode):
     initiate(board.boardMatrix)
 
     x, openNodes, closedNodes = searchAlgorithm(board.goalXY, board, algorithm, heuristic, ninjaMode, False)
 
+    if x.xPos == board.goalXY[0] or x.yPos == board.goalXY[1]:
+        print
+        print "Results:"
+        print "\tLength of solution:\t", lengthSolution(x, 0)
+        print "\tSearched nodes:\t\t", len(openNodes) + len(closedNodes)
+        print "\t\tOpen nodes:\t\t", len(openNodes)
+        print "\t\tClosed nodes:\t", len(closedNodes)
+
     drawBoard(x, board.boardMatrix, board.startXY, board.goalXY, openNodes, closedNodes, True)
+
+
 
 
 MOVEMENT_COST = 1
@@ -171,7 +187,7 @@ def inputValidation(inputText):
 def main():
     boardList = getBoardExampleList()
 
-    board = inputValidation('Choose board (0-5): ')
+    board = inputValidation('Choose board (0-5) (9 - custom): ')
 
     algorithm = inputValidation('Choose from algorithms: A* (1), Depth-first (2), Breadth-first (3): ')
 
@@ -183,7 +199,12 @@ def main():
     if node == 2:
         ninjaMode = True
 
-    run(boardList[board], algorithm, heuristic, ninjaMode)
+    if board == 9:
+        selectedBoard = getBoardInfoFromInput()
+    else:
+        selectedBoard = boardList[board]
+
+    run(selectedBoard, algorithm, heuristic, ninjaMode)
 
 
 main()
