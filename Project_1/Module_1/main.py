@@ -88,7 +88,6 @@ def searchAlgorithm(goalPos, board, algorithm, heuristic, ninjaMode, debug=False
             print "No solution found"
             return closedNodes[-1], openNodes, closedNodes
 
-        openNodes.sort()
 
         if debug:
             print
@@ -104,6 +103,9 @@ def searchAlgorithm(goalPos, board, algorithm, heuristic, ninjaMode, debug=False
                 print a
             print
 
+        if algorithm == 1:
+            openNodes.sort()
+
         x = heappop(openNodes)
 
         if debug:
@@ -112,6 +114,7 @@ def searchAlgorithm(goalPos, board, algorithm, heuristic, ninjaMode, debug=False
         drawBoard(x, board.boardMatrix, openNodes, closedNodes, False)
 
         heappush(closedNodes, x)
+
         if x.xPos == goalPos[0] and x.yPos == goalPos[1]:
             print "Solution found!"
             return x, openNodes, closedNodes
@@ -130,7 +133,10 @@ def searchAlgorithm(goalPos, board, algorithm, heuristic, ninjaMode, debug=False
             x.kids.append(s)
             if s not in closedNodes and s not in openNodes:
                 attach_and_eval(s, x, goalPos)
-                heappush(openNodes, s)
+                if algorithm == 1:
+                    heappush(openNodes, s)
+                elif algorithm == 2:
+
 
             elif x.gValue + MOVEMENT_COST < s.gValue:
                 attach_and_eval(s, x, goalPos)
@@ -154,7 +160,7 @@ def main():
 
     board = int(raw_input('Choose board (0-5): '))
 
-    algorithm = int(raw_input('Choose from algorithms: A* (1), Best-first (2), Depth-first (3), Breadth-first (4): '))
+    algorithm = int(raw_input('Choose from algorithms: A* (1), Depth-first (2), Breadth-first (3): '))
 
     heuristic = int(raw_input('Choose from heuristics: Manhattan (1), Euclidean (2), No heuristic/Dijkstra (3)'))
 
