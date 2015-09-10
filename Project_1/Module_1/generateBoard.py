@@ -14,10 +14,10 @@ def generateBoard(dimensionX, dimensionY, startX, startY, goalX, goalY, barriers
             for yPos in range(yStart, yStart + yRange):
                 board[xPos][yPos] = '#'
 
-    for a in board:
-        for b in a:
-            print b,
-        print ''
+    # for a in board:
+    #     for b in a:
+    #         print b,
+    #     print ''
 
     return board
 

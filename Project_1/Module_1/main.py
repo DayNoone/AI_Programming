@@ -33,7 +33,8 @@ def generate_all_successors(parent, board, goalPos):
     for direction in range(len(directionX)):
         newX = parent.xPos + directionX[direction]
         newY = parent.yPos + directionY[direction]
-        if parent.xPos == newX and parent.yPos == newY:
+
+        if parent.parent is not None and parent.parent.xPos == newX and parent.parent.yPos == newY:
             continue
         if boardWidth > newX >= 0 and boardHeight > newY >= 0:
             if board[newX][newY] != '#':
@@ -43,6 +44,7 @@ def generate_all_successors(parent, board, goalPos):
 
 
 def propagate_path_improvements(parent):
+    print "propagate_path_improvements"
     for child in parent.kids:
         if (parent.gValue + MOVEMENT_COST) < child.gValue:
             child.parent = parent
@@ -58,7 +60,7 @@ def attach_and_eval(child, parent, goalPos):
 
 def updateStates(succ, states):
     for s in succ:
-        string = str(s.xPos) + str(999) + str(s.yPos) + str(999) + str(s.gValue)
+        string = str(s.xPos) + str(s.yPos)
         s.state = int(string)
         if s.state not in states:
             states[s.state] = s
@@ -74,12 +76,13 @@ def best_first_search(initNode, goalPos, board):
     heappush(openNodes, initNode)
 
     while True:
+        print ""
         print "Open nodes:", len(openNodes)
         print "Closed nodes:", len(closedNodes)
         print "States:", len(states)
         if len(openNodes) == 0:
             print "No solution found"
-            break
+            return initNode
         openNodes.sort()
         x = heappop(openNodes)
         drawBoard(x, board, False)
@@ -89,6 +92,7 @@ def best_first_search(initNode, goalPos, board):
             return x
 
         succ = generate_all_successors(x, board, goalPos)
+        print "len(succ):", len(succ)
         updateStates(succ, states)
 
         for s in succ:
@@ -97,18 +101,14 @@ def best_first_search(initNode, goalPos, board):
                 s = states[s.state]
             x.kids.append(s)
             if s not in closedNodes and s not in openNodes:
+                print "Not in list"
                 attach_and_eval(s, x, goalPos)
                 heappush(openNodes, s)
             elif x.gValue + MOVEMENT_COST < s.gValue:
-                print "ELFI!!!"
+                print "Elif"
                 attach_and_eval(s, x, goalPos)
                 if s in closedNodes:
                     propagate_path_improvements()
-            elif x.gValue + MOVEMENT_COST == s.gValue:
-                print "EQUALS"
-
-            else:
-                print "not in open or closed"
 
 MOVEMENT_COST = 1
 
@@ -135,12 +135,11 @@ run(board_5)
 
 # Tests
 def generateSuccTest():
-    global succ
     testBoard = [['O' for x in range(5)] for x in range(5)]
-    testBoard[0][1] = '#'
-    succ = generate_all_successors(Node(None, 0, 0, 1, 1),
+    testBoard[0][0] = '#'
+    succ = generate_all_successors(Node(Node(None, 0, 0, 1, 1), 0, 0, 1, 0),
                                    testBoard,
-                                   Node(None, 0, 0, 0, 0))
+                                   (1, 1))
     print "Length of succ:"
     print len(succ)
 
