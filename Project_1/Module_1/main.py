@@ -148,17 +148,23 @@ def run(board, algorithm, heuristic, ninjaMode):
 
 MOVEMENT_COST = 1
 
+def inputValidation(inputText):
+    while True:
+        try:
+            return int(raw_input(inputText))
+        except ValueError:
+            print('Please enter an integer...')
 
 def main():
     boardList = getBoardExampleList()
 
-    board = int(raw_input('Choose board (0-5): '))
+    board = inputValidation('Choose board (0-5): ')
 
-    algorithm = int(raw_input('Choose from algorithms: A* (1), Best-first (2), Depth-first (3), Breadth-first (4): '))
+    algorithm = inputValidation('Choose from algorithms: A* (1), Best-first (2), Depth-first (3), Breadth-first (4): ')
 
-    heuristic = int(raw_input('Choose from heuristics: Manhattan (1), Euclidean (2), No heuristic/Dijkstra (3)'))
+    heuristic = inputValidation('Choose from heuristics: Manhattan (1), Euclidean (2), No heuristic/Dijkstra (3)')
 
-    node = int(raw_input('Choose from nodes: Normal Node (1), Ninja Node (2)'))
+    node = inputValidation('Choose from nodes: Normal Node (1), Ninja Node (2)')
 
     ninjaMode = False;
     if node == 2:
