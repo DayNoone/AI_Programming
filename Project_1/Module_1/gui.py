@@ -5,10 +5,10 @@ from pygame.locals import *
 WHITE = (255, 255, 255)
 GREY = (90, 90, 90)
 BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-YELLOW = (255, 255, 0)
-BLUE = (0, 0, 255)
+RED = (178, 34, 34)
+GREEN = (173, 255, 47)
+YELLOW = (255, 215, 0)
+BLUE = (30, 144, 255)
 
 #constants representing the different resources
 START = 'S'
@@ -19,7 +19,7 @@ EMPTY_SPACE = 'O'
 #a dictionary linking resources to colours
 colors = {
     'S'    : RED,
-    'X'    : GREEN,
+    'X'    : RED,
     '#'    : GREY,
     'O'    : WHITE,
     '1'    : BLUE
