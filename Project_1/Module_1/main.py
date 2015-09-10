@@ -55,7 +55,7 @@ def attach_and_eval(child, parent, goalPos):
 
 def updateStates(succ, states):
     for s in succ:
-        s.state = int(str(s.xPos) + str(s.yPos))
+        s.state = int(str(s.xPos) + "00000" + str(s.yPos))
         if s.state not in states:
             states[s.state] = s
 
@@ -93,6 +93,13 @@ def best_first_search(initNode, goalPos, board, debug):
                 print a
             print
 
+        if debug:
+            print
+            print "Closed nodes: "
+            for a in closedNodes:
+                print a
+            print
+
         x = heappop(openNodes)
 
         if debug:
@@ -109,14 +116,20 @@ def best_first_search(initNode, goalPos, board, debug):
 
         if debug:
             print "len(succ):", len(succ)
+            for a in succ:
+                print a
 
         updateStates(succ, states)
 
         for s in succ:
             s = states[s.state]
             x.kids.append(s)
-            if s not in closedNodes and s not in openNodes:
+            if s in closedNodes:
+                print "Is in closed:", s
+            if s in openNodes:
+                print "Is is open:", s
 
+            if s not in closedNodes and s not in openNodes:
                 if debug:
                     print "Not in any list"
 
@@ -127,13 +140,14 @@ def best_first_search(initNode, goalPos, board, debug):
 
                 if debug:
                     print "Elif"
-
                 attach_and_eval(s, x, goalPos)
                 if s in closedNodes:
                     propagate_path_improvements(s)
+            else:
+                print("Else")
 
 
-MOVEMENT_COST = 2
+MOVEMENT_COST = 1
 
 board_test = Board(generateBoard(6, 6, 1, 0, 5, 5, [[3, 2, 2, 2], [0, 3, 1, 3], [2, 0, 4, 2], [2, 5, 2, 1]]),
                    (1, 0), (5, 5))
@@ -164,7 +178,9 @@ def run(board):
     drawBoard(x, board.boardMatrix, openNodes, closedNodes, True)
 
 
-# run(board_2)
+# run(board_5)
+#
+
 run(scenarioWeird)
 
 

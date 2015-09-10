@@ -61,7 +61,7 @@ def drawSolution(node):
 
 
 def drawBoard(node, board, openNodes, closedNodes, finished):
-    pygame.time.wait(100)
+    # pygame.time.wait(100)
     pathMat = generatePathMatrix(node)
     #loop through each row
     for row in range(MAPHEIGH):
