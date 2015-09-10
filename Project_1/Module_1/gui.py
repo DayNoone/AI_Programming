@@ -35,7 +35,7 @@ def initiate(board):
     MAPHEIGH = len(board)
     MAPWIDTH = len(board[0])
     TILESIZE = 25
-    DISPLAYSURF = pygame.display.set_mode((20 * TILESIZE, 20 * TILESIZE))
+    DISPLAYSURF = pygame.display.set_mode((MAPHEIGH * TILESIZE, MAPWIDTH * TILESIZE))
     pygame.display.set_caption('Module 1 - A*')
 
 
