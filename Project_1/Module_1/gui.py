@@ -63,7 +63,8 @@ def drawSolution(node):
 def drawBoard(node, board, startPos, goalPos, openNodes, closedNodes, finished):
     pygame.time.wait(20)
     pathMat = generatePathMatrix(node)
-    # loop through each row
+
+    # Displaying the general board
     for row in range(MAPHEIGH):
         # loop through each column in the row
         for column in range(MAPWIDTH):
@@ -72,6 +73,23 @@ def drawBoard(node, board, startPos, goalPos, openNodes, closedNodes, finished):
                              (column * TILESIZE, row * TILESIZE, TILESIZE, TILESIZE))
             pygame.draw.circle(DISPLAYSURF, BLACK,
                                ((column * TILESIZE) + TILESIZE / 2, (row * TILESIZE) + TILESIZE / 2), 3, 0)
+
+    # Displaying the open nodes
+    for node in openNodes:
+        pygame.draw.rect(DISPLAYSURF, GREEN, (node.yPos * TILESIZE, node.xPos * TILESIZE, TILESIZE, TILESIZE))
+        pygame.draw.circle(DISPLAYSURF, BLACK,
+                           ((node.yPos * TILESIZE) + TILESIZE / 2, (node.xPos * TILESIZE) + TILESIZE / 2), 3, 0)
+
+    # Displaying the closed nodes
+    for node in closedNodes:
+        pygame.draw.rect(DISPLAYSURF, YELLOW, (node.yPos * TILESIZE, node.xPos * TILESIZE, TILESIZE, TILESIZE))
+        pygame.draw.circle(DISPLAYSURF, BLACK,
+                           ((node.yPos * TILESIZE) + TILESIZE / 2, (node.xPos * TILESIZE) + TILESIZE / 2), 3, 0)
+
+    # Displaying the current path
+    for row in range(MAPHEIGH):
+        # loop through each column in the row
+        for column in range(MAPWIDTH):
             if pathMat[row][column] == '1':
                 # draw the resource at that position in the tilmap, using the cc
                 pygame.draw.rect(DISPLAYSURF, colors[pathMat[row][column]],
@@ -79,20 +97,16 @@ def drawBoard(node, board, startPos, goalPos, openNodes, closedNodes, finished):
                 pygame.draw.circle(DISPLAYSURF, BLACK,
                                    ((column * TILESIZE) + TILESIZE / 2, (row * TILESIZE) + TILESIZE / 2), 3, 0)
 
-    for node in openNodes:
-        pygame.draw.rect(DISPLAYSURF, GREEN, (node.yPos * TILESIZE, node.xPos * TILESIZE, TILESIZE, TILESIZE))
-        pygame.draw.circle(DISPLAYSURF, BLACK,
-                           ((node.yPos * TILESIZE) + TILESIZE / 2, (node.xPos * TILESIZE) + TILESIZE / 2), 3, 0)
+    # Displaying the startTile
+    pygame.draw.rect(DISPLAYSURF, RED,
+                         (startPos[1] * TILESIZE, startPos[0] * TILESIZE, TILESIZE, TILESIZE))
+    pygame.draw.circle(DISPLAYSURF, BLACK,
+                                   ((startPos[1] * TILESIZE) + TILESIZE / 2, (startPos[0] * TILESIZE) + TILESIZE / 2), 3, 0)
 
-    for node in closedNodes:
-        pygame.draw.rect(DISPLAYSURF, YELLOW, (node.yPos * TILESIZE, node.xPos * TILESIZE, TILESIZE, TILESIZE))
-        pygame.draw.circle(DISPLAYSURF, BLACK,
-                           ((node.yPos * TILESIZE) + TILESIZE / 2, (node.xPos * TILESIZE) + TILESIZE / 2), 3, 0)
-
-    pygame.draw.circle(DISPLAYSURF, RED,
-                                   ((startPos[1] * TILESIZE) + TILESIZE / 2, (startPos[0] * TILESIZE) + TILESIZE / 2), 5, 0)
-
-    pygame.draw.circle(DISPLAYSURF, RED, ((goalPos[1] * TILESIZE) + TILESIZE / 2, (goalPos[0] * TILESIZE) + TILESIZE / 2), 5, 0)
+    # Displaying the goalTile
+    pygame.draw.rect(DISPLAYSURF, RED,
+                         (goalPos[1] * TILESIZE, goalPos[0] * TILESIZE, TILESIZE, TILESIZE))
+    pygame.draw.circle(DISPLAYSURF, BLACK, ((goalPos[1] * TILESIZE) + TILESIZE / 2, (goalPos[0] * TILESIZE) + TILESIZE / 2), 3, 0)
 
     if finished:
         drawSolution(node)
@@ -100,6 +114,8 @@ def drawBoard(node, board, startPos, goalPos, openNodes, closedNodes, finished):
     # update the display
     pygame.display.update()
     # pygame.time.wait(10)
+
+    # Looping the final board
     while finished:
         # get all the user events
         for event in pygame.event.get():
