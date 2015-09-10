@@ -1,7 +1,10 @@
-import pygame, sys
+import sys
+
+import pygame
 from pygame.locals import *
 
-# contants representing colours
+
+# constants representing colours
 WHITE = (255, 255, 255)
 GREY = (90, 90, 90)
 BLACK = (0, 0, 0)
@@ -29,7 +32,6 @@ colors = {
 TILESIZE = 25
 MAPWIDTH = 0
 MAPHEIGH = 0
-
 
 DISPLAYSURF = pygame.display.set_mode((20 * TILESIZE, 20 * TILESIZE))
 

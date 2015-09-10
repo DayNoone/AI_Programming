@@ -1,10 +1,16 @@
 # coding=utf-8
 import math
 from heapq import heappush, heappop
-from Node import Node
-from Board import Board
-from generateBoard import generateBoard
+from Node import Node, NinjaNode
+from generateBoard import getBoardExampleList
 from gui import drawBoard, initiate
+
+
+def updateStates(successors, states):
+    for s in successors:
+        s.state = int(str(s.xPos) + "00000" + str(s.yPos))
+        if s.state not in states:
+            states[s.state] = s
 
 
 def calculateHValue(xPos, yPos, goalPos):
@@ -19,7 +25,7 @@ def calculateGValue(parent):
     return parent.gValue + MOVEMENT_COST
 
 
-def generate_all_successors(parent, board, goalPos):
+def generate_all_successors(parent, boardMatrix, ninjaMode):
     newChildPositions = [
         (parent.xPos + 1, parent.yPos),
         (parent.xPos - 1, parent.yPos),
@@ -28,18 +34,20 @@ def generate_all_successors(parent, board, goalPos):
     ]
     newChildren = []
     for newChildPosition in newChildPositions:
-        if 0 <= newChildPosition[0] < len(board) and 0 <= newChildPosition[1] < len(board):
-            if board[newChildPosition[0]][newChildPosition[1]] != '#':
+        if 0 <= newChildPosition[0] < len(boardMatrix) and 0 <= newChildPosition[1] < len(boardMatrix):
+            if boardMatrix[newChildPosition[0]][newChildPosition[1]] != '#':
                 if parent.parent is not None and parent.parent.xPos == newChildPosition[0] and parent.parent.yPos == \
                         newChildPosition[1]:
                     continue
-                newChildren.append(Node(parent, 0, 0, newChildPosition[0], newChildPosition[1]))
+                if ninjaMode:
+                    newChildren.append(NinjaNode(parent, 0, 0, newChildPosition[0], newChildPosition[1]))
+                else:
+                    newChildren.append(Node(parent, 0, 0, newChildPosition[0], newChildPosition[1]))
 
     return newChildren
 
 
 def propagate_path_improvements(parent):
-    print "propagate_path_improvements"
     for child in parent.kids:
         if (parent.gValue + MOVEMENT_COST) < child.gValue:
             child.parent = parent
@@ -53,17 +61,13 @@ def attach_and_eval(child, parent, goalPos):
     child.set_hValue(calculateHValue(child.xPos, child.yPos, goalPos))
 
 
-def updateStates(succ, states):
-    for s in succ:
-        s.state = int(str(s.xPos) + "00000" + str(s.yPos))
-        if s.state not in states:
-            states[s.state] = s
-
-
-def best_first_search(initNode, goalPos, board, debug):
+def searchAlgorithm(goalPos, board, algorithm, heuristic, ninjaMode, debug=False):
     closedNodes = []
     openNodes = []
     states = {}
+    initNode = Node(None, 0, 0, board.startXY[0], board.startXY[1])
+    if ninjaMode:
+        initNode = NinjaNode(None, 0, 0, board.startXY[0], board.startXY[1])
     initNode.set_gValue(0)
     initNode.set_hValue(calculateHValue(initNode.xPos, initNode.yPos, goalPos))
 
@@ -105,77 +109,62 @@ def best_first_search(initNode, goalPos, board, debug):
         if debug:
             print "Popped node:", x
 
-        drawBoard(x, board, openNodes, closedNodes, False)
+        drawBoard(x, board.boardMatrix, openNodes, closedNodes, False)
 
         heappush(closedNodes, x)
         if x.xPos == goalPos[0] and x.yPos == goalPos[1]:
             print "Solution found!"
             return x, openNodes, closedNodes
 
-        succ = generate_all_successors(x, board, goalPos)
+        successors = generate_all_successors(x, board.boardMatrix, ninjaMode)
 
         if debug:
-            print "len(succ):", len(succ)
-            for a in succ:
+            print "len(successors):", len(successors)
+            for a in successors:
                 print a
 
-        updateStates(succ, states)
+        updateStates(successors, states)
 
-        for s in succ:
+        for s in successors:
             s = states[s.state]
             x.kids.append(s)
             if s not in closedNodes and s not in openNodes:
-                if debug:
-                    print "Not in any list"
-
                 attach_and_eval(s, x, goalPos)
                 heappush(openNodes, s)
 
             elif x.gValue + MOVEMENT_COST < s.gValue:
-                if debug:
-                    print "Elif"
-
                 attach_and_eval(s, x, goalPos)
                 if s in closedNodes:
                     propagate_path_improvements(s)
 
 
-MOVEMENT_COST = 1
-
-board_test = Board(generateBoard(6, 6, 1, 0, 5, 5, [[3, 2, 2, 2], [0, 3, 1, 3], [2, 0, 4, 2], [2, 5, 2, 1]]),
-                   (1, 0), (5, 5))
-board_0 = Board(generateBoard(10, 10, 0, 0, 9, 9, [[2, 3, 5, 5], [8, 8, 2, 1]]), (0, 0), (9, 9))
-
-board_1 = Board(generateBoard(20, 20, 19, 3, 2, 18, [[5, 5, 10, 10], [1, 2, 4, 1]]),
-                (19, 3), (2, 18))
-
-board_2 = Board(
-    generateBoard(20, 20, 0, 0, 19, 19, [[17, 10, 2, 1], [14, 4, 5, 2], [3, 16, 10, 2], [13, 7, 5, 3], [15, 15, 3, 3]]),
-    (0, 0), (19, 19))
-
-board_3 = Board(generateBoard(10, 10, 0, 0, 9, 5, [[3, 0, 2, 7], [6, 0, 4, 4], [6, 6, 2, 4]]), (0, 0), (9, 5))
-
-board_4 = Board(generateBoard(10, 10, 0, 0, 9, 9, [[3, 0, 2, 7], [6, 0, 4, 4], [6, 6, 2, 4]]), (0, 0), (9, 9))
-
-board_5 = Board(generateBoard(20, 20, 0, 0, 19, 13, [[4, 0, 4, 16], [12, 4, 2, 16], [16, 8, 4, 4]]),
-                (0, 0), (19, 13))
-
-scenarioWeird = Board(generateBoard(20, 20, 0, 0, 19, 19, [[1, 18, 18, 1], [18, 1, 1, 18]]), (0, 0), (19, 19))
-
-
-def run(board):
+def run(board, algorithm, heuristic, ninjaMode):
     initiate(board.boardMatrix)
-    startNode = Node(None, calculateGValue(None), calculateHValue(board.startXY[0], board.startXY[1], board.goalXY),
-                     board.startXY[0], board.startXY[1])
-    x, openNodes, closedNodes = best_first_search(startNode, board.goalXY, board.boardMatrix, True)
+
+    x, openNodes, closedNodes = searchAlgorithm(board.goalXY, board, algorithm, heuristic, ninjaMode, False)
+
     drawBoard(x, board.boardMatrix, openNodes, closedNodes, True)
 
+
+MOVEMENT_COST = 1
+
+
 def main():
-    board = int(raw_input('Choose board (1-5): '))
-    boardList = [board_0, board_1, board_2, board_3, board_4, board_5]
+    boardList = getBoardExampleList()
+
+    board = int(raw_input('Choose board (0-5): '))
 
     algorithm = int(raw_input('Choose from algorithms: A* (1), Best-first (2), Depth-first (3), Breadth-first (4): '))
 
-    run(boardList[board])
+    heuristic = int(raw_input('Choose from heuristics: Manhattan (1), Euclidean (2), No heuristic/Dijkstra (3)'))
+
+    node = int(raw_input('Choose from nodes: Normal Node (1), Ninja Node (2)'))
+
+    ninjaMode = False;
+    if node == 2:
+        ninjaMode = True
+
+    run(boardList[board], algorithm, heuristic, ninjaMode)
+
 
 main()
