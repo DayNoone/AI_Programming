@@ -32,19 +32,20 @@ class Node(AStarNode):
 	@staticmethod
 	def calculateHeuristicValue(self):
 		#TODO
-		pass
+		return 1
 
 	@staticmethod
 	def calculateGValue(self):
-		#TODO
-		pass
+		if self.parent is None:
+			return 0
+		return self.parent.gValue + self.MOVEMENT_COST
 
 	@staticmethod
 	def generate_all_successors(self):
 		#TODO
-		#       Generating their successor states (by makin assumptions)
-		#       Enforcing the assumption in each successor state by reducing the domain of the assumed variable to a singleton set
-		#       Calling GAC-Rerun on each newly-generated state
-		#       Computing the f, g and h values for each new state,
-		#           where h i based on the state of the CSP after the call to GAC-Rerun
+		#	   Generating their successor states (by makin assumptions)
+		#	   Enforcing the assumption in each successor state by reducing the domain of the assumed variable to a singleton set
+		#	   Calling GAC-Rerun on each newly-generated state
+		#	   Computing the f, g and h values for each new state,
+		#		   where h i based on the state of the CSP after the call to GAC-Rerun
 		pass
