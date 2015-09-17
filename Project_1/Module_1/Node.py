@@ -11,6 +11,8 @@ class Node:
         self.xPos = x
         self.yPos = y
 
+        self.state = int(str(self.xPos) + "00000" + str(self.yPos))
+
     def __lt__(self, other):
         return self.fValue < other.fValue
 

@@ -8,7 +8,6 @@ from gui import drawBoard, initiate
 
 def updateStates(successors, states):
     for s in successors:
-        s.state = int(str(s.xPos) + "00000" + str(s.yPos))
         if s.state not in states:
             states[s.state] = s
 
