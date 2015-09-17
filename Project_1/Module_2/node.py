@@ -20,9 +20,9 @@ class Node(AStarNode):
 
 	def checkIfContradiction(self):
 		for variable in self.variables:
-			if len(variable.domain) != 1:
-				return False
-		return True
+			if len(variable.domain) == 0:
+				return True
+		return False
 
 	def calculateStateIndex(self):
 		pass
