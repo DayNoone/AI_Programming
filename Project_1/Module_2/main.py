@@ -1,5 +1,5 @@
 from ioHandler import *
-from Node2 import Node
+from node import node
 import os
 
 # General outline of Algorithm
