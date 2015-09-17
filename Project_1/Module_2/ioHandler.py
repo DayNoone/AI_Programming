@@ -3,6 +3,7 @@ from Variable import Variable
 import os
 
 boards = ['graph-color-1.txt', 'graph-color-2.txt', 'rand-50-4-color1.txt', 'rand-100-4-color1.txt', 'rand-100-6-color1.txt', 'spiral-500-4-color1.txt']
+K = [4, 4, 4, 4, 6, 4]
 
 def readFile(path):
     with open(path) as f:
@@ -34,10 +35,10 @@ def readFile(path):
     graph.append(extremal_values)
     return graph
 
-def create_Variables(graph):
+def create_Variables(graph, k):
     Variables = []
     for i in graph[2]: # creates Variables using id and pos
-        Variables.append(Variable(i[0], i[1], i[2]))
+        Variables.append(Variable(i[0], i[1], i[2], k))
     for i in graph[3]: # adds lines between Variables
         Variable1 = i[0]
         Variable2 = i[1]
@@ -45,6 +46,13 @@ def create_Variables(graph):
         Variables[Variable2].neighbor.append(Variable1) # has to add to other neighbor aswell
         #print Variables[Variable1].neighbor, Variables[Variable2].neighbor
     return Variables
+
+def readBoard(no):
+    if os.name == 'nt':
+        return readFile('graphs\\' + no)
+    else:
+        return readFile('graphs/' + no)
+
 
 def inputValidation(inputText):
     while True:
