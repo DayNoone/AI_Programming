@@ -21,7 +21,7 @@ def initiate(graph):
     global board_size, screen, multiplier, x_offset, y_offset, coffset
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (25, 50) # forces screen to top left corner
     pygame.init()
-    board_size = 800
+    board_size = 700
     screen = pygame.display.set_mode((board_size, board_size + 0))
     pygame.display.set_caption('Module 2 - CSP-A*')
  
@@ -55,7 +55,7 @@ def draw_board(variables, graph, finished):
     for i in variables:
         coordinates = (int((i.xPos + x_offset) * multiplier) + coffset, int((i.yPos + y_offset) * multiplier) + coffset)
         if(i.colorid == None):
-            pygame.draw.circle(screen, black, coordinates, 5, 0)
+            pygame.draw.circle(screen, black, coordinates, 10, 3)
         else:
             pygame.draw.circle(screen, colors[i.colorid], coordinates, 10, 0)
 

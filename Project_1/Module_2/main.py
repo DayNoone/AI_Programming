@@ -1,5 +1,6 @@
 from ioHandler import *
 from node import Node
+from Project_1.genericAstar import searchAlgorithm
 import os
 
 
@@ -10,43 +11,38 @@ def makefunc(var_names, expression, envir=globals()):
         args = args + ", " + n
     return eval("(lambda " + args[1:] + ": " + expression + ")", envir)
 
+def GAC_Domain_Filtering_Loop(variables):
+    while len(variables) != 0:
+        revise(variables.pop[0])
 
-def GAC_Initialize(node):
+
+def GAC_Rerun(newVariable, variables):
+    for constraint in newVariable.neighbors:
+        variables.append([newVariable, constraint])
+    GAC_Domain_Filtering_Loop(variables)
+
+def revise(pair):
+    #TODO
     pass
-
-
-def GAC_Domain_Filtering_Loop(node):
-    pass
-
-def GAC_Rerun(node):
-    pass
-
-
-def checkForContradiction(Node):
-    pass
-
-def run(variables, k):
-    node = Node(variables, [x for x in range(k)], None)
-    GAC_Initialize(node)
-    GAC_Domain_Filtering_Loop(node)
-
-    if not node.checkIfGoalState() and not node.checkIfContradiction():
-        # Run A* with s0 as root
-        while True:
-
-            pass
-
 
 def main():
-    board = inputValidation('Choose board (0-5): ')
-    k = inputValidation('Choose domain size: ')
-    graph = readBoard(boards[board])
+    #board = inputValidation('Choose board (0-5): ')
+    #k = inputValidation('Choose domain size: ')
+    graph = readBoard(boards[1])
     initiate(graph)
-    variables = create_Variables(graph, [x for x in range(k)])
-    draw_board(variables, graph, True)
+    variables = create_Variables(graph, [x for x in range(4)])
+
+    #draw_board(variables, graph, True)
+
+    node = Node(variables, [x for x in range(4)], None)
+
+    if not node.checkIfGoalState() and not node.checkIfContradiction():
+        searchAlgorithm(1, node, False)
 
 
-    run(variables, k)
+
+
+
 main()
 
 # General outline of Algorithm
