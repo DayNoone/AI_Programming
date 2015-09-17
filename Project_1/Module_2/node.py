@@ -1,17 +1,19 @@
+import copy
+from gui import initiate, draw_board
 from variable import Variable
 from Project_1.genericAStarNode import AStarNode
 
 
 class Node(AStarNode):
-	def __init__(self, variables, initialDomain, parent):
+	def __init__(self, variables, parent):
 		self.variables = variables
-		self.domainSize = initialDomain
 		self.parent = parent
-		self.gValue = 0
-		self.hValue = 0
+		self.gValue = self.calculateGValue()
+		self.hValue = self.calculateHeuristicValue()
 		self.fValue = self.gValue + self.hValue
 		self.kids = []
 		self.state = self.calculateStateIndex()
+		AStarNode.__init__(self, parent)
 
 	def checkIfGoalState(self):
 		for variable in self.variables:
@@ -36,7 +38,7 @@ class Node(AStarNode):
 
 	def calculateHeuristicValue(self):
 		# TODO
-		return 1
+		return 0
 
 	def calculateGValue(self):
 		if self.parent is None:
@@ -44,13 +46,38 @@ class Node(AStarNode):
 		return self.parent.gValue + self.MOVEMENT_COST
 
 	def generate_all_successors(self):
-		# TODO
-		#	   Generating their successor states (by makin assumptions)
-		#	   Enforcing the assumption in each successor state by reducing the domain of the assumed variable to a singleton set
-		#	   Calling GAC-Rerun on each newly-generated state
-		#	   Computing the f, g and h values for each new state,
-		#		   where h i based on the state of the CSP after the call to GAC-Rerun
-		pass
+		smallestDomain = int
+		smallestVariable = None
+		newVariables = copy.deepcopy(self.variables)
+		for variable in newVariables:
+			if 1 < len(variable.domain) < smallestDomain:
+				smallestVariable = variable
+				smallestDomain = len(variable.domain)
+
+		successors = []
+		for value in smallestVariable.domain:
+			smallestVariable.colorid = value
+			smallestVariable.domain = [value]
+			self.revise(smallestVariable)
+			newNode = Node(copy.deepcopy(newVariables), self)
+
+			successors.append(newNode)
+
+		return successors
+
+	def revise(self, variable):
+		reviseQueue = [variable]
+
+		while len(reviseQueue) != 0:
+			newVariable = reviseQueue.pop(0)
+
+			for neighbor in newVariable.neighbors:
+				print neighbor
+				if newVariable.colorid in neighbor.domain:
+					neighbor.domain.remove(newVariable.colorid)
+				if len(neighbor.domain) == 1:
+					neighbor.colorid = neighbor.domain[0]
+					reviseQueue.append(neighbor)
 
 	def drawBoard(self, openNodes, closedNodes, isFinished):
-		pass
+		draw_board(self.variables, False)

@@ -45,8 +45,8 @@ def create_Variables(graph, k):
 	for i in graph[3]:  # adds lines between Variables
 		VariableID1 = i[0]
 		VariableID2 = i[1]
-		Variables[VariableID1].neighbor.append(Variables[VariableID2])  # adds another neighbor
-		Variables[VariableID2].neighbor.append(Variables[VariableID1])  # has to add to other neighbor aswell
+		Variables[VariableID1].neighbors.append(Variables[VariableID2])  # adds another neighbor
+		Variables[VariableID2].neighbors.append(Variables[VariableID1])  # has to add to other neighbor aswell
 		# print Variables[VariableID1].neighbor, Variables[VariableID2].neighbor
 	return Variables
 
