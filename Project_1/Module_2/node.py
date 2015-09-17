@@ -34,18 +34,15 @@ class Node(AStarNode):
 
 	"""Algorithm methods"""
 
-	@staticmethod
 	def calculateHeuristicValue(self):
 		# TODO
 		return 1
 
-	@staticmethod
 	def calculateGValue(self):
 		if self.parent is None:
 			return 0
 		return self.parent.gValue + self.MOVEMENT_COST
 
-	@staticmethod
 	def generate_all_successors(self):
 		# TODO
 		#	   Generating their successor states (by makin assumptions)
