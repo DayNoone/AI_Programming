@@ -21,7 +21,7 @@ def attach_and_eval(child, parent):
     child.set_hValue(child.calculateHeuristicValue())
 
 
-def searchAlgorithm(board, algorithm, heuristic, ninjaMode, initNode, debug=False):
+def searchAlgorithm(algorithm, initNode, debug=False):
     closedNodes = []
     openNodes = []
     states = {}
@@ -69,6 +69,7 @@ def searchAlgorithm(board, algorithm, heuristic, ninjaMode, initNode, debug=Fals
         if debug:
             print "Popped node:", x
 
+        #TODO: Fix drawing of board!
         # x.drawBoard(x, board.boardMatrix, board.startXY, board.goalXY, openNodes, closedNodes, False)
 
         heappush(closedNodes, x)
