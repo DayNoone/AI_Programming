@@ -1,9 +1,15 @@
 from ioHandler import *
+import os
+
 
 def main():
     board = inputValidation('Choose board (0-5): ')
 
-    graph = readFile('graphs\\' + boards[board])
+    if os.name == 'nt':
+        graph = readFile('graphs\\' + boards[board])
+    else:
+        graph = readFile('graphs/' + boards[board])
+
     initiate(graph)
     variables = create_Variables(graph)
     variables[0].colorid = 2
@@ -13,6 +19,3 @@ def main():
 
 
 main()
-
-
-
