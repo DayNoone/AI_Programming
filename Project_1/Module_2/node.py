@@ -1,4 +1,6 @@
+from variable import Variable
 from Project_1.genericAStarNode import AStarNode
+
 
 class Node(AStarNode):
 	def __init__(self, variables, initialDomain, parent):
@@ -10,7 +12,7 @@ class Node(AStarNode):
 		self.fValue = self.gValue + self.hValue
 		self.kids = []
 		self.state = self.calculateStateIndex()
-		
+
 	def checkIfGoalState(self):
 		for variable in self.variables:
 			if len(variable.domain) != 1:
@@ -24,14 +26,17 @@ class Node(AStarNode):
 		return False
 
 	def calculateStateIndex(self):
-		#TODO
-		pass
+		string = "0"
+		for variable in self.variables:
+			if variable.colorid is not None:
+				string += str(variable.id) + str(variable.colorid) + "999"
+		return string
 
 	"""Algorithm methods"""
 
 	@staticmethod
 	def calculateHeuristicValue(self):
-		#TODO
+		# TODO
 		return 1
 
 	@staticmethod
@@ -42,7 +47,7 @@ class Node(AStarNode):
 
 	@staticmethod
 	def generate_all_successors(self):
-		#TODO
+		# TODO
 		#	   Generating their successor states (by makin assumptions)
 		#	   Enforcing the assumption in each successor state by reducing the domain of the assumed variable to a singleton set
 		#	   Calling GAC-Rerun on each newly-generated state
