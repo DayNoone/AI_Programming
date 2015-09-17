@@ -16,7 +16,7 @@ def run(board, algorithm, heuristic, ninjaMode):
 
     initNode = Module1Node(None, 0, 0, board.startXY[0], board.startXY[1], board, heuristic, ninjaMode)
     if ninjaMode:
-        initNode = Module1NinjaNode(None, 0, 0, board.startXY[0], board.startXY[1])
+        initNode = Module1NinjaNode(None, 0, 0, board.startXY[0], board.startXY[1], board, heuristic, ninjaMode)
 
     x, openNodes, closedNodes = searchAlgorithm(algorithm, initNode, False)
 
@@ -42,15 +42,15 @@ def inputValidation(inputText):
 def main():
     boardList = getBoardExampleList()
 
-    # board = inputValidation('Choose board (0-5) (9 - custom): ')
-    #
-    # algorithm = inputValidation('Choose from algorithms: A* (1), Depth-first (2), Breadth-first (3): ')
-    #
-    # heuristic = inputValidation('Choose from heuristics: Manhattan (1), Euclidean (2), No heuristic/Dijkstra (3): ')
-    #
-    # node = inputValidation('Choose from nodes: Normal Node (1), Ninja Node (2): ')
+    board = inputValidation('Choose board (0-5) (9 - custom): ')
 
-    board, algorithm, heuristic, node = 5, 1, 1, 1
+    algorithm = inputValidation('Choose from algorithms: A* (1), Depth-first (2), Breadth-first (3): ')
+
+    heuristic = inputValidation('Choose from heuristics: Manhattan (1), Euclidean (2), No heuristic/Dijkstra (3): ')
+
+    node = inputValidation('Choose from nodes: Normal Node (1), Ninja Node (2): ')
+
+    # board, algorithm, heuristic, node = 5, 1, 1, 1
 
     ninjaMode = False;
     if node == 2:

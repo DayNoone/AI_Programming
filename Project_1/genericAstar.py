@@ -11,7 +11,7 @@ def propagate_path_improvements(parent):
     for child in parent.kids:
         if (parent.gValue + child.MOVEMENT_COST) < child.gValue:
             child.parent = parent
-            child.set_gValue(child.calculateGValue(parent))
+            child.set_gValue(child.calculateGValue())
             propagate_path_improvements(child)
 
 
