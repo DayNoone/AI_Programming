@@ -5,42 +5,42 @@ import os
 
 
 def makefunc(var_names, expression, envir=globals()):
-    #---------makefunc(['x','y','z'], 'x + y < 2*z or x < y')
-    args = ""
-    for n in var_names:
-        args = args + ", " + n
-    return eval("(lambda " + args[1:] + ": " + expression + ")", envir)
+	# ---------makefunc(['x','y','z'], 'x + y < 2*z or x < y')
+	args = ""
+	for n in var_names:
+		args = args + ", " + n
+	return eval("(lambda " + args[1:] + ": " + expression + ")", envir)
+
 
 def GAC_Domain_Filtering_Loop(variables):
-    while len(variables) != 0:
-        revise(variables.pop[0])
+	while len(variables) != 0:
+		revise(variables.pop[0])
 
 
 def GAC_Rerun(newVariable, variables):
-    for constraint in newVariable.neighbors:
-        variables.append([newVariable, constraint])
-    GAC_Domain_Filtering_Loop(variables)
+	for constraint in newVariable.neighbors:
+		variables.append([newVariable, constraint])
+	GAC_Domain_Filtering_Loop(variables)
+
 
 def revise(pair):
-    #TODO
-    pass
+	# TODO
+	pass
+
 
 def main():
-    #board = inputValidation('Choose board (0-5): ')
-    #k = inputValidation('Choose domain size: ')
-    graph = readBoard(boards[1])
-    initiate(graph)
-    variables = create_Variables(graph, [x for x in range(4)])
+	# board = inputValidation('Choose board (0-5): ')
+	# k = inputValidation('Choose domain size: ')
+	graph = readBoard(boards[1])
+	initiate(graph)
+	variables = create_Variables(graph, [x for x in range(4)])
 
-    #draw_board(variables, graph, True)
+	# draw_board(variables, graph, True)
 
-    node = Node(variables, [x for x in range(4)], None)
+	node = Node(variables, [x for x in range(4)], None)
 
-    if not node.checkIfGoalState() and not node.checkIfContradiction():
-        searchAlgorithm(1, node, False)
-
-
-
+	if not node.checkIfGoalState() and not node.checkIfContradiction():
+		searchAlgorithm(1, node, False)
 
 
 main()
