@@ -1,5 +1,5 @@
 from ioHandler import *
-from node import node
+from node import Node
 import os
 
 # General outline of Algorithm
@@ -23,17 +23,40 @@ def makefunc(var_names, expression, envir=globals()):
     return eval("(lambda " + args[1:] + ": " + expression + ")", envir)
 
 
+def GAC_Initialize(node):
+    pass
+
+
+def GAC_Domain_Filtering_Loop(node):
+    pass
+
+def GAC_Rerun(node):
+    pass
+
+
+def checkForContradiction(Node):
+    pass
+
+def run(variables, k):
+    node = Node(variables, [x for x in range(k)], None)
+    GAC_Initialize(node)
+    GAC_Domain_Filtering_Loop(node)
+
+    if not node.checkIfGoalState() and not node.checkIfContradiction():
+        # Run A* with s0 as root
+        while True:
+
+            pass
+
+
 def main():
     board = inputValidation('Choose board (0-5): ')
     k = inputValidation('Choose domain size: ')
     graph = readBoard(boards[board])
     initiate(graph)
     variables = create_Variables(graph, [x for x in range(k)])
-    draw_board(variables, graph, False)
-
-    s0 = Node(variables, [x for x in range(k)])
     draw_board(variables, graph, True)
 
 
-
+    run(variables, k)
 main()

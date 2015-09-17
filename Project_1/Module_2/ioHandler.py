@@ -1,5 +1,5 @@
 from gui import initiate, draw_board
-from Variable2 import Variable
+from variable import Variable
 import os
 
 boards = ['graph-color-1.txt', 'graph-color-2.txt', 'rand-50-4-color1.txt', 'rand-100-4-color1.txt', 'rand-100-6-color1.txt', 'spiral-500-4-color1.txt']

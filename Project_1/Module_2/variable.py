@@ -1,4 +1,4 @@
-class variable:
+class Variable:
     def __init__(self, id, x, y, initDomain):
         self.id = id
         self.xPos = x
