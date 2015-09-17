@@ -14,11 +14,11 @@ def lengthSolution(x, length):
 def run(board, algorithm, heuristic, ninjaMode):
     initiate(board.boardMatrix)
 
-    initNode = Module1Node(None, 0, 0, board.startXY[0], board.startXY[1], board.goalXY, board.boardMatrix, heuristic, ninjaMode)
+    initNode = Module1Node(None, 0, 0, board.startXY[0], board.startXY[1], board, heuristic, ninjaMode)
     if ninjaMode:
         initNode = Module1NinjaNode(None, 0, 0, board.startXY[0], board.startXY[1])
 
-    x, openNodes, closedNodes = searchAlgorithm(board, algorithm, heuristic, ninjaMode, initNode, False)
+    x, openNodes, closedNodes = searchAlgorithm(algorithm, initNode, False)
 
     if x.xPos == board.goalXY[0] or x.yPos == board.goalXY[1]:
         print

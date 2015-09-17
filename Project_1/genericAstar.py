@@ -69,8 +69,7 @@ def searchAlgorithm(algorithm, initNode, debug=False):
         if debug:
             print "Popped node:", x
 
-        #TODO: Fix drawing of board!
-        # x.drawBoard(x, board.boardMatrix, board.startXY, board.goalXY, openNodes, closedNodes, False)
+        x.drawBoard(openNodes, closedNodes, False)
 
         heappush(closedNodes, x)
 

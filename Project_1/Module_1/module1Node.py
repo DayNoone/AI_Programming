@@ -6,7 +6,7 @@ from gui import drawBoard, initiate
 class Module1Node(AStarNode):
     MOVEMENT_COST = 1
 
-    def __init__(self, parent, g, h, x, y, goalTuple, boardMatrix, heuristic, ninjaNodeMode):
+    def __init__(self, parent, g, h, x, y, board, heuristic, ninjaNodeMode):
         self.parent = parent
         self.gValue = g
         self.hValue = h
@@ -15,13 +15,13 @@ class Module1Node(AStarNode):
 
         """Module 1 attributes"""
 
-        self.boardMatrix = boardMatrix
+        self.board = board
         self.heuristic = heuristic
         self.ninjaNodeMode = ninjaNodeMode
         self.xPos = x
         self.yPos = y
         self.state = self.calculateStateIndex()
-        self.goalTuple = goalTuple
+        self.goalTuple = board.goalXY
 
         AStarNode.__init__(self, parent)
 
@@ -44,6 +44,7 @@ class Module1Node(AStarNode):
         self.fValue = self.gValue + self.hValue
 
     """Algorithm methods"""
+
 
     def checkIfGoalState(self):
         if self.xPos == self.goalTuple[0] and self.yPos == self.goalTuple[1]:
@@ -75,19 +76,22 @@ class Module1Node(AStarNode):
         ]
         newChildren = []
         for newChildPosition in newChildPositions:
-            if 0 <= newChildPosition[0] < len(self.boardMatrix) and 0 <= newChildPosition[1] < len(self.boardMatrix):
-                if self.boardMatrix[newChildPosition[0]][newChildPosition[1]] != '#':
+            if 0 <= newChildPosition[0] < len(self.board.boardMatrix) and 0 <= newChildPosition[1] < len(self.board.boardMatrix):
+                if self.board.boardMatrix[newChildPosition[0]][newChildPosition[1]] != '#':
                     if self.parent is not None and self.parent.xPos == newChildPosition[0] and self.parent.yPos == \
                             newChildPosition[1]:
                         continue
                     if self.ninjaNodeMode:
                         newChildren.append(
-                            Module1NinjaNode(self, 0, 0, newChildPosition[0], newChildPosition[1], self.goalTuple, self.boardMatrix, self.heuristic, self.ninjaNodeMode))
+                            Module1NinjaNode(self, 0, 0, newChildPosition[0], newChildPosition[1], self.board, self.heuristic, self.ninjaNodeMode))
                     else:
                         newChildren.append(
-                            Module1Node(self, 0, 0, newChildPosition[0], newChildPosition[1], self.goalTuple, self.boardMatrix, self.heuristic, self.ninjaNodeMode))
+                            Module1Node(self, 0, 0, newChildPosition[0], newChildPosition[1], self.board, self.heuristic, self.ninjaNodeMode))
 
         return newChildren
+
+    def drawBoard(self, openNodes, closedNodes, False):
+        drawBoard(self, self.board.boardMatrix, self.board.startXY, self.board.goalXY, openNodes, closedNodes, False)
 
 
 class Module1NinjaNode(Module1Node):

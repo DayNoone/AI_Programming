@@ -30,16 +30,16 @@ class AStarNode:
 
     """Algorithm methods"""
 
-    @staticmethod
     def calculateHeuristicValue(self):
         raise NotImplementedError
 
-    @staticmethod
     def calculateGValue(self):
         raise NotImplementedError
 
-    @staticmethod
     def generate_all_successors(self):
+        raise NotImplementedError
+
+    def drawBoard(self, openNodes, closedNodes, isFinished):
         raise NotImplementedError
 
 
