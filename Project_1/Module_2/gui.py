@@ -19,9 +19,9 @@ colors = [(255, 0, 0),  # RED
 
 def initiate(graph):
     global board_size, screen, multiplier, x_offset, y_offset, coffset
-    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (25, 50)  # forces screen to top left corner
+    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 50)  # forces screen to top left corner
     pygame.init()
-    board_size = 700
+    board_size = 750
     screen = pygame.display.set_mode((board_size, board_size + 0))
     pygame.display.set_caption('Module 2 - CSP-A*')
 
