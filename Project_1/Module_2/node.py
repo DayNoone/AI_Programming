@@ -37,6 +37,18 @@ class Node(AStarNode):
 	"""Algorithm methods"""
 
 	def calculateHeuristicValue(self):
+		numberOfTotalDomain = 0
+		for variableId in self.variables:
+			numberOfTotalDomain += len(self.variables[variableId].domain)
+
+		if self.checkIfContradiction():
+			heuristic = 999999
+		else:
+			heuristic = numberOfTotalDomain
+
+		return heuristic
+
+	def calculateHeuristicValue2(self):
 		numberOfColoredVariables = 0
 		for variableId in self.variables:
 			if self.variables[variableId].colorid is not None:

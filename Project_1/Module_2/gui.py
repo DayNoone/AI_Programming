@@ -53,7 +53,7 @@ def draw_board(variables, finished):
     # ---------- draw variables and fill with color
     for i in variables.itervalues():
         coordinates = (int((i.xPos + x_offset) * multiplier) + coffset, int((i.yPos + y_offset) * multiplier) + coffset)
-        if i.colorid is None:
+        if (i.colorid == None):
             pygame.draw.circle(screen, black, coordinates, 10, 1)
 
         else:
