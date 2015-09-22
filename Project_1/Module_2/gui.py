@@ -45,10 +45,9 @@ def draw_board(variables, finished):
     # ---------- draw connections
     for i in variables:
         for j in i.neighbors:
-            if (j.colorid is not None or i.colorid is not None):  # only draw lines to variables with colors
-                coordinates1 = ((i.xPos + x_offset) * multiplier + coffset, (i.yPos + y_offset) * multiplier + coffset)
-                coordinates2 = ((j.xPos + x_offset) * multiplier + coffset, (j.yPos + y_offset) * multiplier + coffset)
-                pygame.draw.line(screen, black, coordinates1, coordinates2, 2)
+            coordinates1 = ((i.xPos + x_offset) * multiplier + coffset, (i.yPos + y_offset) * multiplier + coffset)
+            coordinates2 = ((j.xPos + x_offset) * multiplier + coffset, (j.yPos + y_offset) * multiplier + coffset)
+            pygame.draw.line(screen, black, coordinates1, coordinates2, 1)
 
 
     # ---------- draw variables and fill with color
