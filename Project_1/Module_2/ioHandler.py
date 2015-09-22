@@ -38,7 +38,7 @@ def readFile(path):
 	return graph
 
 
-def create_Variables(graph, k):
+def create_Variables2(graph, k):
 	Variables = []
 	for i in graph[2]:  # creates Variables using id and pos
 		Variables.append(Variable(i[0], i[1], i[2], [x for x in range(k)]))
@@ -47,7 +47,21 @@ def create_Variables(graph, k):
 		VariableID2 = i[1]
 		Variables[VariableID1].neighbors.append(Variables[VariableID2])  # adds another neighbor
 		Variables[VariableID2].neighbors.append(Variables[VariableID1])  # has to add to other neighbor aswell
-		# print Variables[VariableID1].neighbor, Variables[VariableID2].neighbor
+	# print Variables[VariableID1].neighbor, Variables[VariableID2].neighbor
+	return Variables
+
+
+def create_Variables(graph, k):
+	Variables = {}
+	for i in graph[2]:  # creates Variables using id and pos
+		v = Variable(i[0], i[1], i[2], [x for x in range(k)])
+		Variables[v.id] = v
+	for i in graph[3]:  # adds lines between Variables
+		VariableID1 = i[0]
+		VariableID2 = i[1]
+		Variables[VariableID1].neighbors.append(Variables[VariableID2])  # adds another neighbor
+		Variables[VariableID2].neighbors.append(Variables[VariableID1])  # has to add to other neighbor aswell
+	# print Variables[VariableID1].neighbor, Variables[VariableID2].neighbor
 	return Variables
 
 

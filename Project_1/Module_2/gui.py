@@ -43,7 +43,7 @@ def draw_board(variables, finished):
     screen.fill(background_color)
 
     # ---------- draw connections
-    for i in variables:
+    for i in variables.itervalues():
         for j in i.neighbors:
             coordinates1 = ((i.xPos + x_offset) * multiplier + coffset, (i.yPos + y_offset) * multiplier + coffset)
             coordinates2 = ((j.xPos + x_offset) * multiplier + coffset, (j.yPos + y_offset) * multiplier + coffset)
@@ -51,10 +51,10 @@ def draw_board(variables, finished):
 
 
     # ---------- draw variables and fill with color
-    for i in variables:
+    for i in variables.itervalues():
         coordinates = (int((i.xPos + x_offset) * multiplier) + coffset, int((i.yPos + y_offset) * multiplier) + coffset)
-        if (i.colorid == None):
-            pygame.draw.circle(screen, black, coordinates, 10, 3)
+        if i.colorid is None:
+            pygame.draw.circle(screen, black, coordinates, 10, 1)
 
         else:
             pygame.draw.circle(screen, colors[i.colorid], coordinates, 10, 0)

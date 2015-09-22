@@ -16,36 +16,36 @@ class Node(AStarNode):
 		AStarNode.__init__(self, parent)
 
 	def checkIfGoalState(self):
-		for variable in self.variables:
-			if len(variable.domain) != 1:
+		for variableId in self.variables:
+			if len(self.variables[variableId].domain) != 1:
 				return False
 		return True
 
 	def checkIfContradiction(self):
-		for variable in self.variables:
-			if len(variable.domain) == 0:
+		for variableId in self.variables:
+			if len(self.variables[variableId].domain) == 0:
 				return True
 		return False
 
 	def calculateStateIndex(self):
 		string = "0"
-		for variable in self.variables:
-			if variable.colorid is not None:
-				string += str(variable.id) + str(variable.colorid) + "999"
+		for variableId in self.variables:
+			if self.variables[variableId].colorid is not None:
+				string += str(variableId) + str(self.variables[variableId].colorid) + "999"
 		return string
 
 	"""Algorithm methods"""
 
 	def calculateHeuristicValue(self):
 		numberOfColoredVariables = 0
-		for variable in self.variables:
-			if variable.colorid is not None:
+		for variableId in self.variables:
+			if self.variables[variableId].colorid is not None:
 				numberOfColoredVariables += 1
 
 		if self.checkIfContradiction():
 			heuristic = 999999
 		else:
-			heuristic = len(self.variables)-numberOfColoredVariables
+			heuristic = len(self.variables) - numberOfColoredVariables
 
 		return heuristic
 
@@ -57,25 +57,22 @@ class Node(AStarNode):
 	def generate_all_successors(self):
 		smallestVariable = None
 		smallestVariableDomainSize = 999
-		for variable in self.variables:
-			if 1 < len(variable.domain) < smallestVariableDomainSize:
-				smallestVariable = variable
+		for variableId in self.variables:
+			if 1 < len(self.variables[variableId].domain) < smallestVariableDomainSize:
+				smallestVariable = self.variables[variableId]
 				smallestVariableDomainSize = len(smallestVariable.domain)
 
 		successors = []
 
-
 		for value in smallestVariable.domain:
 			variablesCopy = copy.deepcopy(self.variables)
-			for variable in variablesCopy:
-				if variable.id == smallestVariable.id:
-					variable.colorid = value
-					variable.domain = [value]
-					newNode = Node(variablesCopy, self)
-					newNode.revise(variable)
+			variable = variablesCopy[smallestVariable.id]
+			variable.colorid = value
+			variable.domain = [value]
+			newNode = Node(variablesCopy, self)
+			newNode.revise(variable)
 
-					successors.append(newNode)
-					break;
+			successors.append(newNode)
 
 		return successors
 
@@ -93,4 +90,4 @@ class Node(AStarNode):
 					reviseQueue.append(neighbor)
 
 	def drawBoard(self, openNodes, closedNodes, isFinished):
-		draw_board(self.variables, False)
+		draw_board(self.variables, isFinished)

@@ -6,28 +6,29 @@ import os
 
 
 def makefunc(var_names, expression, envir=globals()):
-    # ---------makefunc(['x','y','z'], 'x + y < 2*z or x < y')
-    args = ""
-    for n in var_names:
-        args = args + ", " + n
-    return eval("(lambda " + args[1:] + ": " + expression + ")", envir)
+	# ---------makefunc(['x','y','z'], 'x + y < 2*z or x < y')
+	args = ""
+	for n in var_names:
+		args = args + ", " + n
+	return eval("(lambda " + args[1:] + ": " + expression + ")", envir)
 
 
 
 
 def main():
-    sys.setrecursionlimit(10000)
-    # board = inputValidation('Choose board (0-5): ')
-    # k = inputValidation('Choose domain size: ')
-    k = 4
-    graph = readBoard(boards[4])
-    initiate(graph)
-    variables = create_Variables(graph, k)
+	sys.setrecursionlimit(10000)
+	# board = inputValidation('Choose board (0-5): ')
+	# k = inputValidation('Choose domain size: ')
+	k = 4
+	graph = readBoard(boards[1])
+	initiate(graph)
+	variables = create_Variables(graph, k)
 
-    node = Node(variables, None)
+	node = Node(variables, None)
 
-    if not node.checkIfGoalState() and not node.checkIfContradiction():
-        searchAlgorithm(1, node, False)
+	if not node.checkIfGoalState() and not node.checkIfContradiction():
+		x, opennodes, closednodes = searchAlgorithm(1, node, False)
+		x.drawBoard(opennodes, closednodes, True)
 
 
 main()
