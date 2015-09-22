@@ -47,7 +47,6 @@ class Node(AStarNode):
 		else:
 			heuristic = len(self.variables)-numberOfColoredVariables
 
-		print self, "- Heuristic:", heuristic
 		return heuristic
 
 	def calculateGValue(self):
@@ -65,8 +64,6 @@ class Node(AStarNode):
 
 		successors = []
 
-		if smallestVariable is None:
-			print "WHAT"
 
 		for value in smallestVariable.domain:
 			variablesCopy = copy.deepcopy(self.variables)

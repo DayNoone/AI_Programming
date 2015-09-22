@@ -1,3 +1,4 @@
+import sys
 from ioHandler import *
 from node import Node
 from Project_1.genericAstar import searchAlgorithm
@@ -15,6 +16,7 @@ def makefunc(var_names, expression, envir=globals()):
 
 
 def main():
+    sys.setrecursionlimit(10000)
     # board = inputValidation('Choose board (0-5): ')
     # k = inputValidation('Choose domain size: ')
     k = 4
@@ -25,7 +27,7 @@ def main():
     node = Node(variables, None)
 
     if not node.checkIfGoalState() and not node.checkIfContradiction():
-        searchAlgorithm(1, node, True)
+        searchAlgorithm(1, node, False)
 
 
 main()
