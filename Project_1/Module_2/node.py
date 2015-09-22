@@ -37,8 +37,18 @@ class Node(AStarNode):
 	"""Algorithm methods"""
 
 	def calculateHeuristicValue(self):
-		# TODO
-		return 0
+		numberOfColoredVariables = 0
+		for variable in self.variables:
+			if variable.colorid is not None:
+				numberOfColoredVariables += 1
+
+		if self.checkIfContradiction():
+			heuristic = 999999
+		else:
+			heuristic = len(self.variables)-numberOfColoredVariables
+
+		print self, "- Heuristic:", heuristic
+		return heuristic
 
 	def calculateGValue(self):
 		if self.parent is None:
@@ -46,22 +56,29 @@ class Node(AStarNode):
 		return self.parent.gValue + self.MOVEMENT_COST
 
 	def generate_all_successors(self):
-		smallestDomain = int
 		smallestVariable = None
-		newVariables = copy.deepcopy(self.variables)
-		for variable in newVariables:
-			if 1 < len(variable.domain) < smallestDomain:
+		smallestVariableDomainSize = 999
+		for variable in self.variables:
+			if 1 < len(variable.domain) < smallestVariableDomainSize:
 				smallestVariable = variable
-				smallestDomain = len(variable.domain)
+				smallestVariableDomainSize = len(smallestVariable.domain)
 
 		successors = []
-		for value in smallestVariable.domain:
-			smallestVariable.colorid = value
-			smallestVariable.domain = [value]
-			self.revise(smallestVariable)
-			newNode = Node(copy.deepcopy(newVariables), self)
 
-			successors.append(newNode)
+		if smallestVariable is None:
+			print "WHAT"
+
+		for value in smallestVariable.domain:
+			variablesCopy = copy.deepcopy(self.variables)
+			for variable in variablesCopy:
+				if variable.id == smallestVariable.id:
+					variable.colorid = value
+					variable.domain = [value]
+					newNode = Node(variablesCopy, self)
+					newNode.revise(variable)
+
+					successors.append(newNode)
+					break;
 
 		return successors
 
@@ -72,10 +89,9 @@ class Node(AStarNode):
 			newVariable = reviseQueue.pop(0)
 
 			for neighbor in newVariable.neighbors:
-				print neighbor
 				if newVariable.colorid in neighbor.domain:
 					neighbor.domain.remove(newVariable.colorid)
-				if len(neighbor.domain) == 1:
+				if len(neighbor.domain) == 1 and neighbor.colorid is None:
 					neighbor.colorid = neighbor.domain[0]
 					reviseQueue.append(neighbor)
 

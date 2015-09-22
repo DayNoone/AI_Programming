@@ -41,7 +41,7 @@ def readFile(path):
 def create_Variables(graph, k):
 	Variables = []
 	for i in graph[2]:  # creates Variables using id and pos
-		Variables.append(Variable(i[0], i[1], i[2], k))
+		Variables.append(Variable(i[0], i[1], i[2], [x for x in range(k)]))
 	for i in graph[3]:  # adds lines between Variables
 		VariableID1 = i[0]
 		VariableID2 = i[1]

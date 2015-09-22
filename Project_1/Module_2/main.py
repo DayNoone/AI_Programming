@@ -17,14 +17,15 @@ def makefunc(var_names, expression, envir=globals()):
 def main():
     # board = inputValidation('Choose board (0-5): ')
     # k = inputValidation('Choose domain size: ')
-    graph = readBoard(boards[1])
+    k = 4
+    graph = readBoard(boards[5])
     initiate(graph)
-    variables = create_Variables(graph, [x for x in range(4)])
+    variables = create_Variables(graph, k)
 
     node = Node(variables, None)
 
     if not node.checkIfGoalState() and not node.checkIfContradiction():
-        searchAlgorithm(1, node, False)
+        searchAlgorithm(1, node, True)
 
 
 main()
