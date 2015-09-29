@@ -1,0 +1,38 @@
+from gui import initiate, draw_board
+import os
+
+boards = ['nono-camel.txt', 'nono-cat.txt', 'nono-chick.txt', 'nono-heart-1.txt', 'nono-rabbit.txt', 'nono-sailboat.txt', 'nono-telephone.txt']
+
+
+def readFile(path):
+    row_specs = []
+    column_specs = []
+    with open(path) as f:
+        x_dimension, y_dimension = [int(x) for x in f.readline().split()]  # read first line
+        for row in range(y_dimension):
+            line = f.readline().strip().split(' ')
+            line = map(int, line)
+            row_specs.append(line)
+        for column in range(x_dimension):
+            line = f.readline().strip().split(' ')
+            line = map(int, line)
+            column_specs.append(line)
+    return x_dimension, y_dimension, row_specs, column_specs
+
+def readBoard(no):
+	if os.name == 'nt':
+		return readFile('scenarios\\' + no)
+	else:
+		return readFile('scenarios/' + no)
+
+
+def inputValidation(inputText):
+	while True:
+		try:
+			return int(raw_input(inputText))
+		except ValueError:
+			print('Please enter an integer...')
+
+
+print(readFile('scenarios/'+boards[0]))
+
