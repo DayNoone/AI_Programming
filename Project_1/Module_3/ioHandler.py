@@ -17,13 +17,14 @@ def readFile(path):
             line = f.readline().strip().split(' ')
             line = map(int, line)
             column_specs.append(line)
-    return x_dimension, y_dimension, row_specs, column_specs
+    board = [[0 for y in range(x_dimension)] for x in range(y_dimension)]
+    return board, x_dimension, y_dimension, row_specs, column_specs
 
 def readBoard(no):
 	if os.name == 'nt':
-		return readFile('scenarios\\' + no)
+		return readFile('scenarios\\' + boards[no])
 	else:
-		return readFile('scenarios/' + no)
+		return readFile('scenarios/' + boards[no])
 
 
 def inputValidation(inputText):
@@ -32,7 +33,3 @@ def inputValidation(inputText):
 			return int(raw_input(inputText))
 		except ValueError:
 			print('Please enter an integer...')
-
-
-print(readFile('scenarios/'+boards[0]))
-

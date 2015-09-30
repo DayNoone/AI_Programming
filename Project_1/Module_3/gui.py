@@ -2,19 +2,24 @@ import random, os
 import pygame
 import sys
 
-def initiate():
-    global x_size, y_size
+def initiate(board):
+    global TILESIZE, DISPLAYSURF
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 50)  # forces screen to top left corner
     pygame.init()
-    board_size = 750
-    screen = pygame.display.set_mode((board_size, board_size + 0))
     pygame.display.set_caption('Module 3 - Nonograms')
+    TILESIZE = 50
+    DISPLAYSURF = pygame.display.set_mode((len(board[0]) * TILESIZE, len(board) * TILESIZE))
 
-    board = [[0 for y in range(y_size)] for x in range(x_size)]
 
 
 
 def draw_board(board, finished):
+    for row in range(len(board)):
+        for column in range(len(board[0])):
+            if board[row][column] == 0:
+                pygame.draw.rect(DISPLAYSURF, (255, 255, 255), (column * TILESIZE, row * TILESIZE, TILESIZE, TILESIZE))
+            else:
+                pygame.draw.rect(DISPLAYSURF, (30, 144, 255), (column * TILESIZE, row * TILESIZE, TILESIZE, TILESIZE))
 
     pygame.display.update()
 
