@@ -2,7 +2,6 @@ import sys
 from ioHandler import *
 from node import Node
 from Project_1.genericAstar import searchAlgorithm
-import os
 
 
 def makefunc(var_names, expression, envir=globals()):
@@ -13,14 +12,12 @@ def makefunc(var_names, expression, envir=globals()):
     return eval("(lambda " + args[1:] + ": " + expression + ")", envir)
 
 
-
-
 def main():
     sys.setrecursionlimit(10000)
     # board = inputValidation('Choose board (0-5): ')
     # k = inputValidation('Choose domain size: ')
     k = 4
-    graph = readBoard(boards[3])
+    graph = readBoard(boards[5])
     initiate(graph)
     variables = create_Variables(graph, k)
 

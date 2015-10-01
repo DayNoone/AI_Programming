@@ -55,7 +55,7 @@ class Node(AStarNode):
 				numberOfColoredVariables += 1
 
 		if self.checkIfContradiction():
-			heuristic = 999999
+			heuristic = 9999999
 		else:
 			heuristic = len(self.variables) - numberOfColoredVariables
 
