@@ -75,6 +75,6 @@ def readBoard(no):
 def inputValidation(inputText):
 	while True:
 		try:
-			return int(raw_input(inputText))
+			return int(eval(input(inputText)))
 		except ValueError:
 			print('Please enter an integer...')

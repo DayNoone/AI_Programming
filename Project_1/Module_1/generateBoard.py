@@ -25,20 +25,20 @@ def generateBoard(dimensionX, dimensionY, startX, startY, goalX, goalY, barriers
 
 
 def getBoardInfoFromInput():
-    dimX = raw_input("DimensionX: ")
-    dimY = raw_input("DimensionY: ")
-    startX = raw_input("StartX: ")
-    startY = raw_input("StartY: ")
-    goalX = raw_input("GoalX: ")
-    goalY = raw_input("GoalY: ")
+    dimX = input("DimensionX: ")
+    dimY = input("DimensionY: ")
+    startX = input("StartX: ")
+    startY = input("StartY: ")
+    goalX = input("GoalX: ")
+    goalY = input("GoalY: ")
     barriers = []
     while 1:
-        prompt = raw_input("Do you want to enter one more barrier? y/n")
+        prompt = input("Do you want to enter one more barrier? y/n")
         if prompt == 'y':
-            barrierXpos = int(raw_input("Enter barrier Xpos: "))
-            barrierYpos = int(raw_input("Enter barrier Ypos: "))
-            barrierXRange = int(raw_input("Enter barrier XRange: "))
-            barrierYRange = int(raw_input("Enter barrier YRange: "))
+            barrierXpos = int(input("Enter barrier Xpos: "))
+            barrierYpos = int(input("Enter barrier Ypos: "))
+            barrierXRange = int(input("Enter barrier XRange: "))
+            barrierYRange = int(input("Enter barrier YRange: "))
             barriers.append([barrierXpos, barrierYpos, barrierXRange, barrierYRange])
         elif prompt == 'n':
             break

@@ -21,12 +21,12 @@ def run(board, algorithm, heuristic, ninjaMode):
     x, openNodes, closedNodes = searchAlgorithm(algorithm, initNode, False)
 
     if x.xPos == board.goalXY[0] or x.yPos == board.goalXY[1]:
-        print
-        print "Results:"
-        print "\tLength of solution:\t", lengthSolution(x, 0)
-        print "\tSearched nodes:\t\t", len(openNodes) + len(closedNodes)
-        print "\t\tOpen nodes:\t\t", len(openNodes)
-        print "\t\tClosed nodes:\t", len(closedNodes)
+        print()
+        print("Results:")
+        print("\tLength of solution:\t", lengthSolution(x, 0))
+        print("\tSearched nodes:\t\t", len(openNodes) + len(closedNodes))
+        print("\t\tOpen nodes:\t\t", len(openNodes))
+        print("\t\tClosed nodes:\t", len(closedNodes))
 
     drawBoard(x, board.boardMatrix, board.startXY, board.goalXY, openNodes, closedNodes, True)
 
@@ -34,7 +34,7 @@ def run(board, algorithm, heuristic, ninjaMode):
 def inputValidation(inputText):
     while True:
         try:
-            return int(raw_input(inputText))
+            return int(input(inputText))
         except ValueError:
             print('Please enter an integer...')
 
@@ -63,7 +63,7 @@ def main():
 
     run(selectedBoard, algorithm, heuristic, ninjaMode)
 
-    print ""
+    print("")
 
 
 while True:

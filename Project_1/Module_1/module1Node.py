@@ -90,8 +90,8 @@ class Module1Node(AStarNode):
 
         return newChildren
 
-    def drawBoard(self, openNodes, closedNodes, False):
-        drawBoard(self, self.board.boardMatrix, self.board.startXY, self.board.goalXY, openNodes, closedNodes, False)
+    def drawBoard(self, openNodes, closedNodes, finished):
+        drawBoard(self, self.board.boardMatrix, self.board.startXY, self.board.goalXY, openNodes, closedNodes, finished)
 
 
 class Module1NinjaNode(Module1Node):

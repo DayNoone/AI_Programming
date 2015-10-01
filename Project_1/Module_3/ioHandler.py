@@ -12,11 +12,11 @@ def readFile(path):
 		x_dimension, y_dimension = [int(x) for x in f.readline().split()]  # read first line
 		for row in range(y_dimension):
 			line = f.readline().strip().split(' ')
-			line = map(int, line)
+			line = list(map(int, line))
 			row_specs.append(line)
 		for column in range(x_dimension):
 			line = f.readline().strip().split(' ')
-			line = map(int, line)
+			line = list(map(int, line))
 			column_specs.append(line)
 	board = [[0 for y in range(x_dimension)] for x in range(y_dimension)]
 	return board, x_dimension, y_dimension, row_specs, column_specs
@@ -32,6 +32,6 @@ def readBoard(no):
 def inputValidation(inputText):
 	while True:
 		try:
-			return int(raw_input(inputText))
+			return int(input(inputText))
 		except ValueError:
 			print('Please enter an integer...')

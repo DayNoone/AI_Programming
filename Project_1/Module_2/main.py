@@ -1,6 +1,7 @@
 import sys
-from ioHandler import *
-from node import Node
+from Project_1.Module_2.gui import initiate
+from Project_1.Module_2.ioHandler import create_Variables, readBoard, boards
+from Project_1.Module_2.node import Node
 from Project_1.genericAstar import searchAlgorithm
 
 

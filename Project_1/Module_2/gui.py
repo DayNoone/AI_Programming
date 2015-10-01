@@ -1,6 +1,5 @@
-import random, os
+import os
 import pygame
-import sys
 
 background_color = (255, 255, 255)  # rbg
 black = (0, 0, 0)
@@ -43,7 +42,7 @@ def draw_board(variables, finished):
     screen.fill(background_color)
 
     # ---------- draw connections
-    for i in variables.itervalues():
+    for i in list(variables.values()):
         for j in i.neighbors:
             coordinates1 = ((i.xPos + x_offset) * multiplier + coffset, (i.yPos + y_offset) * multiplier + coffset)
             coordinates2 = ((j.xPos + x_offset) * multiplier + coffset, (j.yPos + y_offset) * multiplier + coffset)
@@ -51,7 +50,7 @@ def draw_board(variables, finished):
 
 
     # ---------- draw variables and fill with color
-    for i in variables.itervalues():
+    for i in list(variables.values()):
         coordinates = (int((i.xPos + x_offset) * multiplier) + coffset, int((i.yPos + y_offset) * multiplier) + coffset)
         if (i.colorid == None):
             pygame.draw.circle(screen, black, coordinates, 10, 1)

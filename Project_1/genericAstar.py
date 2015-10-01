@@ -34,31 +34,31 @@ def searchAlgorithm(algorithm, initNode, debug=False):
     while True:
 
         if debug:
-            print
-            print "#####"
-            print "NEW WHILE"
-            print "#####"
-            print "Open nodes:", len(openNodes)
-            print "Closed nodes:", len(closedNodes)
-            print "States:", len(states)
+            print()
+            print("#####")
+            print("NEW WHILE")
+            print("#####")
+            print(("Open nodes:", len(openNodes)))
+            print(("Closed nodes:", len(closedNodes)))
+            print(("States:", len(states)))
 
         if len(openNodes) == 0:
-            print "No solution found"
+            print("No solution found")
             return closedNodes[-1], openNodes, closedNodes
 
         if debug:
-            print
-            print "Open nodes: "
+            print()
+            print("Open nodes: ")
             for a in openNodes:
-                print a
-            print
+                print(a)
+            print()
 
         if debug:
-            print
-            print "Closed nodes: "
+            print()
+            print("Closed nodes: ")
             for a in closedNodes:
-                print a
-            print
+                print(a)
+            print()
 
         if algorithm == 1:
             openNodes.sort()
@@ -67,22 +67,22 @@ def searchAlgorithm(algorithm, initNode, debug=False):
             x = openNodes.pop(0)
 
         if debug:
-            print "Popped node:", x
+            print(("Popped node:", x))
 
         x.drawBoard(openNodes, closedNodes, False)
 
         heappush(closedNodes, x)
 
         if x.checkIfGoalState():
-            print "Solution found!"
+            print("Solution found!")
             return x, openNodes, closedNodes
 
         successors = x.generate_all_successors()
 
         if debug:
-            print "len(successors):", len(successors)
+            print(("len(successors):", len(successors)))
             for a in successors:
-                print a
+                print(a)
 
         addSuccessorsToState(successors, states)
 
