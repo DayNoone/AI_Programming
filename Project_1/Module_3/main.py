@@ -1,4 +1,6 @@
 import copy
+from node import Node
+from Project_1.genericAstar import searchAlgorithm
 from variable import Variable
 from ioHandler import *
 
@@ -45,18 +47,9 @@ def insertPossibilities(alternative, row_spec, i, domain):
 			insertPossibilities(newAlternative, row_spec, i + 1, domain)
 
 
-def createVariables(x_dimension, y_dimension, row_specs, column_specs):
+def generateVariables(specs, dimension, rowOrColumn):
 	variables = []
-	generateVariables(row_specs, variables, x_dimension, 0)
-	generateVariables(column_specs, variables, y_dimension, 1)
-
-	return variables
-
-
-def generateVariables(specs, variables, dimension, rowOrColumn):
 	for row_specIndex in range(len(specs)):
-		# print row_specs[row_specIndex]
-
 		domain = []
 		variable = Variable(rowOrColumn, row_specIndex, domain)
 
@@ -66,15 +59,23 @@ def generateVariables(specs, variables, dimension, rowOrColumn):
 
 		variables.append(variable)
 
+	return variables
+
 
 def main():
 	board, x_dimension, y_dimension, row_specs, column_specs = readBoard(1)
-	print(x_dimension, y_dimension, row_specs, column_specs)
 	initiate(board)
 	# draw_board(board, True)
 
-	variables = createVariables(x_dimension, y_dimension, row_specs, column_specs)
-	print variables
+	rowVars = generateVariables(row_specs, x_dimension, 0)
+	colVars = generateVariables(column_specs, y_dimension, 1)
+
+	initNode = Node(rowVars, colVars, None, x_dimension, y_dimension)
+
+	if not initNode.checkIfGoalState() and not initNode.checkIfContradiction():
+		initNode.initialFiltering()
+		x, opennodes, closednodes = searchAlgorithm(1, initNode, True)
+		x.drawBoard(opennodes, closednodes, True)
 
 
 main()
