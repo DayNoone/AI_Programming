@@ -32,7 +32,7 @@ class Node(AStarNode):
 		for variableId in self.variables:
 			if self.variables[variableId].colorid is not None:
 				string += str(variableId) + str(self.variables[variableId].colorid) + "999"
-		return string
+		return int(string)
 
 	"""Algorithm methods"""
 
