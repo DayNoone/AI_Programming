@@ -1,4 +1,5 @@
-from ioHandler import *
+from Project_1.Module_3.gui import initiate
+from Project_1.Module_3.ioHandler import readBoard
 
 
 def main():
@@ -16,11 +17,11 @@ main()
 def createVariables(x_dimension, y_dimension, row_specs, column_specs):
 	variables = []
 	for row_spec in row_specs:
-		print row_spec
+		print(row_spec)
 		numberOfValues = len(row_spec)
 		sumOfValues = sum(row_spec)
-		print "numberOfValues:", numberOfValues
-		print "sumOfValues:", sumOfValues
+		print("numberOfValues:", numberOfValues)
+		print("sumOfValues:", sumOfValues)
 	# Rfor value in row_spec:
 
 	return variables
