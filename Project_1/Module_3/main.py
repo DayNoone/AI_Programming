@@ -63,7 +63,7 @@ def generateVariables(specs, dimension, rowOrColumn):
 
 
 def main():
-	board, x_dimension, y_dimension, row_specs, column_specs = readBoard(1)
+	board, x_dimension, y_dimension, row_specs, column_specs = readBoard(2)
 	initiate(board)
 	# draw_board(board, True)
 
