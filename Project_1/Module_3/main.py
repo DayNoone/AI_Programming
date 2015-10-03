@@ -48,7 +48,7 @@ def insertPossibilities(alternative, row_spec, i, domain):
 
 
 def generateVariables(specs, dimension, rowOrColumn):
-	variables = []
+	variables = {}
 	for row_specIndex in range(len(specs)):
 		domain = []
 		variable = Variable(rowOrColumn, row_specIndex, domain)
@@ -57,7 +57,7 @@ def generateVariables(specs, dimension, rowOrColumn):
 
 		insertPossibilities(emptyAlternative, specs[row_specIndex], 0, domain)
 
-		variables.append(variable)
+		variables[variable.id] = variable
 
 	return variables
 

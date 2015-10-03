@@ -48,18 +48,18 @@ class Node(AStarNode):
 
 		return heuristic
 
-	def calculateHeuristicValue2(self):
-		numberOfColoredVariables = 0
-		for variableId in self.variables:
-			if self.variables[variableId].colorid is not None:
-				numberOfColoredVariables += 1
-
-		if self.checkIfContradiction():
-			heuristic = 9999999
-		else:
-			heuristic = len(self.variables) - numberOfColoredVariables
-
-		return heuristic
+	# def calculateHeuristicValue2(self):
+	# 	numberOfColoredVariables = 0
+	# 	for variableId in self.variables:
+	# 		if self.variables[variableId].colorid is not None:
+	# 			numberOfColoredVariables += 1
+	#
+	# 	if self.checkIfContradiction():
+	# 		heuristic = 9999999
+	# 	else:
+	# 		heuristic = len(self.variables) - numberOfColoredVariables
+	#
+	# 	return heuristic
 
 	def calculateGValue(self):
 		if self.parent is None:

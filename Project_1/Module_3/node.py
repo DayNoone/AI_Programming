@@ -10,6 +10,7 @@ class Node(AStarNode):
 		self.parent = parent
 		self.x_dimension = x_dimension
 		self.y_dimension = y_dimension
+		self.state = self.calculateStateIndex()
 		AStarNode.__init__(self, parent)
 
 	def calculateHeuristicValue(self):
@@ -27,22 +28,40 @@ class Node(AStarNode):
 		return 1
 
 	def generate_all_successors(self):
-		return []
 		smallestVariable = None
+		# TODO: Do better! Start with domainSize of first variable?
 		smallestVariableDomainSize = 999
+
+		# TODO: Stop if domainsize == 2?? Maybe not faster
 		for variableId in self.rowVariables:
 			if 1 < len(self.rowVariables[variableId].domain) < smallestVariableDomainSize:
 				smallestVariable = self.rowVariables[variableId]
 				smallestVariableDomainSize = len(smallestVariable.domain)
 
+		for variableId in self.columnVariables:
+			if 1 < len(self.columnVariables[variableId].domain) < smallestVariableDomainSize:
+				smallestVariable = self.columnVariables[variableId]
+				smallestVariableDomainSize = len(smallestVariable.domain)
+
 		successors = []
 
 		for value in smallestVariable.domain:
-			variablesCopy = copy.deepcopy(self.rowVariables)
-			variable = variablesCopy[smallestVariable.id]
-			variable.colorid = value
+			rowVariablesCopy = copy.deepcopy(self.rowVariables)
+			columnVariablesCopy = copy.deepcopy(self.columnVariables)
+
+			if smallestVariable.type == 0:
+				variablesCopy = rowVariablesCopy
+			else:
+				variablesCopy = columnVariablesCopy
+
+			variable = None
+			for tempVariable in variablesCopy:
+				if smallestVariable.position == tempVariable.position:
+					variable = tempVariable
+
+			variable.setValue(value)
 			variable.domain = [value]
-			newNode = Node(variablesCopy, self)
+			newNode = Node(rowVariablesCopy, columnVariablesCopy, self, self.x_dimension, self.y_dimension)
 			newNode.revise(variable)
 
 			successors.append(newNode)
@@ -57,12 +76,14 @@ class Node(AStarNode):
 	# Different from Module2
 	def calculateStateIndex(self):
 		string = "0"
-		for variable in self.rowVariables:
-			if len(variable.domain) == 1:
-				string += str(variable.type) + str(variable.position)
-				for value in variable.domain[0]:
-					string += str(value)
-				string += "999"
+		for rowVariableId in self.rowVariables:
+			if self.rowVariables[rowVariableId].value is not None:
+				string += str(rowVariableId) + ''.join(str(i) for i in self.rowVariables[rowVariableId].value) + "999"
+
+		for columnVariableId in self.columnVariables:
+			if self.columnVariables[columnVariableId].value is not None:
+				string += str(columnVariableId) + ''.join(str(i) for i in self.columnVariables[columnVariableId].value) + "999"
+
 		return int(string)
 
 	# Different from Module2
@@ -100,8 +121,6 @@ class Node(AStarNode):
 		for rowVariable in self.rowVariables:
 			for rowVariableVersion in rowVariable.domain:
 
-				# TODO: Find invalid rowVariableVersions
-
 				for rowVariableDomainIndex in range(len(rowVariableVersion)):
 					# For hver kolonne i raden
 
@@ -119,8 +138,6 @@ class Node(AStarNode):
 
 		for columnVariable in self.columnVariables:
 			for columnVariableVersion in columnVariable.domain:
-
-				# TODO: Find invalid rowVariableVersions
 
 				for columnVariableDomainIndex in range(len(columnVariableVersion)):
 					# For hver kolonne i raden
