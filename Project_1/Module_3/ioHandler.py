@@ -18,6 +18,7 @@ def readFile(path):
 			line = f.readline().strip().split(' ')
 			line = map(int, line)
 			column_specs.append(line)
+		row_specs = row_specs[::-1]
 	board = [[0 for y in range(x_dimension)] for x in range(y_dimension)]
 	return board, x_dimension, y_dimension, row_specs, column_specs
 

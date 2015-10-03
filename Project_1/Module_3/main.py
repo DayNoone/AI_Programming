@@ -66,7 +66,7 @@ def generateVariables(specs, dimension, rowOrColumn):
 
 
 def main():
-	board, x_dimension, y_dimension, row_specs, column_specs = readBoard(1)
+	board, x_dimension, y_dimension, row_specs, column_specs = readBoard(6)
 	initiate(board)
 	# draw_board(board, True)
 
@@ -78,6 +78,8 @@ def main():
 	if not initNode.checkIfGoalState() and not initNode.checkIfContradiction():
 		initNode.initialFiltering()
 		x, opennodes, closednodes = searchAlgorithm(1, initNode, False)
+		print "Open:", len(opennodes)
+		print "Closed:", len(closednodes)
 		x.drawBoard(opennodes, closednodes, True)
 
 
