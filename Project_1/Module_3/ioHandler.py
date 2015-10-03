@@ -2,7 +2,7 @@ from gui import initiate, draw_board
 import os
 
 boards = ['nono-camel.txt', 'nono-cat.txt', 'nono-chick.txt', 'nono-heart-1.txt', 'nono-rabbit.txt',
-          'nono-sailboat.txt', 'nono-telephone.txt']
+          'nono-sailboat.txt', 'nono-telephone.txt', 'nono-hard.txt']
 
 
 def readFile(path):

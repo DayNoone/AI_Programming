@@ -24,7 +24,7 @@ def main():
     node = Node(variables, None)
 
     if not node.checkIfGoalState() and not node.checkIfContradiction():
-        x, opennodes, closednodes = searchAlgorithm(1, node, True)
+        x, opennodes, closednodes = searchAlgorithm(1, node)
         x.drawBoard(opennodes, closednodes, True)
 
 

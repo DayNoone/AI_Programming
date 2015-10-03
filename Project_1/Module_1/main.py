@@ -18,7 +18,7 @@ def run(board, algorithm, heuristic, ninjaMode):
     if ninjaMode:
         initNode = Module1NinjaNode(None, 0, 0, board.startXY[0], board.startXY[1], board, heuristic, ninjaMode)
 
-    x, openNodes, closedNodes = searchAlgorithm(algorithm, initNode, False)
+    x, openNodes, closedNodes = searchAlgorithm(algorithm, initNode)
 
     if x.xPos == board.goalXY[0] or x.yPos == board.goalXY[1]:
         print
