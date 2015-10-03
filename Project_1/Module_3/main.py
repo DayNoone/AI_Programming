@@ -57,7 +57,7 @@ def generateVariables(specs, dimension, rowOrColumn):
 
 		insertPossibilities(emptyAlternative, specs[row_specIndex], 0, domain)
 
-		variables[variable.id] = variable
+		variables[variable.position] = variable
 
 	return variables
 
