@@ -4,6 +4,3 @@ class Variable:
         self.position = position
         self.domain = initDomain
         self.value = None
-
-    def setValue(self, value):
-        self.value = value

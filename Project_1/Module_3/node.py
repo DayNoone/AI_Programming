@@ -66,7 +66,7 @@ class Node(AStarNode):
 				if smallestVariable.position == variablesCopy[tempVariableId].position:
 					variable = variablesCopy[tempVariableId]
 
-			variable.setValue(value)
+			variable.value = value
 			variable.domain = [value]
 			newNode = Node(rowVariablesCopy, columnVariablesCopy, self, self.x_dimension, self.y_dimension)
 			# newNode.revise(variable)
@@ -107,6 +107,8 @@ class Node(AStarNode):
 			variable = self.rowVariables[variableId]
 			if len(variable.domain) == 1:
 				if variable.type == 0:
+					if variable.value == None:
+						print "none"
 					for column in range(len(variable.value)):
 						board[variable.position][column] = variable.value[column]
 				else:
@@ -156,49 +158,49 @@ class Node(AStarNode):
 	def initialFiltering(self):
 		numberOfDeletedRowDomainVersions = 0
 		numberOfDeletedColumnDomainVersions = 0
-		for rowVariableId in self.rowVariables:
-			rowVariable = self.rowVariables[rowVariableId]
-			for rowVariableVersion in rowVariable.domain:
+		# for rowVariableId in self.rowVariables:
+		# 	rowVariable = self.rowVariables[rowVariableId]
+		# 	for rowVariableVersion in rowVariable.domain:
+		#
+		# 		for rowVariableDomainIndex in range(len(rowVariableVersion)):
+		# 			# For hver kolonne i raden
+		#
+		# 			isValid = False
+		#
+		# 			for columnVersion in self.columnVariables[rowVariableDomainIndex].domain:
+		# 				if columnVersion[rowVariable.position] == rowVariableVersion[rowVariableDomainIndex]:
+		# 					isValid = True
+		# 					break
+		#
+		# 			if not isValid:
+		# 				rowVariable.domain.remove(rowVariableVersion)
+		# 				if len(rowVariable.domain) == 1:
+		# 					rowVariable.value = rowVariable.domain[0]
+		# 				numberOfDeletedRowDomainVersions += 1
+		# 				break
 
-				for rowVariableDomainIndex in range(len(rowVariableVersion)):
-					# For hver kolonne i raden
-
-					isValid = False
-
-					for columnVersion in self.columnVariables[rowVariableDomainIndex].domain:
-						if columnVersion[rowVariable.position] == rowVariableVersion[rowVariableDomainIndex]:
-							isValid = True
-							break
-
-					if not isValid:
-						rowVariable.domain.remove(rowVariableVersion)
-						if len(rowVariable.domain) == 1:
-							rowVariable.setValue(rowVariable.domain[0])
-						numberOfDeletedRowDomainVersions += 1
-						break
-
-		for columnVariableId in self.columnVariables:
-			columnVariable = self.columnVariables[columnVariableId]
-			for columnVariableVersion in columnVariable.domain:
-
-				for columnVariableDomainIndex in range(len(columnVariableVersion)):
-					# For hver kolonne i raden
-
-					isValid = False
-
-					for rowVersion in self.rowVariables[columnVariableDomainIndex].domain:
-						if rowVersion[columnVariable.position] == columnVariableVersion[columnVariableDomainIndex]:
-							isValid = True
-							break
-
-					if not isValid:
-						columnVariable.domain.remove(columnVariableVersion)
-						if len(columnVariable.domain) == 1:
-							columnVariable.setValue(columnVariable.domain[0])
-						numberOfDeletedColumnDomainVersions += 1
-						break
+		# for columnVariableId in self.columnVariables:
+		# 	columnVariable = self.columnVariables[columnVariableId]
+		# 	for columnVariableVersion in columnVariable.domain:
+		#
+		# 		for columnVariableDomainIndex in range(len(columnVariableVersion)):
+		# 			# For hver kolonne i raden
+		#
+		# 			isValid = False
+		#
+		# 			for rowVersion in self.rowVariables[columnVariableDomainIndex].domain:
+		# 				if rowVersion[columnVariable.position] == columnVariableVersion[columnVariableDomainIndex]:
+		# 					isValid = True
+		# 					break
+		#
+		# 			if not isValid:
+		# 				columnVariable.domain.remove(columnVariableVersion)
+		# 				if len(columnVariable.domain) == 1:
+		# 					columnVariable.value = columnVariable.domain[0]
+		# 				numberOfDeletedColumnDomainVersions += 1
+		# 				break
 
 
-
-		print "numberOfDeletedRowDomainVersions:", numberOfDeletedRowDomainVersions
-		print "numberOfDeletedColumnDomainVersions:", numberOfDeletedColumnDomainVersions
+		#
+		# print "numberOfDeletedRowDomainVersions:", numberOfDeletedRowDomainVersions
+		# print "numberOfDeletedColumnDomainVersions:", numberOfDeletedColumnDomainVersions
