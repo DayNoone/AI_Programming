@@ -20,4 +20,3 @@ class CSPNode(AStarNode):
                 smallestVariableDomainSize = len(smallestVariable.domain)
         return smallestVariable, smallestVariableDomainSize
 
-    def
