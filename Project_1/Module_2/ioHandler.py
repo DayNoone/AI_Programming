@@ -38,31 +38,23 @@ def readFile(path):
 	return graph
 
 
-def create_Variables2(graph, k):
-	Variables = []
-	for i in graph[2]:  # creates Variables using id and pos
-		Variables.append(Variable(i[0], i[1], i[2], [x for x in range(k)]))
-	for i in graph[3]:  # adds lines between Variables
-		VariableID1 = i[0]
-		VariableID2 = i[1]
-		Variables[VariableID1].neighbors.append(Variables[VariableID2])  # adds another neighbor
-		Variables[VariableID2].neighbors.append(Variables[VariableID1])  # has to add to other neighbor aswell
-	# print Variables[VariableID1].neighbor, Variables[VariableID2].neighbor
-	return Variables
-
-
 def create_Variables(graph, k):
-	Variables = {}
-	for i in graph[2]:  # creates Variables using id and pos
-		v = Variable(i[0], i[1], i[2], [x for x in range(k)])
-		Variables[v.id] = v
-	for i in graph[3]:  # adds lines between Variables
+	variables = {}
+	constraints = {}
+	for i in graph[2]:  # creates variables using id and pos
+		variableID = i[0]
+		v = Variable(variableID, i[1], i[2], [x for x in range(k)])
+		variables[v.id] = v
+		constraints[variableID] = []
+	for i in graph[3]:  # adds lines between variables
 		VariableID1 = i[0]
 		VariableID2 = i[1]
-		Variables[VariableID1].neighbors.append(Variables[VariableID2])  # adds another neighbor
-		Variables[VariableID2].neighbors.append(Variables[VariableID1])  # has to add to other neighbor aswell
-	# print Variables[VariableID1].neighbor, Variables[VariableID2].neighbor
-	return Variables
+		constraints[VariableID1].append(VariableID2)
+		constraints[VariableID2].append(VariableID1)
+	for variableId in variables:
+		variable = variables[variableId]
+		variable.constraints = constraints
+	return variables
 
 
 def readBoard(no):
