@@ -28,12 +28,14 @@ class AStarNode:
         self.hValue = newHValue
         self.fValue = self.gValue + self.hValue
 
+    def calculateGValue(self):
+        if self.parent is None:
+            return 0
+        return self.parent.gValue + self.MOVEMENT_COST
+
     """Algorithm methods"""
 
     def calculateHeuristicValue(self):
-        raise NotImplementedError
-
-    def calculateGValue(self):
         raise NotImplementedError
 
     def generate_all_successors(self):
