@@ -3,7 +3,7 @@ class Variable:
         self.id = id
         self.xPos = x
         self.yPos = y
-        self.neighbors = []
+        self.constraints = {}
         self.colorid = None
         self.domain = initDomain
 

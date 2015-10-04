@@ -18,50 +18,52 @@ colors = [(255, 0, 0),  # RED
 
 
 def initiate(graph):
-    global board_size, screen, multiplier, x_offset, y_offset, coffset
-    os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 50)  # forces screen to top left corner
-    pygame.init()
-    board_size = 750
-    screen = pygame.display.set_mode((board_size, board_size + 0))
-    pygame.display.set_caption('Module 2 - CSP-A*')
+	global board_size, screen, multiplier, x_offset, y_offset, coffset
+	os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 50)  # forces screen to top left corner
+	pygame.init()
+	board_size = 750
+	screen = pygame.display.set_mode((board_size, board_size + 0))
+	pygame.display.set_caption('Module 2 - CSP-A*')
 
-    # ---------- multiplyer to get complete graph within board
-    x_size = graph[4][2] - graph[4][0]
-    y_size = graph[4][3] - graph[4][1]
-    if x_size > y_size:
-        biggest = x_size
-    else:
-        biggest = y_size
-    multiplier = (board_size - 20) / biggest
+	# ---------- multiplyer to get complete graph within board
+	x_size = graph[4][2] - graph[4][0]
+	y_size = graph[4][3] - graph[4][1]
+	if x_size > y_size:
+		biggest = x_size
+	else:
+		biggest = y_size
+	multiplier = (board_size - 20) / biggest
 
-    # ---------- offset to correct certain graph coordinates of board
-    x_offset, y_offset = 0 - graph[4][0], 0 - graph[4][1]
-    coffset = 10  # Fixes so circles and variables stay within the board due to circle origo being coordinates
+	# ---------- offset to correct certain graph coordinates of board
+	x_offset, y_offset = 0 - graph[4][0], 0 - graph[4][1]
+	coffset = 10  # Fixes so circles and variables stay within the board due to circle origo being coordinates
 
 
 def draw_board(variables, finished):
-    screen.fill(background_color)
+	screen.fill(background_color)
 
-    # ---------- draw connections
-    for i in variables.itervalues():
-        for j in i.neighbors:
-            coordinates1 = ((i.xPos + x_offset) * multiplier + coffset, (i.yPos + y_offset) * multiplier + coffset)
-            coordinates2 = ((j.xPos + x_offset) * multiplier + coffset, (j.yPos + y_offset) * multiplier + coffset)
-            pygame.draw.line(screen, black, coordinates1, coordinates2, 1)
+	# ---------- draw connections
+	for i in variables.itervalues():
+		# for j in i.neighbors:
+		for neighborID in i.constraints[i.id]:
+			j = variables[neighborID]
+			coordinates1 = ((i.xPos + x_offset) * multiplier + coffset, (i.yPos + y_offset) * multiplier + coffset)
+			coordinates2 = ((j.xPos + x_offset) * multiplier + coffset, (j.yPos + y_offset) * multiplier + coffset)
+			pygame.draw.line(screen, black, coordinates1, coordinates2, 1)
 
 
-    # ---------- draw variables and fill with color
-    for i in variables.itervalues():
-        coordinates = (int((i.xPos + x_offset) * multiplier) + coffset, int((i.yPos + y_offset) * multiplier) + coffset)
-        if (i.colorid == None):
-            pygame.draw.circle(screen, black, coordinates, 10, 1)
+	# ---------- draw variables and fill with color
+	for i in variables.itervalues():
+		coordinates = (int((i.xPos + x_offset) * multiplier) + coffset, int((i.yPos + y_offset) * multiplier) + coffset)
+		if (i.colorid == None):
+			pygame.draw.circle(screen, black, coordinates, 10, 1)
 
-        else:
-            pygame.draw.circle(screen, colors[i.colorid], coordinates, 10, 0)
+		else:
+			pygame.draw.circle(screen, colors[i.colorid], coordinates, 10, 0)
 
-    pygame.display.update()
+	pygame.display.update()
 
-    while finished:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
+	while finished:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()

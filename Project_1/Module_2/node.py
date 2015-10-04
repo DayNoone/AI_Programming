@@ -93,8 +93,8 @@ class Node(AStarNode):
 
 		while len(reviseQueue) != 0:
 			newVariable = reviseQueue.pop(0)
-
-			for neighbor in newVariable.neighbors:
+			for neighborID in newVariable.constraints[newVariable.id]:
+				neighbor = self.variables[neighborID]
 				if newVariable.colorid in neighbor.domain:
 					neighbor.domain.remove(newVariable.colorid)
 				if len(neighbor.domain) == 1 and neighbor.colorid is None:
