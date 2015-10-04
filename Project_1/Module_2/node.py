@@ -49,7 +49,7 @@ class Node(CSPNode):
 
     # def calculateHeuristicValue2(self):
     # numberOfColoredVariables = 0
-    # 	for variableId in self.variables:
+    # for variableId in self.variables:
     # 		if self.variables[variableId].colorid is not None:
     # 			numberOfColoredVariables += 1
     #
@@ -68,7 +68,8 @@ class Node(CSPNode):
     def generate_all_successors(self):
         smallestVariable = None
         smallestVariableDomainSize = 999
-        smallestVariable, smallestVariableDomainSize = self.findSmallestVariable(self.variables, smallestVariable, smallestVariableDomainSize)
+        smallestVariable, smallestVariableDomainSize = self.findSmallestVariable(self.variables, smallestVariable,
+                                                                                 smallestVariableDomainSize)
 
         successors = []
 
@@ -87,15 +88,16 @@ class Node(CSPNode):
     def revise(self, variable):
         reviseQueue = [variable]
 
-		while len(reviseQueue) != 0:
-			newVariable = reviseQueue.pop(0)
-			for neighborID in newVariable.constraints[newVariable.id]:
-				neighbor = self.variables[neighborID]
-				if newVariable.colorid in neighbor.domain:
-					neighbor.domain.remove(newVariable.colorid)
-				if len(neighbor.domain) == 1 and neighbor.colorid is None:
-					neighbor.colorid = neighbor.domain[0]
-					reviseQueue.append(neighbor)
+        while len(reviseQueue) != 0:
+            newVariable = reviseQueue.pop(0)
+            for neighborID in newVariable.constraints[newVariable.id]:
+                neighbor = self.variables[neighborID]
+                if newVariable.colorid in neighbor.domain:
+                    neighbor.domain.remove(newVariable.colorid)
+                if len(neighbor.domain) == 1 and neighbor.colorid is None:
+                    neighbor.colorid = neighbor.domain[0]
+                    reviseQueue.append(neighbor)
+
 
     def drawBoard(self, openNodes, closedNodes, isFinished):
         draw_board(self.variables, isFinished)
