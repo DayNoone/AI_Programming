@@ -57,7 +57,9 @@ def generateVariables(specs, dimension, rowOrColumn):
 
 		insertPossibilities(emptyAlternative, specs[row_specIndex], 0, domain)
 
-		variables[variable.position] = variable
+		key = Node.getVariableKey(rowOrColumn, row_specIndex)
+
+		variables[key] = variable
 
 		if len(variable.domain) == 1:
 			variable.value = variable.domain[0]
@@ -66,7 +68,7 @@ def generateVariables(specs, dimension, rowOrColumn):
 
 
 def main():
-	board, x_dimension, y_dimension, row_specs, column_specs = readBoard(5)
+	board, x_dimension, y_dimension, row_specs, column_specs = readBoard(6)
 	initiate(board)
 	# draw_board(board, True)
 
@@ -76,7 +78,7 @@ def main():
 	initNode = Node(rowVars, colVars, None, x_dimension, y_dimension)
 
 	if not initNode.checkIfGoalState() and not initNode.checkIfContradiction():
-		initNode.initialFiltering()
+		initNode.revise()
 		x, opennodes, closednodes = searchAlgorithm(1, initNode)
 		print "Open:", len(opennodes)
 		print "Closed:", len(closednodes)

@@ -16,8 +16,8 @@ def main():
     sys.setrecursionlimit(10000)
     # board = inputValidation('Choose board (0-5): ')
     # k = inputValidation('Choose domain size: ')
-    k = 4
-    graph = readBoard(boards[5])
+    k = 6
+    graph = readBoard(boards[4])
     initiate(graph)
     variables = create_Variables(graph, k)
 

@@ -16,18 +16,6 @@ class Node(CSPNode):
         self.state = self.calculateStateIndex()
         CSPNode.__init__(self, parent)
 
-    def checkIfGoalState(self):
-        for variableId in self.variables:
-            if len(self.variables[variableId].domain) != 1:
-                return False
-        return True
-
-    def checkIfContradiction(self):
-        for variableId in self.variables:
-            if len(self.variables[variableId].domain) == 0:
-                return True
-        return False
-
     def calculateStateIndex(self):
         string = "0"
         for variableId in self.variables:
@@ -37,39 +25,13 @@ class Node(CSPNode):
 
     """Algorithm methods"""
 
-    def calculateHeuristicValue(self):
-        numberOfTotalDomain = self.addDomains(self.variables)
-
-        if self.checkIfContradiction():
-            heuristic = 999999
-        else:
-            heuristic = numberOfTotalDomain
-
-        return heuristic
-
-    # def calculateHeuristicValue2(self):
-    # numberOfColoredVariables = 0
-    # for variableId in self.variables:
-    # 		if self.variables[variableId].colorid is not None:
-    # 			numberOfColoredVariables += 1
-    #
-    # 	if self.checkIfContradiction():
-    # 		heuristic = 9999999
-    # 	else:
-    # 		heuristic = len(self.variables) - numberOfColoredVariables
-    #
-    # 	return heuristic
-
     def calculateGValue(self):
         if self.parent is None:
             return 0
         return self.parent.gValue + self.MOVEMENT_COST
 
     def generate_all_successors(self):
-        smallestVariable = None
-        smallestVariableDomainSize = 999
-        smallestVariable, smallestVariableDomainSize = self.findSmallestVariable(self.variables, smallestVariable,
-                                                                                 smallestVariableDomainSize)
+        smallestVariable, smallestVariableDomainSize = self.findSmallestVariable()
 
         successors = []
 
