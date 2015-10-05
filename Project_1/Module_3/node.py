@@ -62,6 +62,7 @@ class Node(CSPNode):
 
 	# Different from Module2
 	def revise(self):
+		self.drawBoard(None, None, None)
 		numberOfDeletedRowDomainVersions = 0
 		numberOfDeletedColumnDomainVersions = 0
 		for rowVariableId in self.rowVariables:
@@ -105,11 +106,10 @@ class Node(CSPNode):
 							columnVariable.value = columnVariable.domain[0]
 						numberOfDeletedColumnDomainVersions += 1
 						break
-
-
-
-					# print "numberOfDeletedRowDomainVersions:", numberOfDeletedRowDomainVersions
-					# print "numberOfDeletedColumnDomainVersions:", numberOfDeletedColumnDomainVersions
+		print "numberOfDeletedRowDomainVersions:", numberOfDeletedRowDomainVersions
+		print "numberOfDeletedColumnDomainVersions:", numberOfDeletedColumnDomainVersions
+		if numberOfDeletedColumnDomainVersions != 0 and numberOfDeletedRowDomainVersions != 0:
+			self.revise()
 
 	@staticmethod
 	def getVariableKey(rowOrColumn, position):
