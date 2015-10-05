@@ -1,7 +1,7 @@
 # coding=utf-8
 from module1Node import Module1Node, Module1NinjaNode
 from Project_1.genericAstar import searchAlgorithm
-from generateBoard import getBoardExampleList, getBoardInfoFromInput
+from generateBoard import getBoardExampleList, getBoardInfoFromInput, getBoardFromFile
 from gui import drawBoard, initiate
 
 
@@ -42,7 +42,15 @@ def inputValidation(inputText):
 def main():
     boardList = getBoardExampleList()
 
-    board = inputValidation('Choose board (0-5) (9 - custom): ')
+    board = inputValidation('Choose board (0-5) (8 - custom, 9 - from file): ')
+
+    if board == 8:
+        selectedBoard = getBoardInfoFromInput()
+    elif board == 9:
+        boardFile = inputValidation('Choose board from file with int')
+        selectedBoard = getBoardFromFile(boardFile)
+    else:
+        selectedBoard = boardList[board]
 
     algorithm = inputValidation('Choose from algorithms: A* (1), Depth-first (2), Breadth-first (3): ')
 
@@ -56,10 +64,7 @@ def main():
     if node == 2:
         ninjaMode = True
 
-    if board == 9:
-        selectedBoard = getBoardInfoFromInput()
-    else:
-        selectedBoard = boardList[board]
+
 
     run(selectedBoard, algorithm, heuristic, ninjaMode)
 
