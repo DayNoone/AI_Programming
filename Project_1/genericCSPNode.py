@@ -23,15 +23,15 @@ class CSPNode(AStarNode):
 
 	def checkIfContradiction(self):
 		for variableId in self.variables:
-			if len(self.variables[variableId].domain) == 0:
+			variable = self.variables[variableId]
+			if len(variable.domain) == 0:
 				return True
-
 		return False
 
 	def calculateHeuristicValue(self):
 
 		if self.checkIfContradiction():
-			heuristic = 999999
+			heuristic = 10000000
 		else:
 			numberOfTotalDomain = countDomainValues(self.variables)
 			heuristic = numberOfTotalDomain

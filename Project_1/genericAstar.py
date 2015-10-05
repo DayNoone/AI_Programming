@@ -42,6 +42,10 @@ def searchAlgorithm(algorithm, initNode):
 		else:
 			x = openNodes.pop(0)
 
+		print "heuristic:", x.hValue
+		if x.hValue >= 10000000:
+			print "No solution found"
+			return closedNodes[-1], openNodes, closedNodes
 		x.drawBoard(openNodes, closedNodes, False)
 
 		heappush(closedNodes, x)
