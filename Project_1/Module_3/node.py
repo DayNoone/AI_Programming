@@ -106,14 +106,14 @@ class Node(CSPNode):
 							columnVariable.value = columnVariable.domain[0]
 						numberOfDeletedColumnDomainVersions += 1
 						break
-		print "numberOfDeletedRowDomainVersions:", numberOfDeletedRowDomainVersions
-		print "numberOfDeletedColumnDomainVersions:", numberOfDeletedColumnDomainVersions
+		# print "numberOfDeletedRowDomainVersions:", numberOfDeletedRowDomainVersions
+		# print "numberOfDeletedColumnDomainVersions:", numberOfDeletedColumnDomainVersions
 		if numberOfDeletedColumnDomainVersions != 0 and numberOfDeletedRowDomainVersions != 0:
 			self.revise()
 
 	@staticmethod
 	def getVariableKey(rowOrColumn, position):
-		return int(str(9) + str(rowOrColumn) + str(11111) + str(position))
+		return int(str(9) + str(rowOrColumn) + str(position))
 
 	"""ONLY FOR GUI"""
 

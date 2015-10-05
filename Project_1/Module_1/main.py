@@ -1,14 +1,8 @@
 # coding=utf-8
 from module1Node import Module1Node, Module1NinjaNode
-from Project_1.genericAstar import searchAlgorithm
+from Project_1.genericAstar import searchAlgorithm, findLengthSolution
 from generateBoard import getBoardExampleList, getBoardInfoFromInput, getBoardFromFile
 from gui import drawBoard, initiate
-
-
-def lengthSolution(x, length):
-	if x.parent is not None:
-		return lengthSolution(x.parent, length + 1)
-	return length
 
 
 def run(board, algorithm, heuristic, ninjaMode):
@@ -23,7 +17,7 @@ def run(board, algorithm, heuristic, ninjaMode):
 	if x.xPos == board.goalXY[0] or x.yPos == board.goalXY[1]:
 		print
 		print "Results:"
-		print "\tLength of solution:\t", lengthSolution(x, 0)
+		print "\tLength of solution:\t", findLengthSolution(x, 0)
 		print "\tSearched nodes:\t\t", len(openNodes) + len(closedNodes)
 		print "\t\tOpen nodes:\t\t", len(openNodes)
 		print "\t\tClosed nodes:\t", len(closedNodes)

@@ -1,6 +1,6 @@
 import copy
 from node import Node
-from Project_1.genericAstar import searchAlgorithm
+from Project_1.genericAstar import searchAlgorithm, findLengthSolution
 from variable import Variable
 from ioHandler import *
 
@@ -82,8 +82,10 @@ def main():
 	if not initNode.checkIfGoalState() and not initNode.checkIfContradiction():
 		initNode.revise()
 		x, opennodes, closednodes = searchAlgorithm(1, initNode)
-		print "Open:", len(opennodes)
-		print "Closed:", len(closednodes)
+		print ""
+		print "Number of search nodes generated:\t\t", len(opennodes) + len(closednodes)
+		print "Search nodes expanded:\t\t\t\t\t", len(closednodes)
+		print "Nodes on path from root to solution:\t", findLengthSolution(x, 0)
 		x.drawBoard(opennodes, closednodes, True)
 
 

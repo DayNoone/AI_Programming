@@ -21,6 +21,15 @@ def attach_and_eval(child, parent):
 	child.set_hValue(child.calculateHeuristicValue())
 
 
+def removeContradictionsFromOpenNodes(openNodes):
+	nodeToRemove = []
+	for node in openNodes:
+		if node.hValue >= 10000000:
+			nodeToRemove.append(node)
+	for node in nodeToRemove:
+		openNodes.remove(node)
+
+
 def searchAlgorithm(algorithm, initNode):
 	closedNodes = []
 	openNodes = []
@@ -34,6 +43,7 @@ def searchAlgorithm(algorithm, initNode):
 	while True:
 		if len(openNodes) == 0:
 			print "No solution found"
+			removeContradictionsFromOpenNodes(openNodes)
 			return closedNodes[-1], openNodes, closedNodes
 
 		if algorithm == 1:
@@ -42,16 +52,18 @@ def searchAlgorithm(algorithm, initNode):
 		else:
 			x = openNodes.pop(0)
 
-		print "heuristic:", x.hValue
 		if x.hValue >= 10000000:
 			print "No solution found"
-			return closedNodes[-1], openNodes, closedNodes
+			removeContradictionsFromOpenNodes(openNodes)
+			return x, openNodes, closedNodes
+
 		x.drawBoard(openNodes, closedNodes, False)
 
 		heappush(closedNodes, x)
 
 		if x.checkIfGoalState():
 			print "Solution found!"
+			removeContradictionsFromOpenNodes(openNodes)
 			return x, openNodes, closedNodes
 
 		successors = x.generate_all_successors()
@@ -74,3 +86,9 @@ def searchAlgorithm(algorithm, initNode):
 				attach_and_eval(s, x)
 				if s in closedNodes:
 					propagate_path_improvements(s)
+
+
+def findLengthSolution(x, length):
+	if x.parent is not None:
+		return findLengthSolution(x.parent, length + 1)
+	return length

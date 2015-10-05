@@ -4,4 +4,3 @@ class Variable:
         self.position = position
         self.domain = initDomain
         self.value = None
-        self.key = int(str(9) + str(self.type) + str(self.position))
