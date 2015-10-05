@@ -31,7 +31,7 @@ class Node(CSPNode):
         return self.parent.gValue + self.MOVEMENT_COST
 
     def generate_all_successors(self):
-        smallestVariable, smallestVariableDomainSize = self.findSmallestVariable()
+        smallestVariable, smallestVariableDomainSize = self.findSmallestVariable(self.variables)
 
         successors = []
 

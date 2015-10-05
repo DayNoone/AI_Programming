@@ -14,10 +14,9 @@ def makefunc(var_names, expression, envir=globals()):
 
 def main():
     sys.setrecursionlimit(10000)
-    # board = inputValidation('Choose board (0-5): ')
-    # k = inputValidation('Choose domain size: ')
-    k = 6
-    graph = readBoard(boards[4])
+    boardNo = inputValidation('Choose board (0-5): ')
+    k = inputValidation('Choose domain size: ')
+    graph = readBoard(boards[boardNo])
     initiate(graph)
     variables = create_Variables(graph, k)
 
