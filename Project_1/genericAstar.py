@@ -55,6 +55,7 @@ def searchAlgorithm(algorithm, initNode):
 		if x.hValue >= 10000000:
 			print "No solution found"
 			removeContradictionsFromOpenNodes(openNodes)
+			closedNodes.append(x)
 			return x, openNodes, closedNodes
 
 		x.drawBoard(openNodes, closedNodes, False)

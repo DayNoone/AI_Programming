@@ -2,8 +2,10 @@ from gui import initiate, draw_board
 from variable import Variable
 import os
 
-boards = ['graph-color-1.txt', 'graph-color-2.txt', 'rand-50-4-color1.txt', 'rand-100-4-color1.txt',
-		  'rand-100-6-color1.txt', 'spiral-500-4-color1.txt']
+# boards = ['graph-color-1.txt', 'graph-color-2.txt', 'rand-50-4-color1.txt', 'rand-100-4-color1.txt',
+# 		  'rand-100-6-color1.txt', 'spiral-500-4-color1.txt']
+
+boards = ['gcolor1.txt', 'gcolor2.txt', 'gcolor3.txt']
 K = [4, 4, 4, 4, 6, 4]
 
 

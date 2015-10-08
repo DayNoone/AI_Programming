@@ -1,7 +1,7 @@
 import os
 from Board import Board
 
-fileBoards = ["testboard.txt"]
+fileBoards = ["navig1.txt", "navig2.txt", "navig3.txt"]
 
 
 def generateBoard(dimensionX, dimensionY, startX, startY, goalX, goalY, barriers):
