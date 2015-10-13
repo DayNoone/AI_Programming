@@ -8,9 +8,9 @@ def getTwoOrFour():
 
 
 def initBoard():
-	board = Board([0 for i in range(16)])
-	board.placeRandomTwoOrFour()
-	return board
+	gameBoard = Board([0 for i in range(16)])
+	gameBoard.placeRandomTwoOrFour()
+	return gameBoard
 
 
 def mergeLine(line):
@@ -61,13 +61,16 @@ class Board:
 	def setBoard(self, param):
 		self.board = param
 
+	def restartGame(self):
+		self.board = [0 for i in range(16)]
+		self.placeRandomTwoOrFour()
+
 	def moveDown(self):
 		lines = [[12, 8, 4, 0],
 		         [13, 9, 5, 1],
 		         [14, 10, 6, 2],
 		         [15, 11, 7, 3]]
 		self.mergeLines(lines)
-		self.placeRandomTwoOrFour()
 
 	def moveUp(self):
 		lines = [[0, 4, 8, 12],
@@ -75,7 +78,6 @@ class Board:
 		         [2, 6, 10, 14],
 		         [3, 7, 11, 15]]
 		self.mergeLines(lines)
-		self.placeRandomTwoOrFour()
 
 	def moveRight(self):
 		lines = [[3, 2, 1, 0],
@@ -84,7 +86,6 @@ class Board:
 		         [15, 14, 13, 12]]
 
 		self.mergeLines(lines)
-		self.placeRandomTwoOrFour()
 
 	def moveLeft(self):
 		lines = [[0, 1, 2, 3],
@@ -93,7 +94,6 @@ class Board:
 		         [12, 13, 14, 15]]
 
 		self.mergeLines(lines)
-		self.placeRandomTwoOrFour()
 
 	def mergeLines(self, lines):
 		for line in lines:

@@ -20,27 +20,34 @@ gameBoard = initBoard()
 
 def leftKey(event):
 	gameBoard.moveLeft()
+	gameBoard.placeRandomTwoOrFour()
+
 	window.update_view(gameBoard.board)
 
 
 def rightKey(event):
 	gameBoard.moveRight()
+	gameBoard.placeRandomTwoOrFour()
+
 	window.update_view(gameBoard.board)
 
 
 def upKey(event):
 	gameBoard.moveUp()
+	gameBoard.placeRandomTwoOrFour()
+
 	window.update_view(gameBoard.board)
 
 
 def downKey(event):
 	gameBoard.moveDown()
+	gameBoard.placeRandomTwoOrFour()
 	window.update_view(gameBoard.board)
 
 
 def keyReleased(event):
 	if event.char == 'r':
-		gameBoard.setBoard(initGame())
+		gameBoard.restartGame()
 		window.update_view(gameBoard.board)
 
 
