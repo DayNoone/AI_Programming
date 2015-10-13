@@ -1,22 +1,27 @@
 from Tkinter import Tk
-from board import Board, initBoard
+import copy
+from node import Node, initBoard
 from visuals import GameWindow
 
-testBoardList = [0, 2, 4, 4,
-                 0, 2, 1, 3,
-                 0, 1, 1, 3,
-                 0, 0, 2, 1]
 
-test_board_list_1 = [1, 2, 3, 4,
-                     5, 6, 7, 8,
-                     9, 10, 11, 12,
-                     13, 14, 16, 16]
+def createHeuristic():
+	pass
 
-testBoard = Board(testBoardList)
-testBoard1 = Board(test_board_list_1)
+
+def generateRandomPlacement(board, depth):
+	score = 0
+	for index in range(len(board)):
+		if board[index] == 0:
+			for value in range(1, 3):
+				newBoard = copy.deepcopy(board)
+				newBoard[index] == value
+				newNode = Node(newBoard)
+				newNode.createHeuristic(depth)
+				score = newNode.heuristic * (0.9 if value == 1 else 0.1)
+	return score
+
 
 gameBoard = initBoard()
-
 
 def leftKey(event):
 	gameBoard.moveLeft()

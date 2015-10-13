@@ -8,7 +8,7 @@ def getTwoOrFour():
 
 
 def initBoard():
-	gameBoard = Board([0 for i in range(16)])
+	gameBoard = Node([0 for i in range(16)])
 	gameBoard.placeRandomTwoOrFour()
 	return gameBoard
 
@@ -54,7 +54,7 @@ Board indices:
 """
 
 
-class Board:
+class Node:
 	def __init__(self, board):
 		self.board = board
 
