@@ -13,28 +13,35 @@ def generateRandomPlacementScore(board, depth):
 				newBoard[index] = value
 				newNode = Node(newBoard)
 				newNode.createHeuristic(depth)
-				score = newNode.heuristic * (0.9 if value == 1 else 0.1)
+				score += newNode.heuristic * (0.9 if value == 1 else 0.1)
+
+				if depth != 0:
+					for node in makeMove(newNode.board):
+						score += generateRandomPlacementScore(node.board, depth-1)
 	return score
+
+def makeMove(board):
+	movedLeftNode = Node(copy.deepcopy(board))
+	movedLeftNode.moveLeft()
+
+	movedRightNode = Node(copy.deepcopy(board))
+	movedRightNode.moveRight()
+
+	movedUpNode = Node(copy.deepcopy(board))
+	movedUpNode.moveUp()
+
+	movedDownNode = Node(copy.deepcopy(board))
+	movedDownNode.moveDown()
+
+	return [movedLeftNode, movedRightNode, movedUpNode, movedDownNode]
 
 
 def findBestMove(node):
-	movedLeftNode = Node(copy.deepcopy(node))
-	movedLeftNode.moveLeft()
-
-	movedRightNode = Node(copy.deepcopy(node))
-	movedRightNode.moveRight()
-
-	movedUpNode = Node(copy.deepcopy(node))
-	movedUpNode.moveUp()
-
-	movedDownNode = Node(copy.deepcopy(node))
-	movedDownNode.moveDown()
-
-	listOfNodes = [movedLeftNode, movedRightNode, movedUpNode, movedDownNode]
-	boardWithHighestScore = movedLeftNode
+	listOfNodes = makeMove(node)
+	boardWithHighestScore = listOfNodes[0]
 	highestScore = 0
 	for node in listOfNodes:
-		tempScore = generateRandomPlacementScore(node.board, 0)
+		tempScore = generateRandomPlacementScore(node.board, 1)
 		if tempScore > highestScore:
 			boardWithHighestScore = node
 			highestScore = tempScore
