@@ -73,6 +73,11 @@ def keyReleased(event):
 	if event.char == 'r':
 		gameBoard.restartGame()
 		window.update_view(gameBoard.board)
+	elif event.char == 's':
+		newNode = findBestMove(gameBoard.board)
+		gameBoard.setBoard(newNode.board)
+		gameBoard.placeRandomTwoOrFour()
+		window.update_view(gameBoard.board)
 
 
 def startAlgorithm(event):

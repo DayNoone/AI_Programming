@@ -116,8 +116,19 @@ class Node:
 				emptySpaces.append(i)
 
 		if len(emptySpaces) == 0:
+			left = Node(copy.deepcopy(self.board))
+			left.moveLeft()
+			right = Node(copy.deepcopy(self.board))
+			right.moveRight()
+			up = Node(copy.deepcopy(self.board))
+			up.moveUp()
+			down = Node(copy.deepcopy(self.board))
+			down.moveDown()
 
-			return True
+			if self.board == left.board and self.board == right.board and self.board == up.board and self.board == down.board:
+				return True
+			else:
+				return False
 		else:
 			return False
 
@@ -136,26 +147,16 @@ class Node:
 		self.board[randomIndex] = getTwoOrFour()
 
 	def createHeuristic(self, depth):
-		index, value = max(enumerate(self.board), key=operator.itemgetter(1))
+		board = self.board
 
-		numbersSorted = sorted(copy.deepcopy(self.board), reverse=True)
-		numbersSorted.pop(0)
+		self.heuristic += 20 * board[0]
+		self.heuristic += 18 * board[1]
+		self.heuristic += 13 * board[4]
+		self.heuristic += 10 * board[2]
+		self.heuristic += 10 * board[5]
+		self.heuristic += 10 * board[8]
+		self.heuristic += 5 * board[3]
+		self.heuristic += 5 * board[6]
+		self.heuristic += 5 * board[9]
+		self.heuristic += 5 * board[12]
 
-		if index == 0:
-			self.heuristic += 10 * value
-			second = numbersSorted.pop(0)
-			third = numbersSorted.pop(0)
-			if self.board[1] == second or self.board[4] == second or self.board[1] == third or self.board[4] == third:
-				self.heuristic += 5
-
-
-			# if index == 0 or index == 3 or index == 12 or index == 15:
-			# 	self.heuristic += 10
-			# 	if index == 0:
-			#
-			# 	elif index == 3:
-			# 		pass
-			# 	elif index == 12:
-			# 		pass
-			# 	elif index == 15:
-			# 		pass
