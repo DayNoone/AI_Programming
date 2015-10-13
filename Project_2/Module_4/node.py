@@ -1,4 +1,5 @@
 import random
+import operator
 
 
 def getTwoOrFour():
@@ -56,6 +57,7 @@ Board indices:
 
 class Node:
 	def __init__(self, board):
+		self.heuristic = 0
 		self.board = board
 
 	def setBoard(self, param):
@@ -119,3 +121,10 @@ class Node:
 		randomIndex = random.choice(emptySpaces)
 
 		self.board[randomIndex] = getTwoOrFour()
+
+	def createHeuristic(self, depth):
+		index, value = max(enumerate(self.board), key=operator.itemgetter(1))
+		if index == 0 or index == 3 or index == 12 or index == 15:
+			self.heuristic = 1
+		else:
+			self.heuristic = 0
