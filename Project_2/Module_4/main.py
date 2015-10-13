@@ -4,10 +4,6 @@ from node import Node, initBoard
 from visuals import GameWindow
 
 
-def createHeuristic():
-	pass
-
-
 def generateRandomPlacementScore(board, depth):
 	score = 0
 	for index in range(len(board)):
@@ -38,8 +34,10 @@ def findBestMove(node):
 	boardWithHighestScore = movedLeftNode
 	highestScore = 0
 	for node in listOfNodes:
-		if generateRandomPlacementScore(node.board, 0) > highestScore:
+		tempScore = generateRandomPlacementScore(node.board, 0)
+		if tempScore > highestScore:
 			boardWithHighestScore = node
+			highestScore = tempScore
 
 	return boardWithHighestScore
 
@@ -78,7 +76,7 @@ def keyReleased(event):
 
 
 def startAlgorithm(event):
-	while 1:
+	while not gameBoard.isGameOver():
 		newNode = findBestMove(gameBoard.board)
 		gameBoard.setBoard(newNode.board)
 		gameBoard.placeRandomTwoOrFour()

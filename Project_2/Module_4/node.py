@@ -1,3 +1,4 @@
+import copy
 import random
 import operator
 
@@ -108,6 +109,18 @@ class Node:
 			for index in range(len(line)):
 				self.board[line[index]] = mergeResult[index]
 
+	def isGameOver(self):
+		emptySpaces = []
+		for i in range(len(self.board)):
+			if self.board[i] == 0:
+				emptySpaces.append(i)
+
+		if len(emptySpaces) == 0:
+
+			return True
+		else:
+			return False
+
 	def placeRandomTwoOrFour(self):
 		emptySpaces = []
 		for i in range(len(self.board)):
@@ -124,7 +137,25 @@ class Node:
 
 	def createHeuristic(self, depth):
 		index, value = max(enumerate(self.board), key=operator.itemgetter(1))
-		if index == 0 or index == 3 or index == 12 or index == 15:
-			self.heuristic = 1
-		else:
-			self.heuristic = 0
+
+		numbersSorted = sorted(copy.deepcopy(self.board), reverse=True)
+		numbersSorted.pop(0)
+
+		if index == 0:
+			self.heuristic += 10 * value
+			second = numbersSorted.pop(0)
+			third = numbersSorted.pop(0)
+			if self.board[1] == second or self.board[4] == second or self.board[1] == third or self.board[4] == third:
+				self.heuristic += 5
+
+
+			# if index == 0 or index == 3 or index == 12 or index == 15:
+			# 	self.heuristic += 10
+			# 	if index == 0:
+			#
+			# 	elif index == 3:
+			# 		pass
+			# 	elif index == 12:
+			# 		pass
+			# 	elif index == 15:
+			# 		pass
