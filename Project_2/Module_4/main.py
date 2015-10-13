@@ -1,24 +1,34 @@
 from Tkinter import Tk
 import copy
+import random
 from node import Node, initBoard
 from visuals import GameWindow
+
+
+def getTwoOrFour():
+	if random.random() <= 0.9:
+		return 1
+	return 2
 
 
 def generateRandomPlacementScore(board, depth):
 	score = 0
 	for index in range(len(board)):
 		if board[index] == 0:
-			for value in range(1, 3):
-				newBoard = copy.deepcopy(board)
-				newBoard[index] = value
-				newNode = Node(newBoard)
+			value = getTwoOrFour()
+			newBoard = copy.deepcopy(board)
+			newBoard[index] = value
+			newNode = Node(newBoard)
+
+			if depth != 0:
+				for node in makeMove(newNode.board):
+					score += generateRandomPlacementScore(node.board, depth - 1)
+			else:
 				newNode.createHeuristic(depth)
 				score += newNode.heuristic * (0.9 if value == 1 else 0.1)
 
-				if depth != 0:
-					for node in makeMove(newNode.board):
-						score += generateRandomPlacementScore(node.board, depth-1)
 	return score
+
 
 def makeMove(board):
 	movedLeftNode = Node(copy.deepcopy(board))
@@ -41,7 +51,7 @@ def findBestMove(node):
 	boardWithHighestScore = listOfNodes[0]
 	highestScore = 0
 	for node in listOfNodes:
-		tempScore = generateRandomPlacementScore(node.board, 1)
+		tempScore = generateRandomPlacementScore(node.board, 2)
 		if tempScore > highestScore:
 			boardWithHighestScore = node
 			highestScore = tempScore

@@ -149,9 +149,14 @@ class Node:
 	def createHeuristic(self, depth):
 		board = self.board
 
+		index, value = max(enumerate(self.board), key=operator.itemgetter(1))
+
+		if index == 0:
+			self.heuristic += 100
+
 		self.heuristic += 20 * board[0]
-		self.heuristic += 18 * board[1]
-		self.heuristic += 13 * board[4]
+		self.heuristic += 15 * board[1]
+		self.heuristic += 15 * board[4]
 		self.heuristic += 10 * board[2]
 		self.heuristic += 10 * board[5]
 		self.heuristic += 10 * board[8]
@@ -160,3 +165,5 @@ class Node:
 		self.heuristic += 5 * board[9]
 		self.heuristic += 5 * board[12]
 
+		if self.isGameOver():
+			self.heuristic = -100000000
