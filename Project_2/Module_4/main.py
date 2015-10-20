@@ -11,21 +11,38 @@ def getTwoOrFour():
 	return 2
 
 
-def generateRandomPlacementScore(board, depth):
+def calculateMovementScoreForBoard(board, depth):
 	score = 0
+	emptyCellIndices = []
+
 	for index in range(len(board)):
 		if board[index] == 0:
-			value = getTwoOrFour()
-			newBoard = copy.deepcopy(board)
-			newBoard[index] = value
-			newNode = Node(newBoard)
+			emptyCellIndices.append(index)
 
-			if depth != 0:
-				for node in makeMove(newNode.board):
-					score += generateRandomPlacementScore(node.board, depth - 1)
+	for index in emptyCellIndices:
+		# value = getTwoOrFour()
+		value = 1
+		newBoard = copy.deepcopy(board)
+		newBoard[index] = value
+		newNode = Node(newBoard)
+
+		if depth == 0:
+			newNode.calculateHeuristic()
+
+			if value == 1:
+				score += newNode.heuristic * 0.9 * 1 / len(emptyCellIndices)
 			else:
-				newNode.createHeuristic(depth)
-				score += newNode.heuristic * (0.9 if value == 1 else 0.1)
+				score += newNode.heuristic * 0.1 * 1 / len(emptyCellIndices)
+
+		else:
+			listOfMoves = makeMove(newNode.board)
+			highestScore = 0
+			for node in listOfMoves:
+				tempScore = calculateMovementScoreForBoard(node.board, depth - 1)
+				if tempScore > highestScore:
+					highestScore = tempScore
+
+			score += highestScore
 
 	return score
 
@@ -46,12 +63,28 @@ def makeMove(board):
 	return [movedLeftNode, movedRightNode, movedUpNode, movedDownNode]
 
 
-def findBestMove(node):
-	listOfNodes = makeMove(node)
+def findBestMove(board):
+	listOfNodes = makeMove(board)
 	boardWithHighestScore = listOfNodes[0]
 	highestScore = 0
+
+	emptyCellIndices = []
+	for index in range(len(board)):
+		if board[index] == 0:
+			emptyCellIndices.append(index)
+
 	for node in listOfNodes:
-		tempScore = generateRandomPlacementScore(node.board, 2)
+		# if len(emptyCellIndices) > 8:
+		# 	tempScore = calculateMovementScoreForBoard(node.board, 0)
+		# elif len(emptyCellIndices) > 4:
+		# 	tempScore = calculateMovementScoreForBoard(node.board, 1)
+		# elif len(emptyCellIndices) > 2:
+		# 	tempScore = calculateMovementScoreForBoard(node.board, 3)
+		# else:
+		# 	tempScore = calculateMovementScoreForBoard(node.board, 4)
+
+		tempScore = calculateMovementScoreForBoard(node.board, 2)
+
 		if tempScore > highestScore:
 			boardWithHighestScore = node
 			highestScore = tempScore

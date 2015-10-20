@@ -46,16 +46,6 @@ def mergeLine(line):
 	return result
 
 
-"""
-Board indices:
-
-0  1  2  3
-4  5  6  7
-8  9  10 11
-12 13 14 15
-"""
-
-
 class Node:
 	def __init__(self, board):
 		self.heuristic = 0
@@ -115,7 +105,10 @@ class Node:
 			if self.board[i] == 0:
 				emptySpaces.append(i)
 
-		if len(emptySpaces) == 0:
+		if len(emptySpaces) != 0:
+			return False
+
+		else:
 			left = Node(copy.deepcopy(self.board))
 			left.moveLeft()
 			right = Node(copy.deepcopy(self.board))
@@ -129,8 +122,6 @@ class Node:
 				return True
 			else:
 				return False
-		else:
-			return False
 
 	def placeRandomTwoOrFour(self):
 		emptySpaces = []
@@ -139,31 +130,75 @@ class Node:
 				emptySpaces.append(i)
 
 		if len(emptySpaces) == 0:
-			print "GAME OVER"
 			return
 
 		randomIndex = random.choice(emptySpaces)
 
 		self.board[randomIndex] = getTwoOrFour()
 
-	def createHeuristic(self, depth):
+	def calculateHeuristic(self):
 		board = self.board
 
-		index, value = max(enumerate(self.board), key=operator.itemgetter(1))
-
-		if index == 0:
-			self.heuristic += 100
-
-		self.heuristic += 20 * board[0]
-		self.heuristic += 15 * board[1]
-		self.heuristic += 15 * board[4]
-		self.heuristic += 10 * board[2]
-		self.heuristic += 10 * board[5]
-		self.heuristic += 10 * board[8]
-		self.heuristic += 5 * board[3]
-		self.heuristic += 5 * board[6]
-		self.heuristic += 5 * board[9]
-		self.heuristic += 5 * board[12]
-
 		if self.isGameOver():
-			self.heuristic = -100000000
+			self.heuristic = -10000000000
+			return
+
+		index, value = max(enumerate(self.board), key=operator.itemgetter(1))
+		# emptyspaces = 0
+		# for number in self.board:
+		# 	if number == 0:
+		# 		emptyspaces += 1
+		#
+		# self.heuristic += emptyspaces * 10
+
+		# multipliers = [15, 5, 5, 15,
+		#                5, 1, 1, 5,
+		#                5, 1, 1, 5,
+		#                15, 5, 5, 15]
+
+		# multipliers = [7, 6, 5, 4,
+		#                6, 5, 4, 3,
+		#                5, 4, 3, 2,
+		#                4, 3, 2, 1]
+
+		multipliers = [7, 6, 5, 4,
+		               6, 5, 4, 3,
+		               5, 4, 3, 2,
+		               4, 3, 2, 1]
+
+		for i in range(len(board)):
+			if board[i] != 0:
+				self.heuristic += multipliers[i] * 2**board[i]
+
+		# if index == 0:
+		# 	diagoalOfHighest = []
+		# 	nextToHighest = []
+		# 	lowValueOffsets = [-5, -3, 3, 5]
+		# 	highValueOffset = [-4, -1, 1, 4]
+		#
+		# 	for offset in lowValueOffsets:
+		# 		if 0 < index + offset < len(board):
+		# 			diagoalOfHighest.append(index + offset)
+		#
+		# 	for offset in highValueOffset:
+		# 		if 0 < index + offset < len(board):
+		# 			nextToHighest.append(index + offset)
+		#
+		# 	for index in diagoalOfHighest:
+		# 		self.heuristic += 3 * board[index]
+		#
+		# 	for index in nextToHighest:
+		# 		self.heuristic += 5 * board[index]
+
+
+		print "Maxvalue: ", 2 ** value, "\t Heuristic: ", self.heuristic, "\tindex: ", index
+
+
+"""
+Board indices:
+
+0  1  2  3
+4  5  6  7
+8  9  10 11
+12 13 14 15
+"""
