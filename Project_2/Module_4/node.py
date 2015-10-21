@@ -46,6 +46,32 @@ def mergeLine(line):
 	return result
 
 
+def boostClustering(board):
+	extraHeuristic = 0
+	highValueOffset = [-4, -1, 1, 4]
+	for index in range(len(board)):
+		for offset in highValueOffset:
+			neighborIndex = index + offset
+			if 0 < neighborIndex < len(board):
+				if board[neighborIndex] == board[index]:
+					extraHeuristic += 100 * 2 ** board[index]
+				elif board[neighborIndex] - 1 == board[index] or board[neighborIndex] + 1 == board[index]:
+					extraHeuristic += 50 * 2 ** board[index]
+	return extraHeuristic
+
+
+def boostSnakePattern(board):
+	extraHeuristic = 0
+	multipliers = [130, 140, 150, 160,
+	               120, 110, 100, 90,
+	               50, 60, 70, 80,
+	               40, 30, 20, 10]
+	for i in range(len(board)):
+		if board[i] != 0:
+			extraHeuristic += multipliers[i] * 2 ** board[i]
+	return extraHeuristic
+
+
 class Node:
 	def __init__(self, board):
 		self.heuristic = 0
@@ -143,55 +169,29 @@ class Node:
 			self.heuristic = -10000000000
 			return
 
-		# index, value = max(enumerate(self.board), key=operator.itemgetter(1))
+		index, value = max(enumerate(self.board), key=operator.itemgetter(1))
+
+		emptyCellPoints = self.boostEmptyCells()
+		self.heuristic += emptyCellPoints
+		print "Empty cell points:\t", emptyCellPoints
+
+		clusterinPoints = boostClustering(board)
+		self.heuristic += clusterinPoints
+		print "Clustering points:\t", clusterinPoints
+
+		patternPoints = boostSnakePattern(board)
+		self.heuristic += patternPoints
+		print "Pattern points:\t\t", patternPoints
+
+		print "Maxvalue: ", 2 ** value, "\t Heuristic: ", self.heuristic, "\tindex: ", index
+
+	def boostEmptyCells(self):
 		emptyspaces = 0
 		for number in self.board:
 			if number == 0:
 				emptyspaces += 1
-
-		self.heuristic += emptyspaces * 100
-
-		# multipliers = [15, 5, 5, 15,
-		#                5, 1, 1, 5,
-		#                5, 1, 1, 5,
-		#                15, 5, 5, 15]
-
-		# multipliers = [7, 6, 5, 4,
-		#                6, 5, 4, 3,
-		#                5, 4, 3, 2,
-		#                4, 3, 2, 1]
-
-		multipliers = [130, 140, 150, 160,
-		               120, 110, 100, 90,
-		               50, 60, 70, 80,
-		               40, 30, 20, 10]
-
-		for i in range(len(board)):
-			if board[i] != 0:
-				self.heuristic += multipliers[i] * 2**board[i]
-
-		# if index == 0:
-		# 	diagoalOfHighest = []
-		# 	nextToHighest = []
-		# 	lowValueOffsets = [-5, -3, 3, 5]
-		# 	highValueOffset = [-4, -1, 1, 4]
-		#
-		# 	for offset in lowValueOffsets:
-		# 		if 0 < index + offset < len(board):
-		# 			diagoalOfHighest.append(index + offset)
-		#
-		# 	for offset in highValueOffset:
-		# 		if 0 < index + offset < len(board):
-		# 			nextToHighest.append(index + offset)
-		#
-		# 	for index in diagoalOfHighest:
-		# 		self.heuristic += 3 * board[index]
-		#
-		# 	for index in nextToHighest:
-		# 		self.heuristic += 5 * board[index]
-
-
-		# print "Maxvalue: ", 2 ** value, "\t Heuristic: ", self.heuristic, "\tindex: ", index
+		extraHeuristic = emptyspaces * 10000
+		return extraHeuristic
 
 
 """

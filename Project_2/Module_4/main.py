@@ -26,6 +26,8 @@ def calculateMovementScoreForBoard(board, depth):
 		newBoard[index] = value
 		newNode = Node(newBoard)
 
+		# TODO: Kan score bare summeres slikt? Da vil jo nesten alltid et brett som har en potensiell dyp path få høyere score enn et brett som har oppnådd en veldig høy brikek men kjørt seg fast.
+
 		if depth == 0:
 			newNode.calculateHeuristic()
 
@@ -48,19 +50,32 @@ def calculateMovementScoreForBoard(board, depth):
 
 
 def makeMove(board):
+	listOfNodes = []
 	movedLeftNode = Node(copy.deepcopy(board))
 	movedLeftNode.moveLeft()
+
+	if movedLeftNode.board != board:
+		listOfNodes.append(movedLeftNode)
 
 	movedRightNode = Node(copy.deepcopy(board))
 	movedRightNode.moveRight()
 
+	if movedRightNode.board != board:
+		listOfNodes.append(movedRightNode)
+
 	movedUpNode = Node(copy.deepcopy(board))
 	movedUpNode.moveUp()
+
+	if movedUpNode.board != board:
+		listOfNodes.append(movedUpNode)
 
 	movedDownNode = Node(copy.deepcopy(board))
 	movedDownNode.moveDown()
 
-	return [movedLeftNode, movedRightNode, movedUpNode, movedDownNode]
+	if movedDownNode.board != board:
+		listOfNodes.append(movedDownNode)
+
+	return listOfNodes
 
 
 def findBestMove(board):
@@ -79,11 +94,11 @@ def findBestMove(board):
 		elif len(emptyCellIndices) > 6:
 			tempScore = calculateMovementScoreForBoard(node.board, 1)
 		elif len(emptyCellIndices) > 4:
-			tempScore = calculateMovementScoreForBoard(node.board, 2)
+			tempScore = calculateMovementScoreForBoard(node.board, 1)
 		elif len(emptyCellIndices) > 2:
-			tempScore = calculateMovementScoreForBoard(node.board, 2)
+			tempScore = calculateMovementScoreForBoard(node.board, 1)
 		else:
-			tempScore = calculateMovementScoreForBoard(node.board, 3)
+			tempScore = calculateMovementScoreForBoard(node.board, 1)
 
 		# tempScore = calculateMovementScoreForBoard(node.board, 2)
 
@@ -157,3 +172,10 @@ gameBoard = initBoard()
 window.update_view(gameBoard.board)  # 1D list representing the board
 
 window.mainloop()
+
+newNode = findBestMove([1, 8, 9, 10,
+                         5, 7, 6, 4,
+                         1, 4, 5, 3,
+                         1, 3, 2, 1])
+
+print newNode
