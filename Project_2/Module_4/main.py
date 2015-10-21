@@ -74,16 +74,18 @@ def findBestMove(board):
 			emptyCellIndices.append(index)
 
 	for node in listOfNodes:
-		# if len(emptyCellIndices) > 8:
-		# 	tempScore = calculateMovementScoreForBoard(node.board, 0)
-		# elif len(emptyCellIndices) > 4:
-		# 	tempScore = calculateMovementScoreForBoard(node.board, 1)
-		# elif len(emptyCellIndices) > 2:
-		# 	tempScore = calculateMovementScoreForBoard(node.board, 3)
-		# else:
-		# 	tempScore = calculateMovementScoreForBoard(node.board, 4)
+		if len(emptyCellIndices) > 8:
+			tempScore = calculateMovementScoreForBoard(node.board, 0)
+		elif len(emptyCellIndices) > 6:
+			tempScore = calculateMovementScoreForBoard(node.board, 1)
+		elif len(emptyCellIndices) > 4:
+			tempScore = calculateMovementScoreForBoard(node.board, 2)
+		elif len(emptyCellIndices) > 2:
+			tempScore = calculateMovementScoreForBoard(node.board, 2)
+		else:
+			tempScore = calculateMovementScoreForBoard(node.board, 3)
 
-		tempScore = calculateMovementScoreForBoard(node.board, 2)
+		# tempScore = calculateMovementScoreForBoard(node.board, 2)
 
 		if tempScore > highestScore:
 			boardWithHighestScore = node

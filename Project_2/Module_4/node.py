@@ -143,13 +143,13 @@ class Node:
 			self.heuristic = -10000000000
 			return
 
-		index, value = max(enumerate(self.board), key=operator.itemgetter(1))
-		# emptyspaces = 0
-		# for number in self.board:
-		# 	if number == 0:
-		# 		emptyspaces += 1
-		#
-		# self.heuristic += emptyspaces * 10
+		# index, value = max(enumerate(self.board), key=operator.itemgetter(1))
+		emptyspaces = 0
+		for number in self.board:
+			if number == 0:
+				emptyspaces += 1
+
+		self.heuristic += emptyspaces * 100
 
 		# multipliers = [15, 5, 5, 15,
 		#                5, 1, 1, 5,
@@ -161,10 +161,10 @@ class Node:
 		#                5, 4, 3, 2,
 		#                4, 3, 2, 1]
 
-		multipliers = [7, 6, 5, 4,
-		               6, 5, 4, 3,
-		               5, 4, 3, 2,
-		               4, 3, 2, 1]
+		multipliers = [130, 140, 150, 160,
+		               120, 110, 100, 90,
+		               50, 60, 70, 80,
+		               40, 30, 20, 10]
 
 		for i in range(len(board)):
 			if board[i] != 0:
@@ -191,7 +191,7 @@ class Node:
 		# 		self.heuristic += 5 * board[index]
 
 
-		print "Maxvalue: ", 2 ** value, "\t Heuristic: ", self.heuristic, "\tindex: ", index
+		# print "Maxvalue: ", 2 ** value, "\t Heuristic: ", self.heuristic, "\tindex: ", index
 
 
 """
