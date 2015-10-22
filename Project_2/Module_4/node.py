@@ -63,9 +63,9 @@ def boostClustering(board):
 def boostSnakePattern(board):
 	extraHeuristic = 0
 	multipliers = [130, 140, 150, 160,
-	               120, 110, 100, 90,
-	               50, 60, 70, 80,
-	               40, 30, 20, 10]
+				   120, 110, 100, 90,
+				   50, 60, 70, 80,
+				   40, 30, 20, 10]
 	for i in range(len(board)):
 		if board[i] != 0:
 			extraHeuristic += multipliers[i] * 2 ** board[i]
@@ -77,6 +77,12 @@ class Node:
 		self.heuristic = 0
 		self.board = board
 
+	def createNodeKey(self):
+		nodeKey = ""
+		for index in self.board:
+			nodeKey = nodeKey + str(index) + "x"
+		return nodeKey
+
 	def setBoard(self, param):
 		self.board = param
 
@@ -86,31 +92,31 @@ class Node:
 
 	def moveDown(self):
 		lines = [[12, 8, 4, 0],
-		         [13, 9, 5, 1],
-		         [14, 10, 6, 2],
-		         [15, 11, 7, 3]]
+				 [13, 9, 5, 1],
+				 [14, 10, 6, 2],
+				 [15, 11, 7, 3]]
 		self.mergeLines(lines)
 
 	def moveUp(self):
 		lines = [[0, 4, 8, 12],
-		         [1, 5, 9, 13],
-		         [2, 6, 10, 14],
-		         [3, 7, 11, 15]]
+				 [1, 5, 9, 13],
+				 [2, 6, 10, 14],
+				 [3, 7, 11, 15]]
 		self.mergeLines(lines)
 
 	def moveRight(self):
 		lines = [[3, 2, 1, 0],
-		         [7, 6, 5, 4],
-		         [11, 10, 9, 8],
-		         [15, 14, 13, 12]]
+				 [7, 6, 5, 4],
+				 [11, 10, 9, 8],
+				 [15, 14, 13, 12]]
 
 		self.mergeLines(lines)
 
 	def moveLeft(self):
 		lines = [[0, 1, 2, 3],
-		         [4, 5, 6, 7],
-		         [8, 9, 10, 11],
-		         [12, 13, 14, 15]]
+				 [4, 5, 6, 7],
+				 [8, 9, 10, 11],
+				 [12, 13, 14, 15]]
 
 		self.mergeLines(lines)
 

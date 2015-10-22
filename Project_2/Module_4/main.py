@@ -10,9 +10,12 @@ def getTwoOrFour():
 		return 1
 	return 2
 
+states = {}
+
 
 def calculateMovementScoreForBoard(board, depth):
 	score = 0
+	leafScore = 0
 	emptyCellIndices = []
 
 	for index in range(len(board)):
@@ -26,15 +29,22 @@ def calculateMovementScoreForBoard(board, depth):
 		newBoard[index] = value
 		newNode = Node(newBoard)
 
-		# TODO: Kan score bare summeres slikt? Da vil jo nesten alltid et brett som har en potensiell dyp path få høyere score enn et brett som har oppnådd en veldig høy brikek men kjørt seg fast.
-
 		if depth == 0:
-			newNode.calculateHeuristic()
+			key = newNode.createNodeKey()
+			if key in states.keys():
+				newNode.heuristic = states[key]
+			else:
+				newNode.calculateHeuristic()
+				states[newNode.createNodeKey()] = newNode.heuristic
+
 
 			if value == 1:
-				score += newNode.heuristic * 0.9 * 1 / len(emptyCellIndices)
+				leafScore = newNode.heuristic * 0.9 * 1 / len(emptyCellIndices)
 			else:
-				score += newNode.heuristic * 0.1 * 1 / len(emptyCellIndices)
+				leafScore = newNode.heuristic * 0.1 * 1 / len(emptyCellIndices)
+			if leafScore > score:
+				score = leafScore
+
 
 		else:
 			listOfMoves = makeMove(newNode.board)
@@ -174,8 +184,8 @@ window.update_view(gameBoard.board)  # 1D list representing the board
 window.mainloop()
 
 newNode = findBestMove([1, 8, 9, 10,
-                         5, 7, 6, 4,
-                         1, 4, 5, 3,
-                         1, 3, 2, 1])
+						 5, 7, 6, 4,
+						 1, 4, 5, 3,
+						 1, 3, 2, 1])
 
 print newNode
