@@ -175,9 +175,9 @@ class Node:
 		self.heuristic += emptyCellPoints
 		print "Empty cell points:\t", emptyCellPoints
 
-		clusterinPoints = boostClustering(board)
-		self.heuristic += clusterinPoints
-		print "Clustering points:\t", clusterinPoints
+		# clusterinPoints = boostClustering(board)
+		# self.heuristic += clusterinPoints
+		# print "Clustering points:\t", clusterinPoints
 
 		patternPoints = boostSnakePattern(board)
 		self.heuristic += patternPoints
