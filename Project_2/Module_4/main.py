@@ -30,16 +30,16 @@ def expValue(board, depth):
 			emptyCellIndices.append(index)
 
 	for index in emptyCellIndices:
-		value = 1
-		newBoard = copy.deepcopy(board)
-		newBoard[index] = value
+		for value in range(1, 3):
+			newBoard = copy.deepcopy(board)
+			newBoard[index] = value
 
-		if value == 1:
-			p = 0.9 * 1 /len(emptyCellIndices)
-		else:
-			p = 0.1 * 1 /len(emptyCellIndices)
+			if value == 1:
+				p = 0.9 * 1 /len(emptyCellIndices)
+			else:
+				p = 0.1 * 1 /len(emptyCellIndices)
 
-		score += p * calculateMovementScoreForBoard(board, depth - 1)
+			score += p * calculateMovementScoreForBoard(board, depth - 1)
 
 	return score
 
@@ -109,12 +109,12 @@ def findBestMove(board):
 		# else:
 		# 	tempScore = calculateMovementScoreForBoard(node.board, 4)
 
-		tempScore = calculateMovementScoreForBoard(node.board, 5)
+		tempScore = calculateMovementScoreForBoard(node.board, 3)
 
 		if tempScore > highestScore:
 			boardWithHighestScore = node
 			highestScore = tempScore
-
+	print "highestScore", highestScore
 	return boardWithHighestScore
 
 
