@@ -1,6 +1,7 @@
 from Tkinter import Tk
 import copy
 import random
+import time
 from node import Node, initBoard
 from visuals import GameWindow
 
@@ -30,7 +31,7 @@ def expValue(board, depth):
 			emptyCellIndices.append(index)
 
 	for index in emptyCellIndices:
-		for value in range(1, 3):
+		for value in range(1, 2):
 			newBoard = copy.deepcopy(board)
 			newBoard[index] = value
 
@@ -107,16 +108,13 @@ def findBestMove(board):
 		elif len(emptyCellIndices) > 2:
 			tempScore = calculateMovementScoreForBoard(node.board, 5)
 		else:
-			tempScore = calculateMovementScoreForBoard(node.board, 7)
+			tempScore = calculateMovementScoreForBoard(node.board, 5)
 
 		# tempScore = calculateMovementScoreForBoard(node.board, 5)
 		node.heuristic = tempScore
 		if tempScore > highestScore:
 			nodeWithHighestScore = node
 			highestScore = tempScore
-	print()
-	print "highestScore", highestScore
-	print()
 	return nodeWithHighestScore
 
 
@@ -158,10 +156,29 @@ def keyReleased(event):
 		window.update_view(gameBoard.board)
 
 
+def gamewon(board):
+	for number in board:
+		if number >= 11:
+			return True
+	return False
+
+
+
+
 def startAlgorithm(event):
+	alreadyCompleted = False
+	startTime = time.time()
 	while not gameBoard.isGameOver():
-		newNode = findBestMove(gameBoard.board)
-		gameBoard.setBoard(newNode.board)
+		bestNode = findBestMove(gameBoard.board)
+		if not alreadyCompleted and gamewon(bestNode.board):
+			gameWonTime = time.time()
+			gametime = gameWonTime - startTime
+			print "######"
+			print "YOU WON! Time elapsed:", gametime
+			print "######"
+			print ""
+			alreadyCompleted = True
+		gameBoard.setBoard(bestNode.board)
 		gameBoard.placeRandomTwoOrFour()
 		window.update_view(gameBoard.board)
 
@@ -185,8 +202,8 @@ window.update_view(gameBoard.board)  # 1D list representing the board
 window.mainloop()
 
 newNode = findBestMove([1, 8, 9, 10,
-                         5, 7, 6, 4,
-                         1, 4, 5, 3,
-                         1, 3, 2, 1])
+                        5, 7, 6, 4,
+                        1, 4, 5, 3,
+                        1, 3, 2, 1])
 
 print newNode

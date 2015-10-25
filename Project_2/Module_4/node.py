@@ -56,7 +56,7 @@ def boostClustering(board):
 				if board[neighborIndex] == board[index]:
 					extraHeuristic += 50.0 * 2 ** board[index]
 				elif board[neighborIndex] - 1 == board[index] or board[neighborIndex] + 1 == board[index]:
-					extraHeuristic += 25.0 * 2 ** board[index]
+					extraHeuristic += 10.0 * 2 ** board[index]
 	return extraHeuristic
 
 
@@ -193,17 +193,17 @@ class Node:
 
 		emptyCellPoints = self.boostEmptyCells()
 		self.heuristic += emptyCellPoints
-		print "Empty cell points:\t", emptyCellPoints
+		# print "Empty cell points:\t", emptyCellPoints
 
 		clusterinPoints = boostClustering(board)
 		self.heuristic += clusterinPoints
-		print "Clustering points:\t", clusterinPoints
+		# print "Clustering points:\t", clusterinPoints
 
 		patternPoints = boostSnakePattern(board, index)
 		self.heuristic += patternPoints
-		print "Pattern points:\t\t", patternPoints
+		# print "Pattern points:\t\t", patternPoints
 
-		print "Maxvalue: ", 2 ** value, "\t Heuristic: ", self.heuristic, "\tindex: ", index
+		# print "Maxvalue: ", 2 ** value, "\t Heuristic: ", self.heuristic, "\tindex: ", index
 
 	def boostEmptyCells(self):
 		emptyspaces = 0
