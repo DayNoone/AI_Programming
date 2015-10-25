@@ -44,20 +44,21 @@ def expValue(board, depth):
 
 	return score
 
-states = {}
+
+# states = {}
+
+
 def calculateMovementScoreForBoard(board, depth):
 	tempNode = Node(copy.deepcopy(board))
 
 	if depth == 0:
+		# key = tempNode.createNodeKey()
+		# if key in states.keys():
+		# 	tempNode.heuristic = states[key]
+		# else:
 		tempNode.calculateHeuristic()
+		# states[tempNode.createNodeKey()] = tempNode.heuristic
 		return tempNode.heuristic
-		key = newNode.createNodeKey()
-		if key in states.keys():
-			newNode.heuristic = states[key]
-		else:
-			newNode.calculateHeuristic()
-			states[newNode.createNodeKey()] = newNode.heuristic
-		return newNode.heuristic
 
 	elif depth % 2 == 0:
 		return maxValue(tempNode, depth)
@@ -115,7 +116,7 @@ def findBestMove(board):
 		elif len(emptyCellIndices) > 2:
 			tempScore = calculateMovementScoreForBoard(node.board, 5)
 		else:
-			tempScore = calculateMovementScoreForBoard(node.board, 5)
+			tempScore = calculateMovementScoreForBoard(node.board, 7)
 
 		# tempScore = calculateMovementScoreForBoard(node.board, 5)
 		node.heuristic = tempScore
@@ -170,8 +171,6 @@ def gamewon(board):
 	return False
 
 
-
-
 def startAlgorithm(event):
 	alreadyCompleted = False
 	startTime = time.time()
@@ -181,7 +180,7 @@ def startAlgorithm(event):
 			gameWonTime = time.time()
 			gametime = gameWonTime - startTime
 			print "######"
-			print "YOU WON! Time elapsed:", gametime
+			print "YOU WON! Time elapsed:", gametime / 60.0, " minutes"
 			print "######"
 			print ""
 			alreadyCompleted = True

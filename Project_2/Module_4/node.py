@@ -287,17 +287,17 @@ class Node:
 
 		emptyCellPoints = self.boostEmptyCells()
 		self.heuristic += emptyCellPoints
-		print "Empty cell points:\t", emptyCellPoints
+		# print "Empty cell points:\t", emptyCellPoints
 
 		clusterinPoints = boostClustering(board)
 		self.heuristic += clusterinPoints
-		print "Clustering points:\t", clusterinPoints
+		# print "Clustering points:\t", clusterinPoints
 
 		patternPoints = boostSnakePattern(board, highestValueIndex, secondHighestValueIndex)
 		self.heuristic += patternPoints
-		print "Pattern points:\t\t", patternPoints
+		# print "Pattern points:\t\t", patternPoints
 
-		print "Maxvalue: ", 2 ** value, "\t Heuristic: ", self.heuristic, "\tindex: ", index
+		# print "Maxvalue: ", 2 ** value, "\t Heuristic: ", self.heuristic, "\tindex: ", index
 
 	def boostEmptyCells(self):
 		emptyspaces = 0
@@ -307,11 +307,11 @@ class Node:
 		extraHeuristic = emptyspaces * 10000.0
 		return extraHeuristic
 
-	def createNodeKey(self):
-		nodeKey = ""
-		for index in self.board:
-			nodeKey = nodeKey + str(index) + "x"
-		return nodeKey
+	# def createNodeKey(self):
+	# 	nodeKey = ""
+	# 	for index in self.board:
+	# 		nodeKey = nodeKey + str(index) + "x"
+	# 	return nodeKey
 
 
 
