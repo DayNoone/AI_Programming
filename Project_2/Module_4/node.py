@@ -193,6 +193,13 @@ class Node:
 		extraHeuristic = emptyspaces * 10000
 		return extraHeuristic
 
+	def createNodeKey(self):
+		nodeKey = ""
+		for index in self.board:
+			nodeKey = nodeKey + str(index) + "x"
+		return nodeKey
+
+
 
 """
 Board indices:

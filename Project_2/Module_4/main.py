@@ -43,12 +43,17 @@ def expValue(board, depth):
 
 	return score
 
-
+states = {}
 def calculateMovementScoreForBoard(board, depth):
 	newNode = Node(board)
 
 	if depth == 0:
-		newNode.calculateHeuristic()
+		key = newNode.createNodeKey()
+		if key in states.keys():
+			newNode.heuristic = states[key]
+		else:
+			newNode.calculateHeuristic()
+			states[newNode.createNodeKey()] = newNode.heuristic
 		return newNode.heuristic
 
 	elif depth % 2 == 1:
