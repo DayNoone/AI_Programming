@@ -114,7 +114,7 @@ def findBestMove(board):
 		elif len(emptyCellIndices) > 2:
 			tempScore = calculateMovementScoreForBoard(node.board, 5)
 		else:
-			tempScore = calculateMovementScoreForBoard(node.board, 7)
+			tempScore = calculateMovementScoreForBoard(node.board, 5)
 
 		# tempScore = calculateMovementScoreForBoard(node.board, 5)
 		node.heuristic = tempScore

@@ -60,29 +60,115 @@ def boostClustering(board):
 	return extraHeuristic
 
 
-def boostSnakePattern(board, index):
-	if index == 0 or index == 1 or index == 4 or index == 5:
+def boostSnakePattern(board, highestValueIndex, secondHighestValueIndex):
+	if highestValueIndex == 1:
 		multipliers = [16, 15, 14, 13,
-		               9, 10, 11, 12,
-		               8, 7, 6, 5,
-		               1, 2, 3, 4]
+				   9, 10, 11, 12,
+				   8, 7, 6, 5,
+				   1, 2, 3, 4]
+	elif highestValueIndex == 4:
+		multipliers = [16, 9, 8, 1,
+					   15, 10, 7, 2,
+					   14, 11, 6, 3,
+					   13, 12, 5, 4]
+	elif highestValueIndex == 0 or highestValueIndex == 5:
+		if secondHighestValueIndex == 1:
+			multipliers = [16, 15, 14, 13,
+					   9, 10, 11, 12,
+					   8, 7, 6, 5,
+					   1, 2, 3, 4]
+		elif secondHighestValueIndex == 4:
+			multipliers = [16, 9, 8, 1,
+					   15, 10, 7, 2,
+					   14, 11, 6, 3,
+					   13, 12, 5, 4]
+		else:
+			multipliers = [16, 15, 14, 13,
+				   9, 10, 11, 12,
+				   8, 7, 6, 5,
+				   1, 2, 3, 4]
 
-	elif index == 2 or index == 3 or index == 6 or index == 7:
+	elif highestValueIndex == 2:
 		multipliers = [13, 14, 15, 16,
-		               12, 11, 10, 9,
-		               5, 6, 7, 8,
-		               4, 3, 2, 1]
-	elif index == 8 or index == 9 or index == 12 or index == 13:
-		multipliers = [1, 2, 3, 4,
-		               8, 7, 6, 5,
-		               9, 10, 11, 12,
-		               16, 15, 14, 13]
+					   12, 11, 10, 9,
+					   5, 6, 7, 8,
+					   4, 3, 2, 1]
+	elif highestValueIndex == 6:
+		multipliers = [4, 8, 9, 16,
+					   3, 7, 10, 15,
+					   2, 6, 11, 14,
+					   1, 5, 12, 13]
+	elif highestValueIndex == 3 or  highestValueIndex == 7:
+		if secondHighestValueIndex == 2:
+			multipliers = [13, 14, 15, 16,
+						   12, 11, 10, 9,
+						   5, 6, 7, 8,
+						   4, 3, 2, 1]
+		elif secondHighestValueIndex == 6:
+			multipliers = [4, 8, 9, 16,
+						   3, 7, 10, 15,
+						   2, 6, 11, 14,
+						   1, 5, 12, 13]
+		else:
+			multipliers = [13, 14, 15, 16,
+					   12, 11, 10, 9,
+					   5, 6, 7, 8,
+					   4, 3, 2, 1]
 
-	elif index == 10 or index == 11 or index == 14 or index == 15:
+	elif highestValueIndex == 8:
+		multipliers = [13, 12, 8, 1,
+						   14, 11, 7, 2,
+						   15, 10, 6, 3,
+						   16, 9, 5, 4]
+	elif highestValueIndex == 13:
+		multipliers = [1, 2, 3, 4,
+					   8, 7, 6, 5,
+					   9, 10, 11, 12,
+					   16, 15, 14, 13]
+	elif highestValueIndex == 9 or highestValueIndex == 12:
+		if secondHighestValueIndex == 8:
+			multipliers = [13, 12, 8, 1,
+							   14, 11, 7, 2,
+							   15, 10, 6, 3,
+							   16, 9, 5, 4]
+		elif secondHighestValueIndex == 13:
+			multipliers = [1, 2, 3, 4,
+						   8, 7, 6, 5,
+						   9, 10, 11, 12,
+						   16, 15, 14, 13]
+		else:
+			multipliers = [13, 12, 8, 1,
+						   14, 11, 7, 2,
+						   15, 10, 6, 3,
+						   16, 9, 5, 4]
+
+	elif highestValueIndex == 11:
+		multipliers = [4, 5, 12, 13,
+					   3, 6, 11, 14,
+					   2, 7, 10, 15,
+					   1, 8, 9, 16]
+	elif highestValueIndex == 14:
 		multipliers = [4, 3, 2, 1,
-		               5, 6, 7, 8,
-		               12, 11, 10, 9,
-		               13, 14, 15, 16]
+					   5, 6, 7, 8,
+					   12, 11, 10, 9,
+					   13, 14, 15, 16]
+	#elif highestValueIndex == 10 or highestValueIndex == 15:
+	else:
+		if secondHighestValueIndex == 11:
+			multipliers = [4, 5, 12, 13,
+						   3, 6, 11, 14,
+						   2, 7, 10, 15,
+						   1, 8, 9, 16]
+		elif secondHighestValueIndex == 14:
+			multipliers = [4, 3, 2, 1,
+						   5, 6, 7, 8,
+						   12, 11, 10, 9,
+						   13, 14, 15, 16]
+		else:
+			multipliers = [4, 5, 12, 13,
+					   3, 6, 11, 14,
+					   2, 7, 10, 15,
+					   1, 8, 9, 16]
 
 	extraHeuristic = 0
 	for i in range(len(board)):
@@ -106,31 +192,31 @@ class Node:
 
 	def moveDown(self):
 		lines = [[12, 8, 4, 0],
-		         [13, 9, 5, 1],
-		         [14, 10, 6, 2],
-		         [15, 11, 7, 3]]
+				 [13, 9, 5, 1],
+				 [14, 10, 6, 2],
+				 [15, 11, 7, 3]]
 		self.mergeLines(lines)
 
 	def moveUp(self):
 		lines = [[0, 4, 8, 12],
-		         [1, 5, 9, 13],
-		         [2, 6, 10, 14],
-		         [3, 7, 11, 15]]
+				 [1, 5, 9, 13],
+				 [2, 6, 10, 14],
+				 [3, 7, 11, 15]]
 		self.mergeLines(lines)
 
 	def moveRight(self):
 		lines = [[3, 2, 1, 0],
-		         [7, 6, 5, 4],
-		         [11, 10, 9, 8],
-		         [15, 14, 13, 12]]
+				 [7, 6, 5, 4],
+				 [11, 10, 9, 8],
+				 [15, 14, 13, 12]]
 
 		self.mergeLines(lines)
 
 	def moveLeft(self):
 		lines = [[0, 1, 2, 3],
-		         [4, 5, 6, 7],
-		         [8, 9, 10, 11],
-		         [12, 13, 14, 15]]
+				 [4, 5, 6, 7],
+				 [8, 9, 10, 11],
+				 [12, 13, 14, 15]]
 
 		self.mergeLines(lines)
 
@@ -189,7 +275,15 @@ class Node:
 			self.heuristic = -10000000000
 			return
 
-		index, value = max(enumerate(self.board), key=operator.itemgetter(1))
+		highestValueIndex = 0
+		secondHighestValueIndex = 0
+		for index in range(len(board)):
+			tempValue = board[index]
+			if tempValue > highestValueIndex:
+				secondHighestValueIndex = highestValueIndex
+				highestValueIndex = tempValue
+			elif tempValue > secondHighestValueIndex:
+				secondHighestValueIndex = tempValue
 
 		emptyCellPoints = self.boostEmptyCells()
 		self.heuristic += emptyCellPoints
@@ -199,11 +293,11 @@ class Node:
 		self.heuristic += clusterinPoints
 		print "Clustering points:\t", clusterinPoints
 
-		patternPoints = boostSnakePattern(board, index)
+		patternPoints = boostSnakePattern(board, highestValueIndex, secondHighestValueIndex)
 		self.heuristic += patternPoints
 		print "Pattern points:\t\t", patternPoints
 
-		print "Maxvalue: ", 2 ** value, "\t Heuristic: ", self.heuristic, "\tindex: ", index
+		print "Maxvalue: ", 2 ** board[highestValueIndex], "\t Heuristic: ", self.heuristic, "\tindex: ", highestValueIndex
 
 	def boostEmptyCells(self):
 		emptyspaces = 0
