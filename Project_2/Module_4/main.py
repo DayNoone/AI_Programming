@@ -11,7 +11,17 @@ def getTwoOrFour():
 	return 2
 
 
-def calculateMovementScoreForBoard(board, depth):
+def maxValue(newNode, depth):
+	listOfMoves = makeMove(newNode.board)
+	highestScore = 0
+	for node in listOfMoves:
+		tempScore = calculateMovementScoreForBoard(node.board, depth - 1)
+		if tempScore > highestScore:
+			highestScore = tempScore
+	return highestScore
+
+
+def expValue(board, depth):
 	score = 0
 	emptyCellIndices = []
 
@@ -20,33 +30,32 @@ def calculateMovementScoreForBoard(board, depth):
 			emptyCellIndices.append(index)
 
 	for index in emptyCellIndices:
-		# value = getTwoOrFour()
 		value = 1
 		newBoard = copy.deepcopy(board)
 		newBoard[index] = value
-		newNode = Node(newBoard)
 
-		# TODO: Kan score bare summeres slikt? Da vil jo nesten alltid et brett som har en potensiell dyp path få høyere score enn et brett som har oppnådd en veldig høy brikek men kjørt seg fast.
-
-		if depth == 0:
-			newNode.calculateHeuristic()
-
-			if value == 1:
-				score += newNode.heuristic * 0.9 * 1 / len(emptyCellIndices)
-			else:
-				score += newNode.heuristic * 0.1 * 1 / len(emptyCellIndices)
-
+		if value == 1:
+			p = 0.9 * 1 /len(emptyCellIndices)
 		else:
-			listOfMoves = makeMove(newNode.board)
-			highestScore = 0
-			for node in listOfMoves:
-				tempScore = calculateMovementScoreForBoard(node.board, depth - 1)
-				if tempScore > highestScore:
-					highestScore = tempScore
+			p = 0.1 * 1 /len(emptyCellIndices)
 
-			score += highestScore
+		score += p * calculateMovementScoreForBoard(board, depth - 1)
 
 	return score
+
+
+def calculateMovementScoreForBoard(board, depth):
+	newNode = Node(board)
+
+	if depth == 0:
+		newNode.calculateHeuristic()
+		return newNode.heuristic
+
+	elif depth % 2 == 1:
+		return maxValue(newNode, depth)
+
+	else:
+		return expValue(board, depth)
 
 
 def makeMove(board):
@@ -89,18 +98,18 @@ def findBestMove(board):
 			emptyCellIndices.append(index)
 
 	for node in listOfNodes:
-		if len(emptyCellIndices) > 8:
-			tempScore = calculateMovementScoreForBoard(node.board, 0)
-		elif len(emptyCellIndices) > 6:
-			tempScore = calculateMovementScoreForBoard(node.board, 1)
-		elif len(emptyCellIndices) > 4:
-			tempScore = calculateMovementScoreForBoard(node.board, 1)
-		elif len(emptyCellIndices) > 2:
-			tempScore = calculateMovementScoreForBoard(node.board, 1)
-		else:
-			tempScore = calculateMovementScoreForBoard(node.board, 1)
+		# if len(emptyCellIndices) > 8:
+		# 	tempScore = calculateMovementScoreForBoard(node.board, 4)
+		# elif len(emptyCellIndices) > 6:
+		# 	tempScore = calculateMovementScoreForBoard(node.board, 4)
+		# elif len(emptyCellIndices) > 4:
+		# 	tempScore = calculateMovementScoreForBoard(node.board, 4)
+		# elif len(emptyCellIndices) > 2:
+		# 	tempScore = calculateMovementScoreForBoard(node.board, 4)
+		# else:
+		# 	tempScore = calculateMovementScoreForBoard(node.board, 4)
 
-		# tempScore = calculateMovementScoreForBoard(node.board, 2)
+		tempScore = calculateMovementScoreForBoard(node.board, 5)
 
 		if tempScore > highestScore:
 			boardWithHighestScore = node
