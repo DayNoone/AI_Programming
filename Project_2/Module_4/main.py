@@ -35,9 +35,9 @@ def expValue(board, depth):
 			newBoard[index] = value
 
 			if value == 1:
-				p = 0.9 * 1.0 /len(emptyCellIndices)
+				p = 0.9 * 1.0 / len(emptyCellIndices)
 			else:
-				p = 0.1 * 1.0 /len(emptyCellIndices)
+				p = 0.1 * 1.0 / len(emptyCellIndices)
 
 			score += p * calculateMovementScoreForBoard(newBoard, depth - 1)
 
@@ -98,19 +98,19 @@ def findBestMove(board):
 			emptyCellIndices.append(index)
 
 	for node in listOfNodes:
-		# if len(emptyCellIndices) > 8:
-		# 	tempScore = calculateMovementScoreForBoard(node.board, 4)
-		# elif len(emptyCellIndices) > 6:
-		# 	tempScore = calculateMovementScoreForBoard(node.board, 4)
-		# elif len(emptyCellIndices) > 4:
-		# 	tempScore = calculateMovementScoreForBoard(node.board, 4)
-		# elif len(emptyCellIndices) > 2:
-		# 	tempScore = calculateMovementScoreForBoard(node.board, 4)
-		# else:
-		# 	tempScore = calculateMovementScoreForBoard(node.board, 4)
+		if len(emptyCellIndices) > 8:
+			tempScore = calculateMovementScoreForBoard(node.board, 1)
+		elif len(emptyCellIndices) > 6:
+			tempScore = calculateMovementScoreForBoard(node.board, 3)
+		elif len(emptyCellIndices) > 4:
+			tempScore = calculateMovementScoreForBoard(node.board, 3)
+		elif len(emptyCellIndices) > 2:
+			tempScore = calculateMovementScoreForBoard(node.board, 5)
+		else:
+			tempScore = calculateMovementScoreForBoard(node.board, 5)
 
-		tempScore = calculateMovementScoreForBoard(node.board, 4)
-
+		# tempScore = calculateMovementScoreForBoard(node.board, 5)
+		node.heuristic = tempScore
 		if tempScore > highestScore:
 			nodeWithHighestScore = node
 			highestScore = tempScore

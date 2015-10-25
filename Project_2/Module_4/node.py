@@ -54,21 +54,41 @@ def boostClustering(board):
 			neighborIndex = index + offset
 			if 0 < neighborIndex < len(board):
 				if board[neighborIndex] == board[index]:
-					extraHeuristic += 100 * 2 ** board[index]
+					extraHeuristic += 50.0 * 2 ** board[index]
 				elif board[neighborIndex] - 1 == board[index] or board[neighborIndex] + 1 == board[index]:
-					extraHeuristic += 50 * 2 ** board[index]
+					extraHeuristic += 25.0 * 2 ** board[index]
 	return extraHeuristic
 
 
-def boostSnakePattern(board):
+def boostSnakePattern(board, index):
+	if index == 0 or index == 1 or index == 4 or index == 5:
+		multipliers = [16, 15, 14, 13,
+		               9, 10, 11, 12,
+		               8, 7, 6, 5,
+		               1, 2, 3, 4]
+
+	elif index == 2 or index == 3 or index == 6 or index == 7:
+		multipliers = [13, 14, 15, 16,
+		               12, 11, 10, 9,
+		               5, 6, 7, 8,
+		               4, 3, 2, 1]
+	elif index == 8 or index == 9 or index == 12 or index == 13:
+		multipliers = [1, 2, 3, 4,
+		               8, 7, 6, 5,
+		               9, 10, 11, 12,
+		               16, 15, 14, 13]
+
+	elif index == 10 or index == 11 or index == 14 or index == 15:
+		multipliers = [4, 3, 2, 1,
+		               5, 6, 7, 8,
+		               12, 11, 10, 9,
+		               13, 14, 15, 16]
+
 	extraHeuristic = 0
-	multipliers = [130, 140, 150, 160,
-	               120, 110, 100, 90,
-	               50, 60, 70, 80,
-	               40, 30, 20, 10]
 	for i in range(len(board)):
 		if board[i] != 0:
-			extraHeuristic += multipliers[i] * 2 ** board[i]
+			extraHeuristic += multipliers[i] * 10 * 2 ** board[i]
+
 	return extraHeuristic
 
 
@@ -175,11 +195,11 @@ class Node:
 		self.heuristic += emptyCellPoints
 		print "Empty cell points:\t", emptyCellPoints
 
-		# clusterinPoints = boostClustering(board)
-		# self.heuristic += clusterinPoints
-		# print "Clustering points:\t", clusterinPoints
+		clusterinPoints = boostClustering(board)
+		self.heuristic += clusterinPoints
+		print "Clustering points:\t", clusterinPoints
 
-		patternPoints = boostSnakePattern(board)
+		patternPoints = boostSnakePattern(board, index)
 		self.heuristic += patternPoints
 		print "Pattern points:\t\t", patternPoints
 
@@ -190,7 +210,7 @@ class Node:
 		for number in self.board:
 			if number == 0:
 				emptyspaces += 1
-		extraHeuristic = emptyspaces * 10000
+		extraHeuristic = emptyspaces * 10000.0
 		return extraHeuristic
 
 
