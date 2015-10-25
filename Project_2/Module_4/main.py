@@ -30,7 +30,7 @@ def expValue(board, depth):
 			emptyCellIndices.append(index)
 
 	for index in emptyCellIndices:
-		for value in range(1, 2):
+		for value in range(1, 3):
 			newBoard = copy.deepcopy(board)
 			newBoard[index] = value
 
@@ -114,7 +114,7 @@ def findBestMove(board):
 		elif len(emptyCellIndices) > 2:
 			tempScore = calculateMovementScoreForBoard(node.board, 5)
 		else:
-			tempScore = calculateMovementScoreForBoard(node.board, 5)
+			tempScore = calculateMovementScoreForBoard(node.board, 7)
 
 		# tempScore = calculateMovementScoreForBoard(node.board, 5)
 		node.heuristic = tempScore
