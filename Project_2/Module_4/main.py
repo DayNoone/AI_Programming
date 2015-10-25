@@ -11,8 +11,8 @@ def getTwoOrFour():
 	return 2
 
 
-def maxValue(newNode, depth):
-	listOfMoves = makeMove(newNode.board)
+def maxValue(tempNode, depth):
+	listOfMoves = makeMove(tempNode.board)
 	highestScore = 0
 	for node in listOfMoves:
 		tempScore = calculateMovementScoreForBoard(node.board, depth - 1)
@@ -30,29 +30,29 @@ def expValue(board, depth):
 			emptyCellIndices.append(index)
 
 	for index in emptyCellIndices:
-		for value in range(1, 3):
+		for value in range(1, 2):
 			newBoard = copy.deepcopy(board)
 			newBoard[index] = value
 
 			if value == 1:
-				p = 0.9 * 1 /len(emptyCellIndices)
+				p = 0.9 * 1.0 /len(emptyCellIndices)
 			else:
-				p = 0.1 * 1 /len(emptyCellIndices)
+				p = 0.1 * 1.0 /len(emptyCellIndices)
 
-			score += p * calculateMovementScoreForBoard(board, depth - 1)
+			score += p * calculateMovementScoreForBoard(newBoard, depth - 1)
 
 	return score
 
 
 def calculateMovementScoreForBoard(board, depth):
-	newNode = Node(board)
+	tempNode = Node(copy.deepcopy(board))
 
 	if depth == 0:
-		newNode.calculateHeuristic()
-		return newNode.heuristic
+		tempNode.calculateHeuristic()
+		return tempNode.heuristic
 
-	elif depth % 2 == 1:
-		return maxValue(newNode, depth)
+	elif depth % 2 == 0:
+		return maxValue(tempNode, depth)
 
 	else:
 		return expValue(board, depth)
@@ -89,7 +89,7 @@ def makeMove(board):
 
 def findBestMove(board):
 	listOfNodes = makeMove(board)
-	boardWithHighestScore = listOfNodes[0]
+	nodeWithHighestScore = listOfNodes[0]
 	highestScore = 0
 
 	emptyCellIndices = []
@@ -109,13 +109,15 @@ def findBestMove(board):
 		# else:
 		# 	tempScore = calculateMovementScoreForBoard(node.board, 4)
 
-		tempScore = calculateMovementScoreForBoard(node.board, 3)
+		tempScore = calculateMovementScoreForBoard(node.board, 4)
 
 		if tempScore > highestScore:
-			boardWithHighestScore = node
+			nodeWithHighestScore = node
 			highestScore = tempScore
+	print()
 	print "highestScore", highestScore
-	return boardWithHighestScore
+	print()
+	return nodeWithHighestScore
 
 
 def leftKey(event):
