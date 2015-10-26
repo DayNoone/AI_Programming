@@ -2,7 +2,8 @@ from Tkinter import Tk
 import copy
 import random
 import time
-from node import Node, initBoard
+from node import initBoard, isGameOver, placeRandomTwoOrFour, moveLeft, moveRight, moveUp, moveDown, calculateHeuristic, \
+	restartGame
 from visuals import GameWindow
 
 
@@ -12,11 +13,11 @@ def getTwoOrFour():
 	return 2
 
 
-def maxValue(tempNode, depth):
-	listOfMoves = makeMove(tempNode.board)
+def maxValue(board, depth):
+	listOfMoves = makeMove(board)
 	highestScore = 0
-	for node in listOfMoves:
-		tempScore = calculateMovementScoreForBoard(node.board, depth - 1)
+	for tempBoard in listOfMoves:
+		tempScore = calculateMovementScoreForBoard(tempBoard, depth - 1)
 		if tempScore > highestScore:
 			highestScore = tempScore
 	return highestScore
@@ -45,60 +46,52 @@ def expValue(board, depth):
 	return score
 
 
-# states = {}
-
-
 def calculateMovementScoreForBoard(board, depth):
-	tempNode = Node(copy.deepcopy(board))
+	tempBoard = copy.deepcopy(board)
 
 	if depth == 0:
-		# key = tempNode.createNodeKey()
-		# if key in states.keys():
-		# 	tempNode.heuristic = states[key]
-		# else:
-		tempNode.calculateHeuristic()
-		# states[tempNode.createNodeKey()] = tempNode.heuristic
-		return tempNode.heuristic
+		heuristic = calculateHeuristic(tempBoard)
+		return heuristic
 
 	elif depth % 2 == 0:
-		return maxValue(tempNode, depth)
+		return maxValue(tempBoard, depth)
 
 	else:
-		return expValue(board, depth)
+		return expValue(tempBoard, depth)
 
 
 def makeMove(board):
-	listOfNodes = []
-	movedLeftNode = Node(copy.deepcopy(board))
-	movedLeftNode.moveLeft()
+	listOfBoards = []
+	movedLeft = copy.deepcopy(board)
+	moveLeft(movedLeft)
 
-	if movedLeftNode.board != board:
-		listOfNodes.append(movedLeftNode)
+	if movedLeft != board:
+		listOfBoards.append(movedLeft)
 
-	movedRightNode = Node(copy.deepcopy(board))
-	movedRightNode.moveRight()
+	movedRight = copy.deepcopy(board)
+	moveRight(movedRight)
 
-	if movedRightNode.board != board:
-		listOfNodes.append(movedRightNode)
+	if movedRight != board:
+		listOfBoards.append(movedRight)
 
-	movedUpNode = Node(copy.deepcopy(board))
-	movedUpNode.moveUp()
+	movedUp = copy.deepcopy(board)
+	moveUp(movedUp)
 
-	if movedUpNode.board != board:
-		listOfNodes.append(movedUpNode)
+	if movedUp != board:
+		listOfBoards.append(movedUp)
 
-	movedDownNode = Node(copy.deepcopy(board))
-	movedDownNode.moveDown()
+	movedDown = copy.deepcopy(board)
+	moveDown(movedDown)
 
-	if movedDownNode.board != board:
-		listOfNodes.append(movedDownNode)
+	if movedDown != board:
+		listOfBoards.append(movedDown)
 
-	return listOfNodes
+	return listOfBoards
 
 
 def findBestMove(board):
-	listOfNodes = makeMove(board)
-	nodeWithHighestScore = listOfNodes[0]
+	listOfBoards = makeMove(board)
+	boardWithHighestScore = listOfBoards[0]
 	highestScore = 0
 
 	emptyCellIndices = []
@@ -106,61 +99,60 @@ def findBestMove(board):
 		if board[index] == 0:
 			emptyCellIndices.append(index)
 
-	for node in listOfNodes:
+	for board in listOfBoards:
 		if len(emptyCellIndices) > 8:
-			tempScore = calculateMovementScoreForBoard(node.board, 1)
+			tempScore = calculateMovementScoreForBoard(board, 1)
 		elif len(emptyCellIndices) > 6:
-			tempScore = calculateMovementScoreForBoard(node.board, 3)
+			tempScore = calculateMovementScoreForBoard(board, 3)
 		elif len(emptyCellIndices) > 4:
-			tempScore = calculateMovementScoreForBoard(node.board, 3)
+			tempScore = calculateMovementScoreForBoard(board, 5)
 		elif len(emptyCellIndices) > 2:
-			tempScore = calculateMovementScoreForBoard(node.board, 5)
+			tempScore = calculateMovementScoreForBoard(board, 5)
 		else:
-			tempScore = calculateMovementScoreForBoard(node.board, 7)
+			tempScore = calculateMovementScoreForBoard(board, 7)
 
-		# tempScore = calculateMovementScoreForBoard(node.board, 5)
-		node.heuristic = tempScore
+		# tempScore = calculateMovementScoreForBoard(board, 5)
 		if tempScore > highestScore:
-			nodeWithHighestScore = node
+			boardWithHighestScore = board
 			highestScore = tempScore
-	return nodeWithHighestScore
+	return boardWithHighestScore
 
 
 def leftKey(event):
-	gameBoard.moveLeft()
-	gameBoard.placeRandomTwoOrFour()
+	moveLeft(gameBoard)
+	placeRandomTwoOrFour(gameBoard)
 
-	window.update_view(gameBoard.board)
+	window.update_view(gameBoard)
 
 
 def rightKey(event):
-	gameBoard.moveRight()
-	gameBoard.placeRandomTwoOrFour()
+	moveRight(gameBoard)
+	placeRandomTwoOrFour(gameBoard)
 
-	window.update_view(gameBoard.board)
+	window.update_view(gameBoard)
 
 
 def upKey(event):
-	gameBoard.moveUp()
-	gameBoard.placeRandomTwoOrFour()
+	moveUp(gameBoard)
+	placeRandomTwoOrFour(gameBoard)
 
-	window.update_view(gameBoard.board)
+	window.update_view(gameBoard)
 
 
 def downKey(event):
-	gameBoard.moveDown()
-	gameBoard.placeRandomTwoOrFour()
-	window.update_view(gameBoard.board)
+	moveDown(gameBoard)
+	placeRandomTwoOrFour(gameBoard)
+	window.update_view(gameBoard)
 
 
 def keyReleased(event):
 	if event.char == 'r':
-		gameBoard.restartGame()
-		window.update_view(gameBoard.board)
+		restartGame(gameBoard)
+		window.update_view(gameBoard)
 	elif event.char == 's':
-		newNode = findBestMove(gameBoard.board)
-		gameBoard.setBoard(newNode.board)
-		gameBoard.placeRandomTwoOrFour()
+		newNode = findBestMove(gameBoard)
+		gameBoard = newNode
+		placeRandomTwoOrFour(gameBoard)
 		window.update_view(gameBoard.board)
 
 
@@ -172,21 +164,23 @@ def gamewon(board):
 
 
 def startAlgorithm(event):
+	board = initBoard()
+
 	alreadyCompleted = False
 	startTime = time.time()
-	while not gameBoard.isGameOver():
-		bestNode = findBestMove(gameBoard.board)
-		if not alreadyCompleted and gamewon(bestNode.board):
+	while not isGameOver(board):
+		bestBoard = findBestMove(board)
+		if not alreadyCompleted and gamewon(bestBoard):
 			gameWonTime = time.time()
 			gametime = gameWonTime - startTime
 			print "######"
-			print "YOU WON! Time elapsed:", gametime / 60.0, " minutes"
+			print "YOU WON! Time elapsed:", gametime / 60.0, " minutes - WITHOUT NODE"
 			print "######"
 			print ""
 			alreadyCompleted = True
-		gameBoard.setBoard(bestNode.board)
-		gameBoard.placeRandomTwoOrFour()
-		window.update_view(gameBoard.board)
+		board = bestBoard
+		placeRandomTwoOrFour(board)
+		window.update_view(board)
 
 
 main = Tk()
@@ -203,13 +197,6 @@ main.bind('<space>', startAlgorithm)
 window.pack()
 
 gameBoard = initBoard()
-window.update_view(gameBoard.board)  # 1D list representing the board
+window.update_view(gameBoard)  # 1D list representing the board
 
 window.mainloop()
-
-newNode = findBestMove([1, 8, 9, 10,
-                        5, 7, 6, 4,
-                        1, 4, 5, 3,
-                        1, 3, 2, 1])
-
-print newNode

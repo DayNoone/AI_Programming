@@ -18,12 +18,12 @@ BACKGROUND_COLOR_DICT = {
 	8: '#edcc61',
 	9: '#edc850',
 	10: '#edc53f',
-	11: '#FFAE00',
-	12: '#FFAE00',
-	13: '#FFAE00',
-	14: '#FFAE00',
-	15: '#FFAE00',
-	16: '#FFAE00'
+	11: '#edc22e',
+	12: '#3c3a32',
+	13: '#3c3a32',
+	14: '#3c3a32',
+	15: '#3c3a32',
+	16: '#3c3a32'
 }
 
 
@@ -32,7 +32,7 @@ class GameWindow(Frame):
 		Frame.__init__(self, main)
 
 		self.grid()
-		self.master.title('2048')
+		self.master.title('2048 - WITHOUT NODE')
 
 		self.grid_cells = []
 		self.init_grid()
