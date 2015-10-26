@@ -12,8 +12,8 @@ def getTwoOrFour():
 	return 2
 
 
-def maxValue(tempNode, depth):
-	listOfMoves = makeMove(tempNode.board)
+def maxValue(board, depth):
+	listOfMoves = makeMove(board)
 	highestScore = 0
 	for node in listOfMoves:
 		tempScore = calculateMovementScoreForBoard(node.board, depth - 1)
@@ -49,19 +49,14 @@ def expValue(board, depth):
 
 
 def calculateMovementScoreForBoard(board, depth):
-	tempNode = Node(copy.deepcopy(board))
+	tempNode = Node(board)
 
 	if depth == 0:
-		# key = tempNode.createNodeKey()
-		# if key in states.keys():
-		# 	tempNode.heuristic = states[key]
-		# else:
 		tempNode.calculateHeuristic()
-		# states[tempNode.createNodeKey()] = tempNode.heuristic
 		return tempNode.heuristic
 
 	elif depth % 2 == 0:
-		return maxValue(tempNode, depth)
+		return maxValue(board, depth)
 
 	else:
 		return expValue(board, depth)
@@ -108,7 +103,7 @@ def findBestMove(board):
 
 	for node in listOfNodes:
 		if len(emptyCellIndices) > 8:
-			tempScore = calculateMovementScoreForBoard(node.board, 1)
+			tempScore = calculateMovementScoreForBoard(node.board, 3)
 		elif len(emptyCellIndices) > 6:
 			tempScore = calculateMovementScoreForBoard(node.board, 3)
 		elif len(emptyCellIndices) > 4:
